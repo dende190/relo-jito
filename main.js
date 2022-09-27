@@ -1,5 +1,5 @@
-let { app, BrowserWindow } = require('electron')
-let path = require('path')
+let { app, BrowserWindow } = require('electron');
+let path = require('path');
 
 const TEXTO_TAMANO = 48;
 const MARGEN = 8;
@@ -18,18 +18,20 @@ let createWindow = () => {
         limites.y
       ),
       height: ALTURA,
-      width: (TEXTO_TAMANO * CARACTERES_CANTIDAD),
+      width: limites.x,
       transparent: true,
       frame: false,
-      alwaysOnTop: true,
       focusable: false,
       skipTaskbar: true,
+      alwaysOnTop: true,
       webPreferences: {
-        preload: path.join(__dirname, 'preload.js')
+        preload: path.join(__dirname, 'preload.js'),
       },
     });
 
-    win.loadFile('src/index.html')
+    win.setIgnoreMouseEvents(true);
+    win.setFocusable(false);
+    win.loadFile('src/index.html');
   });
 }
 
