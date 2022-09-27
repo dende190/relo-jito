@@ -7,7 +7,7 @@ const ALTURA = (TEXTO_TAMANO + MARGEN);
 const CARACTERES_CANTIDAD = 8;
 
 let createWindow = () => {
-  let { screen } = require('electron')
+  let { screen } = require('electron');
   screen.getAllDisplays().forEach((pantalla) => {
     let limites = pantalla.bounds;
     let win = new BrowserWindow({
@@ -26,20 +26,21 @@ let createWindow = () => {
       skipTaskbar: true,
       webPreferences: {
         preload: path.join(__dirname, 'preload.js')
-      }
-    })
+      },
+    });
+
     win.loadFile('src/index.html')
-  })
+  });
 }
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit()
-})
+  if (process.platform !== 'darwin') app.quit();
+});
 
 app.whenReady().then(() => {
-  createWindow()
+  createWindow();
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
-  })
-})
+  });
+});
