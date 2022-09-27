@@ -1,0 +1,54 @@
+{
+  "name": "angry-donkey-haunt-7282t",
+  "productName": "angry-donkey-haunt-7282t",
+  "description": "My Electron application description",
+  "keywords": [],
+  "main": "./main.js",
+  "version": "1.0.0",
+  "author": "Piyin",
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.0",
+    "rpmbuild": "0.0.23"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.66",
+    "@electron-forge/maker-deb": "^6.0.0-beta.66",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.66",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.66",
+    "@electron-forge/maker-zip": "^6.0.0-beta.66",
+    "electron": "^20.1.1"
+  },
+  "license": "ISC",
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "angry_donkey_haunt_7282t"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
+  }
+}

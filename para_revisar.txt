@@ -1,0 +1,4 @@
+1. Fondo negro
+2. Transparencia al darle click
+3. Que no se pierda el perro
+4. Que no salgan como ventanas en linux
