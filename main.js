@@ -3,8 +3,11 @@ let path = require('path');
 
 const TEXTO_TAMANO = 48;
 const MARGEN = 8;
-const ALTURA = (TEXTO_TAMANO + MARGEN);
 const CARACTERES_CANTIDAD = 8;
+// TODO: Determinar si hay un número más correcto para los menores tamaños de
+// ALTURA y ANCHURA
+const ALTURA = (TEXTO_TAMANO + 6);
+const ANCHURA = (CARACTERES_CANTIDAD * 29);
 
 let createWindow = () => {
   let { screen } = require('electron');
@@ -18,7 +21,7 @@ let createWindow = () => {
         limites.y
       ),
       height: ALTURA,
-      width: (TEXTO_TAMANO * CARACTERES_CANTIDAD),
+      width: ANCHURA,
       transparent: true,
       frame: false,
       focusable: false,
