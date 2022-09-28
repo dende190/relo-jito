@@ -18,7 +18,7 @@ let createWindow = () => {
         limites.y
       ),
       height: ALTURA,
-      width: limites.x,
+      width: (TEXTO_TAMANO * CARACTERES_CANTIDAD),
       transparent: true,
       frame: false,
       focusable: false,
