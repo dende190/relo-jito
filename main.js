@@ -32,7 +32,7 @@ let createWindow = () => {
     });
 
     win.setAlwaysOnTop(true, 'screen-saver');
-    win.setIgnoreMouseEvents(true);
+    win.setIgnoreMouseEvents(true, {forward: true});
     win.setFocusable(false);
     win.loadFile('src/index.html');
   });

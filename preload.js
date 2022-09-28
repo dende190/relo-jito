@@ -23,16 +23,20 @@ let actualizarHora = () => {
   document.querySelector('.hora').innerText = horaEnFormatoHHmmss;
 }
 
-let cambiarHoraOpacidad = () => {
+let cambiarHoraOpacidad = (evento) => {
+  if (!evento.shiftKey && !evento.ctrlKey) {
+    return;
+  }
   let horaEstilos = document.querySelector('.hora').style;
-  let opacidadIndice = 1;
-  if (horaEstilos.opacity === OPACIDADES[1]) {
-    opacidadIndice = 0;
+  let opacidadIndice = 0;
+  if (evento.shiftKey) {
+    opacidadIndice = 1;
   }
   horaEstilos.opacity = OPACIDADES[opacidadIndice];
 }
 
 window.addEventListener('DOMContentLoaded', () => {
   setInterval(actualizarHora, 1000);
-  document.querySelector('.hora').addEventListener('click', cambiarHoraOpacidad);
+  let dHora = document.querySelector('.hora');
+  dHora.addEventListener('mousemove', cambiarHoraOpacidad);
 })
