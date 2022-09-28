@@ -23,12 +23,12 @@ let createWindow = () => {
       frame: false,
       focusable: false,
       skipTaskbar: true,
-      alwaysOnTop: true,
       webPreferences: {
         preload: path.join(__dirname, 'preload.js'),
       },
     });
 
+    win.setAlwaysOnTop(true, 'screen-saver');
     win.setIgnoreMouseEvents(true);
     win.setFocusable(false);
     win.loadFile('src/index.html');
