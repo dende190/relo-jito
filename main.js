@@ -1,5 +1,6 @@
-let { app, BrowserWindow, ipcMain, Tray } = require('electron');
-let path = require('path');
+const { app, BrowserWindow, ipcMain, Tray } = require('electron');
+const os = require('os');
+const path = require('path');
 
 const TEXTO_TAMANO = 48;
 const MARGEN = 8;
