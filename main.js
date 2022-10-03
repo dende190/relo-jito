@@ -68,8 +68,13 @@ app.on('window-all-closed', () => {
 let notificacionIcono = null;
 app.whenReady().then(() => {
   createWindow();
-  notificacionIcono = new Tray('reloj.ico');
-  notificacionIcono.setToolTip('Relo Jito');
+  let iconoExtension = '.ico';
+  if (os.platform() === 'linux') {
+    iconoExtension = '.png';
+  }
+
+  notificacionIcono = new Tray('reloj' + iconoExtension);
+  notificacionIcono.setToolTip('Cambiar opacidad');
   notificacionIcono.on('click', () => {
     relojesVentanas.forEach((relojVentana) => {
       relojVentana.setIgnoreMouseEvents(false);
