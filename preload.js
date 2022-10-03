@@ -14,6 +14,7 @@ let actualizarRelojOpacidad = (opacidadIndice) => {
 ipcRenderer.on('hacerRelojOpaco', () => {
   actualizarRelojOpacidad(0);
 });
+ipcRenderer.on('hacerRelojTransparente', hacerRelojTransparente);
 window.addEventListener('DOMContentLoaded', () => {
   let dHora = document.querySelector('.hora');
   dHora.addEventListener('click', hacerRelojTransparente);

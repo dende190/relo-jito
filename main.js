@@ -49,6 +49,7 @@ let createWindow = () => {
       )
     );
     relojVentana.setIgnoreMouseEvents(true);
+    relojVentana.esTransparente = true;
   });
 };
 
@@ -76,9 +77,19 @@ app.whenReady().then(() => {
   notificacionIcono = new Tray('reloj' + iconoExtension);
   notificacionIcono.setToolTip('Cambiar opacidad');
   notificacionIcono.on('click', () => {
-    relojesVentanas.forEach((relojVentana) => {
-      relojVentana.setIgnoreMouseEvents(false);
-      relojVentana.webContents.send('hacerRelojOpaco');
+    let relojesTransparentes = relojesVentanas.filter((relojVentana) => {
+      return relojVentana.esTransparente;
     });
+    if (relojesTransparentes.length) {
+      relojesTransparentes.forEach((relojVentana) => {
+        relojVentana.setIgnoreMouseEvents(false);
+        relojVentana.esTransparente = false;
+        relojVentana.webContents.send('hacerRelojOpaco');
+      });
+    } else {
+      relojesVentanas.forEach((relojVentana) => {
+        relojVentana.webContents.send('hacerRelojTransparente');
+      });
+    }
   });
 });
