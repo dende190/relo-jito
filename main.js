@@ -1,4 +1,4 @@
-let { app, BrowserWindow, ipcMain } = require('electron');
+let { app, BrowserWindow, ipcMain, Tray } = require('electron');
 let path = require('path');
 
 const TEXTO_TAMANO = 48;
@@ -64,6 +64,15 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
 
+let notificacionIcono = null;
 app.whenReady().then(() => {
   createWindow();
+  notificacionIcono = new Tray('reloj.ico');
+  notificacionIcono.setToolTip('Relo Jito');
+  notificacionIcono.on('click', () => {
+    relojesVentanas.forEach((relojVentana) => {
+      relojVentana.setIgnoreMouseEvents(false);
+      relojVentana.webContents.send('hacerRelojOpaco');
+    });
+  });
 });
