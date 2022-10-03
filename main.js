@@ -1,4 +1,4 @@
-let { app, BrowserWindow } = require('electron');
+let { app, BrowserWindow, ipcMain } = require('electron');
 let path = require('path');
 
 const TEXTO_TAMANO = 48;
@@ -9,13 +9,13 @@ const CARACTERES_CANTIDAD = 8;
 const ALTURA = (TEXTO_TAMANO + 6);
 const ANCHURA = (CARACTERES_CANTIDAD * 29);
 
-let relojes = [];
+let relojesVentanas = [];
 
 let createWindow = () => {
   let { screen } = require('electron');
   screen.getAllDisplays().forEach((pantalla) => {
     let limites = pantalla.bounds;
-    let win = new BrowserWindow({
+    let relojVentana = new BrowserWindow({
       x: (limites.x + MARGEN),
       y: (
         limites.height -
@@ -32,18 +32,27 @@ let createWindow = () => {
         preload: path.join(__dirname, 'preload.js'),
       },
     });
-
-    win.setAlwaysOnTop(true, 'screen-saver');
-    win.setIgnoreMouseEvents(true, {forward: true});
-    win.setFocusable(false);
-    win.loadFile('src/index.html');
-    relojes.push(win);
+    relojVentana.setAlwaysOnTop(true, 'screen-saver');
+    relojVentana.loadFile('src/index.html');
+    relojesVentanas.push(relojVentana);
   });
   setInterval(ponerVentanasArribaDeLasDemas, 1000);
+  ipcMain.handle('quitarEscuchadoresDeRaton', (evento) => {
+    let eventoRelojVentanaId = evento.sender.id;
+    let relojVentana = (
+      relojesVentanas
+      .find(
+        (relojVentana) => {
+          return (eventoRelojVentanaId === relojVentana.id);
+        },
+      )
+    );
+    relojVentana.setIgnoreMouseEvents(true);
+  });
 };
 
 let ponerVentanasArribaDeLasDemas = () => {
-  relojes
+  relojesVentanas
   .forEach(
     (ventana) => {
       ventana.setAlwaysOnTop(true, 'screen-saver');
