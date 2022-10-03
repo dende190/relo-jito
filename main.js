@@ -9,6 +9,8 @@ const CARACTERES_CANTIDAD = 8;
 const ALTURA = (TEXTO_TAMANO + 6);
 const ANCHURA = (CARACTERES_CANTIDAD * 29);
 
+let relojes = [];
+
 let createWindow = () => {
   let { screen } = require('electron');
   screen.getAllDisplays().forEach((pantalla) => {
@@ -35,8 +37,19 @@ let createWindow = () => {
     win.setIgnoreMouseEvents(true, {forward: true});
     win.setFocusable(false);
     win.loadFile('src/index.html');
+    relojes.push(win);
   });
-}
+  setInterval(ponerVentanasArribaDeLasDemas, 1000);
+};
+
+let ponerVentanasArribaDeLasDemas = () => {
+  relojes
+  .forEach(
+    (ventana) => {
+      ventana.setAlwaysOnTop(true, 'screen-saver');
+    },
+  );
+};
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
