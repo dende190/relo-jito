@@ -17,11 +17,11 @@ ipcRenderer.on('hacerRelojOpaco', () => {
 ipcRenderer.on('hacerRelojTransparente', hacerRelojTransparente);
 ipcRenderer.on('ponerFondoRojo', () => {
   let dHora = document.querySelector('.hora');
-  dHora.style.backgroundColor = 'pink';
+  dHora.style.color = '#f66';
 });
 ipcRenderer.on('quitarFondoRojo', () => {
   let dHora = document.querySelector('.hora');
-  dHora.style.backgroundColor = '';
+  dHora.style.color = '';
 });
 window.addEventListener('DOMContentLoaded', () => {
   let dHora = document.querySelector('.hora');

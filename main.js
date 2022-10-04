@@ -10,11 +10,11 @@ const path = require('path');
 
 const comandosParaAlternarSilencio = {
   'linux': 'amixer set Capture toggle',
-  'win32': path.join(__dirname, 'librerias/SoundVolumeCommandLine/svcl.exe /Stdout /Switch "Microphone"'),
+  'win32': path.join(__dirname, 'librerias/SoundVolumeCommandLine/svcl.exe') + ' /Stdout /Switch "Microphone"',
 };
 const comandosParaActivarSonido = {
   'linux': 'amixer set Capture cap',
-  'win32': path.join(__dirname, 'librerias/SoundVolumeCommandLine/svcl.exe /Stdout /Unmute "Microphone"'),
+  'win32': path.join(__dirname, 'librerias/SoundVolumeCommandLine/svcl.exe') + ' /Stdout /Unmute "Microphone"',
 };
 
 let microfonoEstaSilenciado;
@@ -93,7 +93,7 @@ let ponerVentanasArribaDeLasDemas = () => {
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
-    tray.destroy();
+    notificacionIcono.destroy();
   }
 });
 
@@ -124,7 +124,7 @@ app.whenReady().then(() => {
     }
   });
 
-  globalShortcut.register('CommandOrControl+Shift+Z', () => {
+  globalShortcut.register('CommandOrControl+Shift+X', () => {
     exec(comandosParaAlternarSilencio[process.platform], (error, stdout, stderr) => {
       if (error) {
         // TODO: Informar el error
