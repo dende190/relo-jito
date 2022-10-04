@@ -105,7 +105,7 @@ app.whenReady().then(() => {
     iconoExtension = '.png';
   }
 
-  notificacionIcono = new Tray('reloj' + iconoExtension);
+  notificacionIcono = new Tray(path.join(__dirname, 'reloj' + iconoExtension));
   notificacionIcono.setToolTip('Cambiar opacidad');
   notificacionIcono.on('click', () => {
     let relojesTransparentes = relojesVentanas.filter((relojVentana) => {
