@@ -1,6 +1,34 @@
-const { app, BrowserWindow, ipcMain, Tray } = require('electron');
-const os = require('os');
+const {
+  app,
+  BrowserWindow,
+  globalShortcut,
+  ipcMain,
+  Tray
+} = require('electron');
+const { exec } = require('child_process');
 const path = require('path');
+
+const comandosParaAlternarSilencio = {
+  'linux': 'amixer set Capture toggle',
+  'win32': path.join(__dirname, 'librerias/SoundVolumeCommandLine/svcl.exe /Stdout /Switch "Microphone"'),
+};
+const comandosParaActivarSonido = {
+  'linux': 'amixer set Capture cap',
+  'win32': path.join(__dirname, 'librerias/SoundVolumeCommandLine/svcl.exe /Stdout /Unmute "Microphone"'),
+};
+
+let microfonoEstaSilenciado;
+exec(comandosParaActivarSonido[process.platform], (error, stdout, stderr) => {
+  if (error) {
+    // TODO: Informar el error
+    return;
+  }
+  if (stderr) {
+    // TODO: Informar el error
+    return;
+  }
+  microfonoEstaSilenciado = false;
+});
 
 const TEXTO_TAMANO = 48;
 const MARGEN = 8;
@@ -63,14 +91,17 @@ let ponerVentanasArribaDeLasDemas = () => {
 };
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit();
+  if (process.platform !== 'darwin') {
+    app.quit();
+    tray.destroy();
+  }
 });
 
 let notificacionIcono = null;
 app.whenReady().then(() => {
   createWindow();
   let iconoExtension = '.ico';
-  if (os.platform() === 'linux') {
+  if (process.platform === 'linux') {
     iconoExtension = '.png';
   }
 
@@ -92,4 +123,25 @@ app.whenReady().then(() => {
       });
     }
   });
+
+  globalShortcut.register('CommandOrControl+Shift+Z', () => {
+    exec(comandosParaAlternarSilencio[process.platform], (error, stdout, stderr) => {
+      if (error) {
+        // TODO: Informar el error
+        return;
+      }
+      if (stderr) {
+        // TODO: Informar el error
+        return;
+      }
+      microfonoEstaSilenciado = !microfonoEstaSilenciado;
+      relojesVentanas.forEach((relojVentana) => {
+        if (microfonoEstaSilenciado) {
+          relojVentana.webContents.send('ponerFondoRojo');
+        } else {
+          relojVentana.webContents.send('quitarFondoRojo');
+        }
+      });
+    });
+  })
 });
