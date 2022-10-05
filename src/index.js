@@ -16,6 +16,7 @@ let actualizarHora = () => {
     SEPARADOR +
     mostrarEnDosCifras(segundos)
   );
+  document.body.style.backgroundColor = '';
   document.querySelector('.hora').innerText = horaEnFormatoHHmmss;
 }
 
