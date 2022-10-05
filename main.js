@@ -1,14 +1,5 @@
 'use strict';
-const {
-  app,
-  BrowserWindow,
-  globalShortcut,
-  ipcMain,
-  Menu,
-  Tray,
-} = require('electron');
-const { exec } = require('child_process');
-const path = require('path');
+const { app } = require('electron');
 const PLATAFORMA = require('./plataforma_' + process.platform + '.js');
 
 const TEXTO_TAMANO = 48;
@@ -26,14 +17,8 @@ let relojesVentanas = [];
 
 app.whenReady().then(inicializar);
 
-function alternarRelojesVentanasNotoriedad(evento) {
-  let relojesVentanasIgnorables = relojesVentanas.filter(validarRelojIgnorable);
-  let notorio = !!relojesVentanasIgnorables.length;
-  let argumentos = {notorio: notorio, debeNotificar: true};
-  relojesVentanas.forEach(cambiarRelojVentanaNotoriedad, argumentos);
-}
-
-function alternarSilencioMicrofonos() {
+function alternarMicrofonosSilencio() {
+  const { exec } = require('child_process');
   if (microfonosEstanSilenciados === undefined) {
     microfonosEstanSilenciados = true;
     exec(
@@ -48,6 +33,13 @@ function alternarSilencioMicrofonos() {
   );
 }
 
+function alternarRelojesVentanasNotoriedad(evento) {
+  let relojesVentanasIgnorables = relojesVentanas.filter(validarRelojIgnorable);
+  let notorio = !!relojesVentanasIgnorables.length;
+  let argumentos = {notorio: notorio, debeNotificar: true};
+  relojesVentanas.forEach(cambiarRelojVentanaNotoriedad, argumentos);
+}
+
 function cerrarAplicacion() {
   if (PLATAFORMA.ESTUPIDA) {
     return;
@@ -56,8 +48,10 @@ function cerrarAplicacion() {
 }
 
 function crearRelojVentana(pantalla) {
+  const { BrowserWindow } = require('electron');
+  const path = require('path');
   let limites = pantalla.bounds;
-  let relojVentana = new BrowserWindow({
+  let ventanaRelojConfiguracion = {
     focusable: false,
     frame: false,
     skipTaskbar: true,
@@ -73,7 +67,8 @@ function crearRelojVentana(pantalla) {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
-  });
+  };
+  let relojVentana = new BrowserWindow(ventanaRelojConfiguracion);
   relojVentana.setAlwaysOnTop(true, 'screen-saver');
   relojVentana.loadFile('src/index.html');
   relojesVentanas.push(relojVentana);
@@ -94,13 +89,10 @@ function cambiarRelojVentanaNotoriedad(relojVentana) {
 }
 
 function inicializar() {
+  const { globalShortcut, ipcMain, Menu, Tray } = require('electron');
   crearRelojesVentanas();
   setInterval(ponerRelojesVentanasArribaDeLasDemas, 1000);
   ipcMain.handle('quitarEscuchadoresParaRaton', quitarEscuchadoresParaRaton);
-  let iconoExtension = '.ico';
-  if (process.platform === 'linux') {
-    iconoExtension = '.png';
-  }
 
   let notificacionIcono = new Tray(PLATAFORMA.ICONO);
   notificacionIcono.setToolTip('Relo-Jito');
@@ -121,11 +113,11 @@ function inicializar() {
   notificacionIcono.setContextMenu(menu);
   notificacionIcono.on('click', alternarRelojesVentanasNotoriedad);
 
-  alternarSilencioMicrofonos();
+  alternarMicrofonosSilencio();
 
   (
     globalShortcut
-    .register(ATAJO_ALTERNAR_SILENCIO_MICROFONOS, alternarSilencioMicrofonos)
+    .register(ATAJO_ALTERNAR_SILENCIO_MICROFONOS, alternarMicrofonosSilencio)
   );
 
   app.on('window-all-closed', cerrarAplicacion);

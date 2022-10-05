@@ -1,5 +1,5 @@
 'use strict';
-let { ipcRenderer } = require('electron')
+const { ipcRenderer } = require('electron');
 
 const OPACIDADES = {
   OPACO: '0.8',
