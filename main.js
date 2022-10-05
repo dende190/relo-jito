@@ -2,14 +2,17 @@
 const { app } = require('electron');
 const PLATAFORMA = require('./plataforma_' + process.platform + '.js');
 
-const TEXTO_TAMANO = 48;
-const MARGEN = 8;
+const TEXTO_TAMANO_PIXELES = 48;
+const MARGEN_PIXELES = 8;
 const CARACTERES_CANTIDAD = 8;
-// TODO: Determinar si hay un número más correcto para los menores tamaños de
-// ALTURA y ANCHURA, estos fueron encontrados por prueba y error hasta que
-// aparecieran barras de scroll
-const ALTURA = (TEXTO_TAMANO + 6);
-const ANCHURA = (CARACTERES_CANTIDAD * 29);
+const SOMBRA_GROSOR_PIXELES = 2;
+// TODO: Determinar si hay un número más correcto para los tamaños de
+// ALTURA_EXTRA_REQUERIDA_PIXELES y ANCHURA_EXTRA_REQUERIDA_PIXELES, estos
+// fueron encontrados por prueba y error hasta que aparecieran barras de scroll
+const ALTURA_EXTRA_REQUERIDA_PIXELES = 6;
+const ANCHURA_EXTRA_REQUERIDA_PIXELES = 29;
+const ALTURA_PIXELES = (TEXTO_TAMANO_PIXELES + ALTURA_EXTRA_REQUERIDA_PIXELES);
+const ANCHURA_PIXELES = (CARACTERES_CANTIDAD * ANCHURA_EXTRA_REQUERIDA_PIXELES);
 const ATAJO_ALTERNAR_SILENCIO_MICROFONOS = 'CommandOrControl+Shift+X';
 
 let microfonosEstanSilenciados;
@@ -56,12 +59,12 @@ function crearRelojVentana(pantalla) {
     frame: false,
     skipTaskbar: true,
     transparent: true,
-    height: ALTURA,
-    width: ANCHURA,
-    x: (limites.x + MARGEN),
+    height: ALTURA_PIXELES,
+    width: ANCHURA_PIXELES,
+    x: (limites.x + MARGEN_PIXELES),
     y: (
       limites.height -
-      (limites.height - pantalla.workAreaSize.height + ALTURA) +
+      (limites.height - pantalla.workAreaSize.height + ALTURA_PIXELES) +
       limites.y
     ),
     webPreferences: {
