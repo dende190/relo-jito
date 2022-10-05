@@ -32,10 +32,10 @@ function inicializar() {
   ipcRenderer.on('notificarMicrofonosEstado', notificarMicrofonosEstado);
 }
 
-function notificarMicrofonosEstado(evento, microfonosEstanSilenciados) {
-  if (microfonosEstanSilenciados) {
-    document.querySelector('.hora').style.color = '#f00';
+function notificarMicrofonosEstado(evento, microfonosEstanActivados) {
+  if (microfonosEstanActivados) {
+    document.querySelector('.hora').style.color = '';
     return;
   }
-  document.querySelector('.hora').style.color = '';
+  document.querySelector('.hora').style.color = '#f00';
 }

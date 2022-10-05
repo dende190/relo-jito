@@ -1,29 +1,30 @@
 'use strict';
 const { app } = require('electron');
+
+const CONFIGURACION = require('./configuracion.js');
 const PLATAFORMA = require('./plataforma_' + process.platform + '.js');
+const FUENTE = (
+  require('./fuentes/' + CONFIGURACION.FUENTE_NOMBRE.replace(/ /g, '_') + '.js')
+);
 
-const TEXTO_TAMANO_PIXELES = 48;
-const MARGEN_PIXELES = 8;
 const CARACTERES_CANTIDAD = 8;
-const SOMBRA_GROSOR_PIXELES = 2;
-// TODO: Determinar si hay un número más correcto para los tamaños de
-// ALTURA_EXTRA_REQUERIDA_PIXELES y ANCHURA_EXTRA_REQUERIDA_PIXELES, estos
-// fueron encontrados por prueba y error hasta que aparecieran barras de scroll
-const ALTURA_EXTRA_REQUERIDA_PIXELES = 6;
-const ANCHURA_EXTRA_REQUERIDA_PIXELES = 29;
-const ALTURA_PIXELES = (TEXTO_TAMANO_PIXELES + ALTURA_EXTRA_REQUERIDA_PIXELES);
-const ANCHURA_PIXELES = (CARACTERES_CANTIDAD * ANCHURA_EXTRA_REQUERIDA_PIXELES);
-const ATAJO_ALTERNAR_SILENCIO_MICROFONOS = 'CommandOrControl+Shift+X';
+const ALTURA_PIXELES = (
+  Math.ceil(CONFIGURACION.TEXTO.TAMANO_PIXELES * FUENTE.FACTORES.ALTURA)
+);
+const ANCHURA_POR_CARACTER = (
+  Math.ceil(CONFIGURACION.TEXTO.TAMANO_PIXELES * FUENTE.FACTORES.ANCHURA)
+);
+const ANCHURA_PIXELES = (CARACTERES_CANTIDAD * ANCHURA_POR_CARACTER);
 
-let microfonosEstanSilenciados;
+let microfonosEstanActivados;
 let relojesVentanas = [];
 
 app.whenReady().then(inicializar);
 
 function alternarMicrofonosSilencio() {
   const { exec } = require('child_process');
-  if (microfonosEstanSilenciados === undefined) {
-    microfonosEstanSilenciados = true;
+  if (microfonosEstanActivados === undefined) {
+    microfonosEstanActivados = false;
     exec(
       PLATAFORMA.MICROFONOS.COMANDO_ACTIVAR_SONIDO,
       notificarMicrofonosSilencioCambio
@@ -61,7 +62,7 @@ function crearRelojVentana(pantalla) {
     transparent: true,
     height: ALTURA_PIXELES,
     width: ANCHURA_PIXELES,
-    x: (limites.x + MARGEN_PIXELES),
+    x: (limites.x + CONFIGURACION.MARGEN_PIXELES),
     y: (
       limites.height -
       (limites.height - pantalla.workAreaSize.height + ALTURA_PIXELES) +
@@ -125,7 +126,10 @@ function inicializar() {
 
   (
     globalShortcut
-    .register(ATAJO_ALTERNAR_SILENCIO_MICROFONOS, alternarMicrofonosSilencio)
+    .register(
+      CONFIGURACION.ATAJO_ALTERNAR_SILENCIO_MICROFONOS,
+      alternarMicrofonosSilencio,
+    )
   );
 
   app.on('window-all-closed', cerrarAplicacion);
@@ -144,8 +148,8 @@ function notificarMicrofonosSilencioCambio(error, stdout, stderr) {
     // TODO: Informar el error
     return;
   }
-  microfonosEstanSilenciados = !microfonosEstanSilenciados;
-  relojesVentanas.forEach(notificarMicrofonosEstado, microfonosEstanSilenciados);
+  microfonosEstanActivados = !microfonosEstanActivados;
+  relojesVentanas.forEach(notificarMicrofonosEstado, microfonosEstanActivados);
 }
 
 function ponerRelojVentanaArribaDeLasDemas(relojVentana) {
