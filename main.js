@@ -102,6 +102,11 @@ function inicializar() {
       type: 'normal',
       click: alternarRelojesVentanasNotoriedad,
     },
+    {
+      label: 'Alternar silencio micrófonos',
+      type: 'normal',
+      click: alternarMicrofonosSilencio,
+    },
     {type: 'separator'},
     {
       label: 'Cerrar',
