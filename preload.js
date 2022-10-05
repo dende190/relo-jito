@@ -1,29 +1,41 @@
-// All of the Node.js APIs are available in the preload process.
-// It has the same sandbox as a Chrome extension.
+'use strict';
 let { ipcRenderer } = require('electron')
 
-const OPACIDADES = ['0.8', '0.1'];
-let hacerRelojTransparente = () => {
-  ipcRenderer.invoke('quitarEscuchadoresDeRaton');
-  actualizarRelojOpacidad(1);
-}
-let actualizarRelojOpacidad = (opacidadIndice) => {
-  let horaEstilos = document.querySelector('.hora').style;
-  horaEstilos.opacity = OPACIDADES[opacidadIndice];
+const OPACIDADES = {
+  OPACO: '0.8',
+  TRANSPARENTE: '0.1',
 };
-ipcRenderer.on('hacerRelojOpaco', () => {
-  actualizarRelojOpacidad(0);
-});
-ipcRenderer.on('hacerRelojTransparente', hacerRelojTransparente);
-ipcRenderer.on('ponerFondoRojo', () => {
+
+window.addEventListener('DOMContentLoaded', inicializar);
+
+function cambiarRelojOpacidad(opacidad) {
+  document.querySelector('.hora').style.opacity = opacidad;
+}
+
+function cambiarRelojNotoriedad(evento, notorio) {
+  if (notorio === undefined) {
+    notorio = (evento.currentTarget.className !== 'hora');
+  }
+  if (notorio) {
+    cambiarRelojOpacidad(OPACIDADES.OPACO);
+    return;
+  }
+  ipcRenderer.invoke('quitarEscuchadoresParaRaton');
+  cambiarRelojOpacidad(OPACIDADES.TRANSPARENTE);
+}
+
+function inicializar() {
   let dHora = document.querySelector('.hora');
-  dHora.style.color = '#f66';
-});
-ipcRenderer.on('quitarFondoRojo', () => {
-  let dHora = document.querySelector('.hora');
-  dHora.style.color = '';
-});
-window.addEventListener('DOMContentLoaded', () => {
-  let dHora = document.querySelector('.hora');
-  dHora.addEventListener('click', hacerRelojTransparente);
-});
+  dHora.addEventListener('click', cambiarRelojNotoriedad);
+
+  ipcRenderer.on('cambiarRelojNotoriedad', cambiarRelojNotoriedad);
+  ipcRenderer.on('notificarMicrofonosEstado', notificarMicrofonosEstado);
+}
+
+function notificarMicrofonosEstado(evento, microfonosEstanSilenciados) {
+  if (microfonosEstanSilenciados) {
+    document.querySelector('.hora').style.color = '#f00';
+    return;
+  }
+  document.querySelector('.hora').style.color = '';
+}

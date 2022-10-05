@@ -1,10 +1,9 @@
+'use strict';
 const SEPARADOR = ':';
 
-let mostrarEnDosCifras = (numero) => {
-  return ('0' + numero).slice(-2);
-}
+inicializar();
 
-let actualizarHora = () => {
+function actualizarHora() {
   let fechaYHora = new Date();
   let hora = fechaYHora.getHours();
   let minutos = fechaYHora.getMinutes();
@@ -20,6 +19,11 @@ let actualizarHora = () => {
   document.querySelector('.hora').innerText = horaEnFormatoHHmmss;
 }
 
-window.addEventListener('DOMContentLoaded', () => {
+function inicializar() {
+  actualizarHora();
   setInterval(actualizarHora, 1000);
-});
+}
+
+function mostrarEnDosCifras(numero) {
+  return ('0' + numero).slice(-2);
+}

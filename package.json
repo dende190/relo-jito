@@ -1,11 +1,11 @@
 {
-  "name": "angry-donkey-haunt-7282t",
-  "productName": "angry-donkey-haunt-7282t",
-  "description": "My Electron application description",
+  "name": "Relo-Jito",
+  "productName": "Relo-Jito",
+  "description": "Para quienes les gusta llevar el tiempo",
   "keywords": [],
   "main": "./main.js",
   "version": "1.0.0",
-  "author": "Piyin",
+  "author": "Piyin&Juanpis",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
