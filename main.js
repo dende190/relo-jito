@@ -2,7 +2,7 @@
 const { app } = require('electron');
 
 const CONFIGURACION = require('./configuracion.js');
-const PLATAFORMA = require('./plataforma_' + process.platform + '.js');
+const PLATAFORMA = require('./plataformas/' + process.platform + '.js');
 const FUENTE = (
   require('./fuentes/' + CONFIGURACION.FUENTE_NOMBRE.replace(/ /g, '_') + '.js')
 );
