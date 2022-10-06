@@ -57,6 +57,13 @@ function cerrarAplicacion() {
   app.quit();
 }
 
+function limpiarAtajoCombinacion(atajoCombinacion) {
+  return (
+    atajoCombinacion
+    .replace('CommandOrControl', PLATAFORMA.TECLA_CONTROL)
+  );
+}
+
 function crearRelojVentana(pantalla) {
   const { BrowserWindow } = require('electron');
   const path = require('path');
@@ -108,12 +115,26 @@ function inicializar() {
   notificacionIcono.setToolTip('Relo-Jito');
   let menuElementos = [
     {
-      label: 'Alternar opacidad',
+      label: (
+        'Alternar opacidad | ' +
+        limpiarAtajoCombinacion(
+          CONFIGURACION
+          .ATAJOS_COMBINACIONES
+          .MICROFONOS_ALTERNAR_SILENCIO
+        )
+      ),
       type: 'normal',
       click: alternarRelojesVentanasNotoriedad,
     },
     {
-      label: 'Alternar silencio micrófonos',
+      label: (
+        'Alternar silencio micrófonos | ' +
+        limpiarAtajoCombinacion(
+          CONFIGURACION
+          .ATAJOS_COMBINACIONES
+          .VENTANAS_ALTERNAR_NOTORIEDAD
+        )
+      ),
       type: 'normal',
       click: alternarMicrofonosSilencio,
     },

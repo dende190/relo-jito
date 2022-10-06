@@ -10,6 +10,7 @@ const MICROFONOS = {
 
 module.exports = {
   ICONO: path.join(__dirname, '../iconos/reloj.ico'),
+  TECLA_CONTROL: 'Ctrl',
   MICROFONOS: {
     COMANDO_ACTIVAR_SONIDO: (
       MICROFONOS.COMANDO_INICIO +
