@@ -99,7 +99,7 @@ function cambiarRelojVentanaNotoriedad(relojVentana) {
 }
 
 function inicializar() {
-  const { globalShortcut, ipcMain, Menu, Tray } = require('electron');
+  const { ipcMain, Menu, Tray } = require('electron');
   crearRelojesVentanas();
   setInterval(ponerRelojesVentanasArribaDeLasDemas, 1000);
   ipcMain.handle('quitarEscuchadoresParaRaton', quitarEscuchadoresParaRaton);
@@ -130,13 +130,25 @@ function inicializar() {
 
   alternarMicrofonosSilencio();
 
-  (
-    globalShortcut
-    .register(
-      CONFIGURACION.ATAJO_ALTERNAR_SILENCIO_MICROFONOS,
-      alternarMicrofonosSilencio,
-    )
-  );
+  let atajosARegistrar = [
+    {
+      combinacion: (
+        CONFIGURACION
+        .ATAJOS_COMBINACIONES
+        .MICROFONOS_ALTERNAR_SILENCIO
+      ),
+      funcion: alternarMicrofonosSilencio,
+    },
+    {
+      combinacion: (
+        CONFIGURACION
+        .ATAJOS_COMBINACIONES
+        .VENTANAS_ALTERNAR_NOTORIEDAD
+      ),
+      funcion: alternarRelojesVentanasNotoriedad,
+    },
+  ];
+  atajosARegistrar.forEach(registrarAtajos);
 
   app.on('window-all-closed', cerrarAplicacion);
 }
@@ -173,6 +185,11 @@ function quitarEscuchadoresParaRaton(evento) {
   );
   let argumentos = {notorio: false, debeNotificar: false};
   cambiarRelojVentanaNotoriedad.bind(argumentos)(relojVentana);
+}
+
+function registrarAtajos(atajo) {
+  const { globalShortcut } = require('electron');
+  globalShortcut.register(atajo.combinacion, atajo.funcion);
 }
 
 function validarRelojIgnorable(relojVentana) {

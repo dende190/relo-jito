@@ -1,5 +1,8 @@
 module.exports = {
-  ATAJO_ALTERNAR_SILENCIO_MICROFONOS: 'CommandOrControl+Shift+X',
+  ATAJOS_COMBINACIONES: {
+    MICROFONOS_ALTERNAR_SILENCIO: 'CommandOrControl+Shift+X',
+    VENTANAS_ALTERNAR_NOTORIEDAD: 'CommandOrControl+Alt+X',
+  },
   FUENTE_NOMBRE: 'courier new',
   MARGEN_PIXELES: 8,
   TEXTO: {
