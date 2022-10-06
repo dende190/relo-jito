@@ -5,7 +5,7 @@
  * Aquí el ejemplo: https://jsfiddle.net/skfvtLxd/
  */
 module.exports = {
-  FACTORES: {
+  CARACTER_FACTORES: {
     // Un caracter de Courier New con 100 pixeles de tamaño, tiene 113 pixeles
     // de alto, así que el factor es 113%
     ALTURA: 1.13,

@@ -8,13 +8,19 @@ const FUENTE = (
 );
 
 const CARACTERES_CANTIDAD = 8;
-const ALTURA_PIXELES = (
-  Math.ceil(CONFIGURACION.TEXTO.TAMANO_PIXELES * FUENTE.FACTORES.ALTURA)
+const VENTANA_ALTURA_PIXELES = (
+  Math.ceil(
+    CONFIGURACION.TEXTO.TAMANO_PIXELES *
+    FUENTE.CARACTER_FACTORES.ALTURA
+  )
 );
-const ANCHURA_POR_CARACTER = (
-  Math.ceil(CONFIGURACION.TEXTO.TAMANO_PIXELES * FUENTE.FACTORES.ANCHURA)
+const VENTANA_ANCHURA_PIXELES = (
+  CARACTERES_CANTIDAD *
+  Math.ceil(
+    CONFIGURACION.TEXTO.TAMANO_PIXELES *
+    FUENTE.CARACTER_FACTORES.ANCHURA
+  )
 );
-const ANCHURA_PIXELES = (CARACTERES_CANTIDAD * ANCHURA_POR_CARACTER);
 
 let microfonosEstanActivados;
 let relojesVentanas = [];
@@ -60,12 +66,12 @@ function crearRelojVentana(pantalla) {
     frame: false,
     skipTaskbar: true,
     transparent: true,
-    height: ALTURA_PIXELES,
-    width: ANCHURA_PIXELES,
+    height: VENTANA_ALTURA_PIXELES,
+    width: VENTANA_ANCHURA_PIXELES,
     x: (limites.x + CONFIGURACION.MARGEN_PIXELES),
     y: (
       limites.height -
-      (limites.height - pantalla.workAreaSize.height + ALTURA_PIXELES) +
+      (limites.height - pantalla.workAreaSize.height + VENTANA_ALTURA_PIXELES) +
       limites.y
     ),
     webPreferences: {
