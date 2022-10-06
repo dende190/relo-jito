@@ -115,8 +115,8 @@ function inicializar() {
   notificacionIcono.setToolTip('Relo-Jito');
   let menuElementos = [
     {
-      label: (
-        'Alternar opacidad | ' +
+      label: 'Alternar opacidad',
+      sublabel: (
         limpiarAtajoCombinacion(
           CONFIGURACION
           .ATAJOS_COMBINACIONES
@@ -127,8 +127,8 @@ function inicializar() {
       click: alternarRelojesVentanasNotoriedad,
     },
     {
-      label: (
-        'Alternar silencio micrófonos | ' +
+      label: 'Alternar silencio micrófonos',
+      sublabel: (
         limpiarAtajoCombinacion(
           CONFIGURACION
           .ATAJOS_COMBINACIONES
