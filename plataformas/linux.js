@@ -1,7 +1,9 @@
+const path = require('path');
+
 const MICROFONOS_COMANDO_INICIO = 'amixer set Capture ';
 
 module.exports = {
-  ICONO: 'reloj.png',
+  ICONO: path.join(__dirname, '../icons/png/1024x1024.png'),
   TECLA_CONTROL: 'Ctrl',
   MICROFONOS: {
     COMANDO_ACTIVAR_SONIDO: (
