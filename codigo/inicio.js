@@ -89,7 +89,7 @@ function crearRelojVentana(pantalla) {
   };
   let relojVentana = new BrowserWindow(relojVentanaConfiguracion);
   relojVentana.setAlwaysOnTop(true, 'screen-saver');
-  relojVentana.loadFile('codigo/index.html');
+  relojVentana.loadFile('codigo/reloj/reloj.html');
   relojesVentanas.push(relojVentana);
 }
 
