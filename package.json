@@ -27,7 +27,9 @@
   "license": "ISC",
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "icon": "icons/icon"
+      },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
@@ -43,7 +45,11 @@
         },
         {
           "name": "@electron-forge/maker-deb",
-          "config": {}
+          "config": {
+            "options": {
+              "icon": "icons/1024x1024.png"
+            }
+          }
         },
         {
           "name": "@electron-forge/maker-rpm",

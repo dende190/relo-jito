@@ -4,7 +4,7 @@ const MICROFONOS_COMANDO_INICIO = 'amixer set Capture ';
 
 module.exports = {
   ESTUPIDA: true,
-  ICONO: path.join(__dirname, '../icons/mac/icon.icns'),
+  ICONO: path.join(__dirname, '../icons/icon.icns'),
   TECLA_CONTROL: 'Command',
   MICROFONOS: {
     COMANDO_ACTIVAR_SONIDO: (
