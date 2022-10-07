@@ -9,7 +9,7 @@ const MICROFONOS = {
 };
 
 module.exports = {
-  ICONO: path.join(__dirname, '../../icons/icon.ico'),
+  ICONO: path.join(__dirname, '../../iconos/icon.ico'),
   TECLA_CONTROL: 'Ctrl',
   MICROFONOS: {
     COMANDO_ACTIVAR_SONIDO: (
