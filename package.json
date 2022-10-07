@@ -3,7 +3,7 @@
   "productName": "Relo-Jito",
   "description": "Para quienes les gusta llevar el tiempo",
   "keywords": [],
-  "main": "./codigo/inicio.js",
+  "main": "./codigo/principal.js",
   "version": "1.0.0",
   "author": "Piyin&Juanpis",
   "scripts": {
