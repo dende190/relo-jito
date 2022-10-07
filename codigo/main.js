@@ -70,7 +70,7 @@ function crearRelojVentana(pantalla) {
       )
     ),
   };
-  let ventanaRelojConfiguracion = {
+  let relojVentanaConfiguracion = {
     focusable: false,
     frame: false,
     skipTaskbar: true,
@@ -87,7 +87,7 @@ function crearRelojVentana(pantalla) {
       preload: path.join(__dirname, 'preload.js'),
     },
   };
-  let relojVentana = new BrowserWindow(ventanaRelojConfiguracion);
+  let relojVentana = new BrowserWindow(relojVentanaConfiguracion);
   relojVentana.setAlwaysOnTop(true, 'screen-saver');
   relojVentana.loadFile('codigo/index.html');
   relojesVentanas.push(relojVentana);
