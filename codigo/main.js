@@ -19,13 +19,13 @@ function alternarMicrofonosSilencio() {
   if (microfonosEstanActivados === undefined) {
     microfonosEstanActivados = false;
     exec(
-      PLATAFORMA.MICROFONOS.SONIDO.ACTIVAR_COMANDO,
+      PLATAFORMA.MICROFONOS.SILENCIO.DESACTIVAR_COMANDO,
       notificarMicrofonosSilencioCambio
     );
     return;
   }
   exec(
-    PLATAFORMA.MICROFONOS.SONIDO.ALTERNAR_COMANDO,
+    PLATAFORMA.MICROFONOS.SILENCIO.ALTERNAR_COMANDO,
     notificarMicrofonosSilencioCambio
   );
 }

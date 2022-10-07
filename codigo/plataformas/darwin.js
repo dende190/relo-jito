@@ -7,8 +7,8 @@ module.exports = {
   ICONO: path.join(__dirname, '../../iconos/icon.icns'),
   TECLA_CONTROL: 'Command',
   MICROFONOS: {
-    SONIDO: {
-      ACTIVAR_COMANDO: (
+    SILENCIO: {
+      DESACTIVAR_COMANDO: (
         MICROFONOS_COMANDO_INICIO +
         'cap'
       ),
