@@ -4,6 +4,8 @@ const SEPARADOR = ':';
 inicializar();
 
 function actualizarHora() {
+  let dCuerpoEstilos = document.body.style;
+  dCuerpoEstilos.backgroundColor = 'red';
   let fechaYHora = new Date();
   let hora = fechaYHora.getHours();
   let minutos = fechaYHora.getMinutes();
@@ -15,7 +17,7 @@ function actualizarHora() {
     SEPARADOR +
     mostrarEnDosCifras(segundos)
   );
-  document.body.style.backgroundColor = '';
+  dCuerpoEstilos.backgroundColor = '';
   document.querySelector('.hora').innerText = horaEnFormatoHHmmss;
 }
 
