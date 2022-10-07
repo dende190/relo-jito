@@ -54,7 +54,6 @@ function limpiarAtajoCombinacion(atajoCombinacion) {
 function crearRelojVentana(pantalla) {
   const { BrowserWindow } = require('electron');
   const path = require('path');
-  let pantallaLimites = pantalla.bounds;
   let ventana = {
     alturaPixeles: (
       Math.ceil(
@@ -70,6 +69,7 @@ function crearRelojVentana(pantalla) {
       )
     ),
   };
+  let pantallaLimites = pantalla.bounds;
   let relojVentanaConfiguracion = {
     focusable: false,
     frame: false,
@@ -79,12 +79,8 @@ function crearRelojVentana(pantalla) {
     width: ventana.anchuraPixeles,
     x: (pantallaLimites.x + CONFIGURACION.MARGEN_PIXELES),
     y: (
-      pantallaLimites.height -
-      (
-        pantallaLimites.height -
-        pantalla.workAreaSize.height +
-        ventana.alturaPixeles
-      ) +
+      pantalla.workAreaSize.height -
+      ventana.alturaPixeles +
       pantallaLimites.y
     ),
     webPreferences: {
