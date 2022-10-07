@@ -84,7 +84,7 @@ function crearRelojVentana(pantalla) {
       pantallaLimites.y
     ),
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'precarga.js'),
     },
   };
   let relojVentana = new BrowserWindow(relojVentanaConfiguracion);
