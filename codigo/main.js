@@ -8,19 +8,6 @@ const FUENTE = (
 );
 
 const CARACTERES_CANTIDAD = 8;
-const VENTANA_ALTURA_PIXELES = (
-  Math.ceil(
-    CONFIGURACION.TEXTO.TAMANO_PIXELES *
-    FUENTE.CARACTER_FACTORES.ALTURA
-  )
-);
-const VENTANA_ANCHURA_PIXELES = (
-  CARACTERES_CANTIDAD *
-  Math.ceil(
-    CONFIGURACION.TEXTO.TAMANO_PIXELES *
-    FUENTE.CARACTER_FACTORES.ANCHURA
-  )
-);
 
 let microfonosEstanActivados;
 let relojesVentanas = [];
@@ -68,17 +55,32 @@ function crearRelojVentana(pantalla) {
   const { BrowserWindow } = require('electron');
   const path = require('path');
   let limites = pantalla.bounds;
+  let ventana = {
+    alturaPixeles: (
+      Math.ceil(
+        CONFIGURACION.TEXTO.TAMANO_PIXELES *
+        FUENTE.CARACTER_FACTORES.ALTURA
+      )
+    ),
+    anchuraPixeles: (
+      CARACTERES_CANTIDAD *
+      Math.ceil(
+        CONFIGURACION.TEXTO.TAMANO_PIXELES *
+        FUENTE.CARACTER_FACTORES.ANCHURA
+      )
+    ),
+  };
   let ventanaRelojConfiguracion = {
     focusable: false,
     frame: false,
     skipTaskbar: true,
     transparent: true,
-    height: VENTANA_ALTURA_PIXELES,
-    width: VENTANA_ANCHURA_PIXELES,
+    height: ventana.alturaPixeles,
+    width: ventana.anchuraPixeles,
     x: (limites.x + CONFIGURACION.MARGEN_PIXELES),
     y: (
       limites.height -
-      (limites.height - pantalla.workAreaSize.height + VENTANA_ALTURA_PIXELES) +
+      (limites.height - pantalla.workAreaSize.height + ventana.alturaPixeles) +
       limites.y
     ),
     webPreferences: {
