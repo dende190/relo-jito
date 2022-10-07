@@ -12,15 +12,17 @@ module.exports = {
   ICONO: path.join(__dirname, '../../iconos/icon.ico'),
   TECLA_CONTROL: 'Ctrl',
   MICROFONOS: {
-    COMANDO_ACTIVAR_SONIDO: (
-      MICROFONOS.COMANDO_INICIO +
-      '/Unmute' +
-      MICROFONOS.COMANDO_FIN
-    ),
-    COMANDO_ALTERNAR_SILENCIO: (
-      MICROFONOS.COMANDO_INICIO +
-      '/Switch' +
-      MICROFONOS.COMANDO_FIN
-    ),
+    SONIDO: {
+      ACTIVAR_COMANDO: (
+        MICROFONOS.COMANDO_INICIO +
+        '/Unmute' +
+        MICROFONOS.COMANDO_FIN
+      ),
+      ALTERNAR_COMANDO: (
+        MICROFONOS.COMANDO_INICIO +
+        '/Switch' +
+        MICROFONOS.COMANDO_FIN
+      ),
+    },
   },
 };

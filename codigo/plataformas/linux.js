@@ -6,13 +6,15 @@ module.exports = {
   ICONO: path.join(__dirname, '../../iconos/1024x1024.png'),
   TECLA_CONTROL: 'Ctrl',
   MICROFONOS: {
-    COMANDO_ACTIVAR_SONIDO: (
-      MICROFONOS_COMANDO_INICIO +
-      'cap'
-    ),
-    COMANDO_ALTERNAR_SILENCIO: (
-      MICROFONOS_COMANDO_INICIO +
-      'toggle'
-    ),
+    SONIDO: {
+      ACTIVAR_COMANDO: (
+        MICROFONOS_COMANDO_INICIO +
+        'cap'
+      ),
+      ALTERNAR_COMANDO: (
+        MICROFONOS_COMANDO_INICIO +
+        'toggle'
+      ),
+    },
   },
 };
