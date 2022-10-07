@@ -1,4 +1,8 @@
-# Holiwis
+# Relo-Jito
+
+Un proyecto que nació porque queríamos poder ver la hora con segundos en todo
+momento, en todos los monitores, de manera que se pudieran tomar decisiones con
+respecto a la misma
 
 ## Generación de iconos
 
