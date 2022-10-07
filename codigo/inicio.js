@@ -73,6 +73,7 @@ function crearRelojVentana(pantalla) {
   let relojVentanaConfiguracion = {
     focusable: false,
     frame: false,
+    resizable: false,
     skipTaskbar: true,
     transparent: true,
     height: ventana.alturaPixeles,
