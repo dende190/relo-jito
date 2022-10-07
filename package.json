@@ -3,7 +3,7 @@
   "productName": "Relo-Jito",
   "description": "Para quienes les gusta llevar el tiempo",
   "keywords": [],
-  "main": "./main.js",
+  "main": "./codigo/main.js",
   "version": "1.0.0",
   "author": "Piyin&Juanpis",
   "scripts": {
@@ -28,7 +28,7 @@
   "config": {
     "forge": {
       "packagerConfig": {
-        "icon": "icons/icon"
+        "icon": "iconos/icon"
       },
       "makers": [
         {
@@ -47,7 +47,7 @@
           "name": "@electron-forge/maker-deb",
           "config": {
             "options": {
-              "icon": "icons/1024x1024.png"
+              "icon": "iconos/1024x1024.png"
             }
           }
         },

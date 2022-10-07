@@ -2,14 +2,14 @@ const path = require('path');
 
 const MICROFONOS = {
   COMANDO_INICIO: (
-    path.join(__dirname, '../librerias/SoundVolumeCommandLine/svcl.exe') +
+    path.join(__dirname, '../../librerias/SoundVolumeCommandLine/svcl.exe') +
     ' /Stdout '
   ),
   COMANDO_FIN: ' "Microphone"',
 };
 
 module.exports = {
-  ICONO: path.join(__dirname, '../icons/icon.ico'),
+  ICONO: path.join(__dirname, '../../icons/icon.ico'),
   TECLA_CONTROL: 'Ctrl',
   MICROFONOS: {
     COMANDO_ACTIVAR_SONIDO: (
