@@ -4,13 +4,13 @@ const SEPARADOR = ':';
 inicializar();
 
 function actualizarHora() {
-  let dCuerpoEstilos = document.body.style;
+  const dCuerpoEstilos = document.body.style;
   dCuerpoEstilos.backgroundColor = 'red';
-  let fechaYHora = new Date();
-  let hora = fechaYHora.getHours();
-  let minutos = fechaYHora.getMinutes();
-  let segundos = fechaYHora.getSeconds();
-  let horaEnFormatoHHmmss = (
+  const fechaYHora = new Date();
+  const hora = fechaYHora.getHours();
+  const minutos = fechaYHora.getMinutes();
+  const segundos = fechaYHora.getSeconds();
+  const horaEnFormatoHHmmss = (
     mostrarEnDosCifras(hora) +
     SEPARADOR +
     mostrarEnDosCifras(minutos) +

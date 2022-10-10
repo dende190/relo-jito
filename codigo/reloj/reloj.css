@@ -5,11 +5,14 @@
 .hora {
   color: #fff;
   cursor: pointer;
+  /* TODO: Traer de configuración */
   font-family: courier new;
+  /* TODO: Traer de configuración */
   font-size: 48px;
   font-weight: bold;
   opacity: 0.8;
   text-shadow:
+    /* TODO: Traer de configuración */
     2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000,
     2px 2px #000, -2px -2px #000, 2px -2px #000, -2px 2px #000;
 }
