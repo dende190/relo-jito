@@ -27,7 +27,7 @@ function abrirConfiguracionVentana() {
   configuracionVentana.removeMenu();
   (
     configuracionVentana
-    .loadURL(path.join(__dirname, 'ventanas/configuracion/configuracion.html'))
+    .loadFile(path.join(__dirname, 'ventanas/configuracion/configuracion.html'))
   );
 }
 
@@ -119,7 +119,7 @@ function crearRelojVentana(pantalla) {
   const relojVentana = new BrowserWindow(relojVentanaDatos);
   relojVentana.pantalla = pantalla;
   relojVentana.setAlwaysOnTop(true, 'screen-saver');
-  relojVentana.loadURL(path.join(__dirname, 'ventanas/reloj/reloj.html'));
+  relojVentana.loadFile(path.join(__dirname, 'ventanas/reloj/reloj.html'));
   ajustarRelojVentanaLimites(relojVentana, CONFIGURACION);
   relojesVentanas.push(relojVentana);
 }
@@ -140,7 +140,7 @@ function crearSonidoVentana() {
   };
   sonidoVentana = new BrowserWindow(sonidoVentanaDatos);
   sonidoVentana.removeMenu();
-  sonidoVentana.loadURL(path.join(__dirname, 'ventanas/sonido/sonido.html'));
+  sonidoVentana.loadFile(path.join(__dirname, 'ventanas/sonido/sonido.html'));
 }
 
 function cambiarRelojVentanaNotoriedad(relojVentana) {
