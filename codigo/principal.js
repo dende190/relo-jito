@@ -4,7 +4,7 @@ const { app } = require('electron');
 const CONFIGURACION = require('./configuracion.js');
 const PLATAFORMA = require('./plataformas/' + process.platform + '.js');
 const FUENTE = (
-  require('./fuentes/' + CONFIGURACION.FUENTE_NOMBRE.replace(/ /g, '_') + '.js')
+  require('./fuentes/' + CONFIGURACION.TEXTO.FUENTE.replace(/ /g, '_') + '.js')
 );
 
 const CARACTERES_CANTIDAD = 8;
