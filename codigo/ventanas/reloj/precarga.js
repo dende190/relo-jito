@@ -8,6 +8,11 @@ const OPACIDADES = {
 
 window.addEventListener('DOMContentLoaded', inicializar);
 
+function ajustarConfiguracion(evento, configuracion) {
+  const horaEstilos = document.querySelector('.hora').style;
+  horaEstilos.fontSize = (configuracion.TEXTO.TAMANO_PIXELES + 'px');
+}
+
 function cambiarRelojOpacidad(opacidad) {
   document.querySelector('.hora').style.opacity = opacidad;
 }
@@ -25,15 +30,16 @@ function inicializar() {
   const dHora = document.querySelector('.hora');
   dHora.addEventListener('click', cambiarRelojNotoriedad);
 
+  ipcRenderer.on('ajustarConfiguracion', ajustarConfiguracion);
   ipcRenderer.on('cambiarRelojNotoriedad', cambiarRelojNotoriedad);
   ipcRenderer.on('notificarMicrofonosEstado', notificarMicrofonosEstado);
 }
 
 function notificarMicrofonosEstado(evento, microfonosEstanActivados) {
-  const dHoraEstilos = document.querySelector('.hora').style;
+  const horaEstilos = document.querySelector('.hora').style;
   if (microfonosEstanActivados) {
-    dHoraEstilos.color = '';
+    horaEstilos.color = '';
     return;
   }
-  dHoraEstilos.color = '#f00';
+  horaEstilos.color = '#f00';
 }

@@ -14,6 +14,61 @@ const relojesVentanas = [];
 
 app.whenReady().then(inicializar);
 
+function abrirConfiguracionVentana() {
+  const { BrowserWindow } = require('electron');
+  const path = require('path');
+  const configuracionVentanaDatos = {
+    webPreferences: {
+      preload: path.join(__dirname, 'ventanas/configuracion/precarga.js'),
+    },
+  };
+  const configuracionVentana = new BrowserWindow(configuracionVentanaDatos);
+  configuracionVentana.removeMenu();
+  (
+    configuracionVentana
+    .loadURL(path.join(__dirname, 'ventanas/configuracion/configuracion.html'))
+  );
+}
+
+function ajustarRelojVentanaLimites(relojVentana, configuracion) {
+  if (!isNaN(configuracion)) {
+    configuracion = this;
+  }
+  const ventana = {
+    alturaPixeles: (
+      Math.ceil(
+        configuracion.TEXTO.TAMANO_PIXELES *
+        FUENTE.CARACTER_FACTORES.ALTURA
+      )
+    ),
+    anchuraPixeles: (
+      CARACTERES_CANTIDAD *
+      Math.ceil(
+        configuracion.TEXTO.TAMANO_PIXELES *
+        FUENTE.CARACTER_FACTORES.ANCHURA
+      )
+    ),
+  };
+  const pantalla = relojVentana.pantalla;
+  const pantallaLimites = pantalla.bounds;
+  const relojVentanaLimites = {
+    height: ventana.alturaPixeles,
+    width: ventana.anchuraPixeles,
+    x: (pantallaLimites.x + configuracion.MARGEN_PIXELES),
+    y: (
+      pantalla.workAreaSize.height -
+      ventana.alturaPixeles +
+      pantallaLimites.y
+    ),
+  };
+  relojVentana.setBounds(relojVentanaLimites);
+}
+
+function ajustarRelojesVentanas() {
+  relojesVentanas.forEach(ajustarRelojVentanaLimites, CONFIGURACION);
+  relojesVentanas.forEach(ponerRelojVentanaArribaDeLasDemas);
+}
+
 function alternarMicrofonosSilencio() {
   const { exec } = require('child_process');
   if (microfonosEstanActivados === undefined) {
@@ -31,7 +86,10 @@ function alternarMicrofonosSilencio() {
 }
 
 function alternarRelojesVentanasNotoriedad(evento) {
-  const relojesVentanasIgnorables = relojesVentanas.filter(validarRelojIgnorable);
+  const relojesVentanasIgnorables = (
+    relojesVentanas
+    .filter(validarRelojIgnorable)
+  );
   const notorio = !!relojesVentanasIgnorables.length;
   const argumentos = {notorio: notorio, debeNotificar: true};
   relojesVentanas.forEach(cambiarRelojVentanaNotoriedad, argumentos);
@@ -47,43 +105,21 @@ function cerrarAplicacion() {
 function crearRelojVentana(pantalla) {
   const { BrowserWindow } = require('electron');
   const path = require('path');
-  const ventana = {
-    alturaPixeles: (
-      Math.ceil(
-        CONFIGURACION.TEXTO.TAMANO_PIXELES *
-        FUENTE.CARACTER_FACTORES.ALTURA
-      )
-    ),
-    anchuraPixeles: (
-      CARACTERES_CANTIDAD *
-      Math.ceil(
-        CONFIGURACION.TEXTO.TAMANO_PIXELES *
-        FUENTE.CARACTER_FACTORES.ANCHURA
-      )
-    ),
-  };
-  const pantallaLimites = pantalla.bounds;
-  const relojVentanaConfiguracion = {
+  const relojVentanaDatos = {
     focusable: false,
     frame: false,
     resizable: false,
     skipTaskbar: true,
     transparent: true,
-    height: ventana.alturaPixeles,
-    width: ventana.anchuraPixeles,
-    x: (pantallaLimites.x + CONFIGURACION.MARGEN_PIXELES),
-    y: (
-      pantalla.workAreaSize.height -
-      ventana.alturaPixeles +
-      pantallaLimites.y
-    ),
     webPreferences: {
-      preload: path.join(__dirname, 'precarga.js'),
+      preload: path.join(__dirname, 'ventanas/reloj/precarga.js'),
     },
   };
-  const relojVentana = new BrowserWindow(relojVentanaConfiguracion);
+  const relojVentana = new BrowserWindow(relojVentanaDatos);
+  relojVentana.pantalla = pantalla;
   relojVentana.setAlwaysOnTop(true, 'screen-saver');
-  relojVentana.loadFile('codigo/reloj/reloj.html');
+  relojVentana.loadURL(path.join(__dirname, 'ventanas/reloj/reloj.html'));
+  ajustarRelojVentanaLimites(relojVentana, CONFIGURACION);
   relojesVentanas.push(relojVentana);
 }
 
@@ -104,13 +140,20 @@ function cambiarRelojVentanaNotoriedad(relojVentana) {
 function inicializar() {
   const { ipcMain, Menu, Tray } = require('electron');
   crearRelojesVentanas();
-  setInterval(ponerRelojesVentanasArribaDeLasDemas, 1000);
+  setInterval(ajustarRelojesVentanas, 1000);
   ipcMain.handle('quitarEscuchadoresParaRaton', quitarEscuchadoresParaRaton);
+  ipcMain.handle('notificarConfiguracionCambio', notificarConfiguracionCambio);
 
   const notificacionIcono = new Tray(PLATAFORMA.ICONO);
   notificacionIcono.setToolTip('Relo-Jito');
 
   const menuElementos = [
+    {
+      click: abrirConfiguracionVentana,
+      label: 'Configurar...',
+      type: 'normal',
+    },
+    {type: 'separator'},
     {
       accelerator: (
         CONFIGURACION
@@ -143,30 +186,23 @@ function inicializar() {
   const menu = Menu.buildFromTemplate(menuElementos);
   notificacionIcono.setContextMenu(menu);
   notificacionIcono.on('click', alternarRelojesVentanasNotoriedad);
+  menuElementos.forEach(registrarAtajoGlobal);
 
   alternarMicrofonosSilencio();
 
-  const atajosGlobalesARegistrar = [
-    {
-      combinacion: (
-        CONFIGURACION
-        .ATAJOS_COMBINACIONES
-        .VENTANAS_ALTERNAR_NOTORIEDAD
-      ),
-      funcion: alternarRelojesVentanasNotoriedad,
-    },
-    {
-      combinacion: (
-        CONFIGURACION
-        .ATAJOS_COMBINACIONES
-        .MICROFONOS_ALTERNAR_SILENCIO
-      ),
-      funcion: alternarMicrofonosSilencio,
-    },
-  ];
-  atajosGlobalesARegistrar.forEach(registrarAtajoGlobal);
-
   app.on('window-all-closed', cerrarAplicacion);
+}
+
+function notificarConfiguracionCambio(evento, configuracion) {
+  (
+    relojesVentanas
+    .forEach(notificarConfiguracionCambioARelojVentana, configuracion)
+  );
+}
+
+function notificarConfiguracionCambioARelojVentana(relojVentana) {
+  ajustarRelojVentanaLimites(relojVentana, this);
+  relojVentana.webContents.send('ajustarConfiguracion', this);
 }
 
 function notificarMicrofonosEstado(relojVentana) {
@@ -190,10 +226,6 @@ function ponerRelojVentanaArribaDeLasDemas(relojVentana) {
   relojVentana.setAlwaysOnTop(true, 'screen-saver');
 }
 
-function ponerRelojesVentanasArribaDeLasDemas() {
-  relojesVentanas.forEach(ponerRelojVentanaArribaDeLasDemas);
-}
-
 function quitarEscuchadoresParaRaton(evento) {
   const relojVentana = (
     relojesVentanas
@@ -203,9 +235,12 @@ function quitarEscuchadoresParaRaton(evento) {
   cambiarRelojVentanaNotoriedad.bind(argumentos)(relojVentana);
 }
 
-function registrarAtajoGlobal(atajo) {
+function registrarAtajoGlobal(menuElemento) {
+  if (!menuElemento.accelerator || !menuElemento.click) {
+    return;
+  }
   const { globalShortcut } = require('electron');
-  return globalShortcut.register(atajo.combinacion, atajo.funcion);
+  return globalShortcut.register(menuElemento.accelerator, menuElemento.click);
 }
 
 function validarRelojIgnorable(relojVentana) {
