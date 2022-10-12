@@ -10,6 +10,7 @@ const FUENTE = (
 const CARACTERES_CANTIDAD = 8;
 
 let microfonosEstanActivados;
+let sonidoVentana;
 const relojesVentanas = [];
 
 app.whenReady().then(inicializar);
@@ -128,6 +129,20 @@ function crearRelojesVentanas() {
   screen.getAllDisplays().forEach(crearRelojVentana);
 }
 
+function crearSonidoVentana() {
+  const { BrowserWindow } = require('electron');
+  const path = require('path');
+  const sonidoVentanaDatos = {
+    webPreferences: {
+      preload: path.join(__dirname, 'ventanas/sonido/precarga.js'),
+    },
+  };
+  sonidoVentana = new BrowserWindow(sonidoVentanaDatos);
+  sonidoVentana.removeMenu();
+  sonidoVentana.loadURL(path.join(__dirname, 'ventanas/sonido/sonido.html'));
+  sonidoVentana.webContents.openDevTools();
+}
+
 function cambiarRelojVentanaNotoriedad(relojVentana) {
   relojVentana.setIgnoreMouseEvents(!this.notorio);
   relojVentana.esIgnorable = !this.notorio;
@@ -219,6 +234,7 @@ function notificarMicrofonosSilencioCambio(error, stdout, stderr) {
     return;
   }
   microfonosEstanActivados = !microfonosEstanActivados;
+  sonidoVentana.webContents.send('notificarMicrofonosEstado');
   relojesVentanas.forEach(notificarMicrofonosEstado, microfonosEstanActivados);
 }
 
