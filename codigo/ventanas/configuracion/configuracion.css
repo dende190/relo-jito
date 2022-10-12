@@ -1,0 +1,12 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+.configuracion {
+  background-color: rgb(27, 27, 29);
+  color: rgb(227, 227, 227);
+  padding: 8px;
+}
+.configuracion-logo {
+  width: 32px;
+}
