@@ -133,6 +133,11 @@ function crearSonidoVentana() {
   const { BrowserWindow } = require('electron');
   const path = require('path');
   const sonidoVentanaDatos = {
+    focusable: false,
+    frame: false,
+    resizable: false,
+    skipTaskbar: true,
+    transparent: true,
     webPreferences: {
       preload: path.join(__dirname, 'ventanas/sonido/precarga.js'),
     },
@@ -140,7 +145,6 @@ function crearSonidoVentana() {
   sonidoVentana = new BrowserWindow(sonidoVentanaDatos);
   sonidoVentana.removeMenu();
   sonidoVentana.loadURL(path.join(__dirname, 'ventanas/sonido/sonido.html'));
-  sonidoVentana.webContents.openDevTools();
 }
 
 function cambiarRelojVentanaNotoriedad(relojVentana) {
