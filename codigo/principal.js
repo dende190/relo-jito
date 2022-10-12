@@ -133,11 +133,7 @@ function crearSonidoVentana() {
   const { BrowserWindow } = require('electron');
   const path = require('path');
   const sonidoVentanaDatos = {
-    focusable: false,
-    frame: false,
-    resizable: false,
-    skipTaskbar: true,
-    transparent: true,
+    show: false,
     webPreferences: {
       preload: path.join(__dirname, 'ventanas/sonido/precarga.js'),
     },
@@ -159,6 +155,7 @@ function cambiarRelojVentanaNotoriedad(relojVentana) {
 function inicializar() {
   const { ipcMain, Menu, Tray } = require('electron');
   crearRelojesVentanas();
+  crearSonidoVentana();
   setInterval(ajustarRelojesVentanas, 1000);
   ipcMain.handle('quitarEscuchadoresParaRaton', quitarEscuchadoresParaRaton);
   ipcMain.handle('notificarConfiguracionCambio', notificarConfiguracionCambio);
