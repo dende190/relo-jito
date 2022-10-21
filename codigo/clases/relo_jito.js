@@ -5,6 +5,7 @@ class ReloJito {
   #plataforma;
   #relojes;
   #sonidoVentana;
+  #tiempo;
 
   constructor() {
     this.configuracion = require('../configuracion.js');
@@ -45,6 +46,12 @@ class ReloJito {
     this.configuracionVentana.on('closed', this.cerrarConfiguracion.bind(this));
     this.configuracionVentana.removeMenu();
     this.configuracionVentana.loadFile(rutaBase + 'configuracion.html');
+  }
+
+  actualizarCadaSegundo() {
+    this.relojes.forEach((reloj) => {reloj.reubicar(this.configuracion);});
+    this.tiempo.actualizar();
+    setTimeout(this.actualizarCadaSegundo.bind(this), 1000);
   }
 
   agregar(reloj) {
@@ -90,12 +97,14 @@ class ReloJito {
   crearRelojes() {
     const { screen } = require('electron');
     screen.getAllDisplays().forEach(this.crearReloj.bind(this));
-    setInterval(this.reubicar.bind(this), 1000);
   }
 
   inicializar() {
     this.crearRelojes();
     this.inicializarSonido();
+    this.tiempo = require('./tiempo.js');
+    this.tiempo.on('cambio', this.notificarTiempoCambio.bind(this));
+    this.actualizarCadaSegundo();
 
     const microfonos = require('./microfonos.js');
     microfonos.on('silencioCambio', this.notificarSilencioCambio.bind(this));
@@ -199,6 +208,40 @@ class ReloJito {
     );
   }
 
+  notificarTiempoCambio(tiempoEnHorasMinutosYSegundos) {
+    if (['10:30:00', '15:30:00'].includes(tiempoEnHorasMinutosYSegundos)) {
+      this.sonidoVentana.webContents.send('alarmaIniciada');
+    } else if (
+      ['10:30:05', '15:30:05']
+      .includes(tiempoEnHorasMinutosYSegundos)
+    ) {
+      this.sonidoVentana.webContents.send('alarmaDetenida');
+    }
+    let tiempoEnMinutosYSegundos = (
+      tiempoEnHorasMinutosYSegundos
+      .split(':')
+      .splice(1)
+      .join(':')
+    );
+    if (
+      ['59:30', '14:30', '29:30', '45:30']
+      .includes(tiempoEnMinutosYSegundos)
+    ) {
+      this.sonidoVentana.webContents.send('recordatorio');
+    }
+    let ultimoDigito = tiempoEnHorasMinutosYSegundos.slice(-1);
+    this.sonidoVentana.webContents.send((ultimoDigito % 2) ? 'tic' : 'toc');
+    (
+      this
+      .relojes
+      .forEach(
+        (reloj) => {
+          reloj.notificarTiempoCambio(tiempoEnHorasMinutosYSegundos);
+        },
+      )
+    );
+  }
+
   obtenerConfiguracion() {
     return this.configuracion;
   }
@@ -212,10 +255,6 @@ class ReloJito {
       globalShortcut
       .register(menuElemento.accelerator, menuElemento.click)
     );
-  }
-
-  reubicar() {
-    this.relojes.forEach((reloj) => {reloj.reubicar(this.configuracion);});
   }
 
 }

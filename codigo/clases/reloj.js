@@ -55,6 +55,15 @@ module.exports = class Reloj {
     this.ventana.webContents.send('silencioCambio', microfonosEstanActivados);
   }
 
+  notificarTiempoCambio(tiempoEnHorasMinutosYSegundos) {
+    (
+      this
+      .ventana
+      .webContents
+      .send('tiempoCambio', tiempoEnHorasMinutosYSegundos)
+    );
+  }
+
   obtenerId() {
     return this.ventana.id;
   }

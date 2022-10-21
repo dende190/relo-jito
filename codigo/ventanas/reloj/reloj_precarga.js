@@ -19,6 +19,7 @@ const Reloj = {
     ipcRenderer.on('configuracionCambio', this.ajustarConfiguracion);
     ipcRenderer.on('notoriedadCambio', this.cambiarNotoriedad.bind(this));
     ipcRenderer.on('silencioCambio', this.notificarSilencioCambio);
+    ipcRenderer.on('tiempoCambio', this.notificarTiempoCambio);
   },
 
   ajustarConfiguracion: function(evento, configuracion) {
@@ -42,6 +43,10 @@ const Reloj = {
       '' :
       '#f00'
     );
+  },
+
+  notificarTiempoCambio: function(evento, tiempoEnHorasMinutosYSegundos) {
+    document.querySelector('.hora').innerText = tiempoEnHorasMinutosYSegundos;
   },
 
 };
