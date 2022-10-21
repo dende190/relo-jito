@@ -70,6 +70,7 @@ class ReloJito {
     if (this.plataforma.ES_MACOS) {
       return;
     }
+    const { app } = require('electron');
     app.quit();
   }
 
