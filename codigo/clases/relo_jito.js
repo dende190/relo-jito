@@ -23,6 +23,10 @@ class ReloJito {
         this.notificarConfiguracionCambio.bind(this),
       )
     );
+    (
+      ipcMain
+      .handle('configuracionSolicitud', this.obtenerConfiguracion.bind(this))
+    );
   }
 
   abrirConfiguracion() {
@@ -172,7 +176,7 @@ class ReloJito {
       .relojes
       .forEach(
         (reloj) => {
-          reloj.notificarConfiguracionCambio(configuracionNueva);
+          reloj.notificarConfiguracionCambio(this.configuracion);
         },
       )
     );
@@ -193,6 +197,10 @@ class ReloJito {
         },
       )
     );
+  }
+
+  obtenerConfiguracion() {
+    return this.configuracion;
   }
 
   registrarAtajoGlobal(menuElemento) {
