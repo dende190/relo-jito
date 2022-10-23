@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta
+    http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self'"
+  />
+  <title>Tiempos Registrados</title>
+  <link rel="stylesheet" type="text/css" href="./tiempos_registrados.css"/>
+</head>
+<body>
+  <h1>Tiempos registrados:</h1>
+  <form class="formulario_registros jsFormularioRegistroNuevo">
+    <input type="text" name="registroNombre" placeholder="Nuevo registro"/>
+    <button type="submit" class="jsTiempoRegistradoBotonCrear">
+      Crear
+    </button>
+  </form>
+  <table border="1" width="100%">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Tiempos</th>
+      </tr>
+    </thead>
+    <tbody class="jsTablaRegistros"></tbody>
+  </table>
+  <div hidden="true">
+    <table>
+      <tr class="jsTablaFilaBase">
+        <td>
+          <input
+            type="radio"
+            name="selected"
+            class="jsTablaFilaSeleccionadorBase"
+          />
+        </td>
+        <td class="jsTablaFilaNombreBase"></td>
+        <td class="jsTablaFilaTiempoBase">
+          <ul class="jsListaTiemposBase"></ul>
+        </td>
+      </tr>
+    </table>
+    <li class="jsListaElementoTiempoBase">
+      <p>
+        Inicio:
+        <span class="jsListaElementoTiempoInicioBase"></span>
+      </p>
+      <p>
+        Fin:
+        <span class="jsListaElementoTiempoFinBase"></span>
+      </p>
+      <p>
+        Diferencia:
+        <span class="jsListaElementoTiempoDiferenciaBase"></span>
+      </p>
+    </li>
+  </div>
+</body>
+</html>

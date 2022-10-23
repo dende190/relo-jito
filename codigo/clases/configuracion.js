@@ -9,14 +9,14 @@ class Configuracion {
     this.valores = require('../configuracion.json');
   }
 
-  obtener() {
+  actualizar(valoresNuevos) {
+    this.valores = valoresNuevos;
+    const fs = require('fs');
+    fs.writeFileSync(this.archivoRuta, JSON.stringify(this.valores));
     return this.valores;
   }
 
-  actualizar(valoresNuevos) {
-    const fs = require('fs');
-    this.valores = valoresNuevos;
-    fs.writeFileSync(this.archivoRuta, JSON.stringify(this.valores));
+  obtener() {
     return this.valores;
   }
 

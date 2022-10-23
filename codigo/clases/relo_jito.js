@@ -7,6 +7,8 @@ class ReloJito {
   #relojes;
   #sonidoVentana;
   #tiempo;
+  #tiemposRegistrados;
+  #tiemposRegistradosVentana;
 
   constructor() {
     this.configuracionClase = require('./configuracion.js');
@@ -17,7 +19,10 @@ class ReloJito {
     const { ipcMain } = require('electron');
     (
       ipcMain
-      .handle('notoriedadCambio', this.notificarNotoriedadCambio.bind(this))
+      .handle(
+        'crearTiempoRegistro',
+        this.notificarTiempoRegistradoCreado.bind(this),
+      )
     );
     (
       ipcMain
@@ -29,6 +34,24 @@ class ReloJito {
     (
       ipcMain
       .handle('configuracionSolicitud', this.obtenerConfiguracion.bind(this))
+    );
+    (
+      ipcMain
+      .handle('notoriedadCambio', this.notificarNotoriedadCambio.bind(this))
+    );
+    (
+      ipcMain
+      .handle(
+        'seleccionarTiempoRegistro',
+        this.notificarTiempoRegistradoSeleccionado.bind(this),
+      )
+    );
+    (
+      ipcMain
+      .handle(
+        'tiemposRegistradosSolicitud',
+        this.obtenerTiemposRegistrados.bind(this),
+      )
     );
   }
 
@@ -50,6 +73,32 @@ class ReloJito {
     this.configuracionVentana.loadFile(rutaBase + 'configuracion.html');
   }
 
+  abrirTiempoRegistros() {
+    if (this.tiemposRegistradosVentana) {
+      return;
+    }
+    const path = require('path');
+    const rutaBase = path.join(__dirname, '../ventanas/tiempos_registrados/');
+    const ventanaDatos = {
+      webPreferences: {
+        preload: (rutaBase + 'tiempos_registrados_precarga.js'),
+      },
+    };
+    const { BrowserWindow } = require('electron');
+    this.tiemposRegistradosVentana = new BrowserWindow(ventanaDatos);
+    (
+      this
+      .tiemposRegistradosVentana
+      .on('closed', this.cerrarTiemposRegistrados.bind(this))
+    );
+    this.tiemposRegistradosVentana.removeMenu();
+    (
+      this
+      .tiemposRegistradosVentana
+      .loadFile(rutaBase + 'tiempos_registrados.html')
+    );
+  }
+
   actualizarCadaSegundo() {
     this.tiempo.actualizar();
     setTimeout(this.actualizarCadaSegundo.bind(this), 1000);
@@ -59,7 +108,7 @@ class ReloJito {
     this.relojes.push(reloj);
   }
 
-  alternarNotoriedad(evento) {
+  alternarNotoriedad() {
     const relojIgnorado = (
       this
       .relojes
@@ -67,6 +116,10 @@ class ReloJito {
     );
     const notorio = !!relojIgnorado;
     this.relojes.forEach((reloj) => {reloj.cambiarNotoriedad(notorio)});
+  }
+
+  alternarTiempoRegistrado() {
+    this.tiempo.alternarEstadoRegistro();
   }
 
   cambiarNotoriedad(relojId, notorio) {
@@ -90,6 +143,10 @@ class ReloJito {
     delete this.configuracionVentana;
   }
 
+  cerrarTiemposRegistrados() {
+    delete this.tiemposRegistradosVentana;
+  }
+
   crearReloj(pantalla) {
     const Reloj = require('./reloj.js');
     this.agregar(new Reloj(pantalla));
@@ -104,6 +161,7 @@ class ReloJito {
     this.crearRelojes();
     this.inicializarSonido();
     this.tiempo = require('./tiempo.js');
+    this.tiemposRegistrados = this.tiempo.obtenerRegistros();
     this.tiempo.on('cambio', this.notificarTiempoCambio.bind(this));
     this.actualizarCadaSegundo();
 
@@ -117,6 +175,24 @@ class ReloJito {
         click: this.abrirConfiguracion.bind(this),
         label: 'Configurar...',
         type: 'normal',
+      },
+      {type: 'separator'},
+      {
+        click: this.abrirTiempoRegistros.bind(this),
+        label: 'Tiempos Registrados',
+        type: 'normal',
+      },
+      {
+        accelerator: (
+          this
+          .configuracion
+          .atajos_combinaciones
+          .tiempo_registrado_alternar_estado
+        ),
+        click: this.alternarTiempoRegistrado.bind(this),
+        label: 'Alternar Estado Tiempo Registrado',
+        type: 'normal',
+        registerAccelerator: false,
       },
       {type: 'separator'},
       {
@@ -243,8 +319,20 @@ class ReloJito {
     );
   }
 
+  notificarTiempoRegistradoCreado(evento, nombre) {
+    this.tiempo.crearRegistro(nombre);
+  }
+
+  notificarTiempoRegistradoSeleccionado(evento, tiempoRegistroIdentificador) {
+    this.tiempo.seleccionarRegistro(tiempoRegistroIdentificador);
+  }
+
   obtenerConfiguracion() {
     return this.configuracion;
+  }
+
+  obtenerTiemposRegistrados() {
+    return this.tiemposRegistrados;
   }
 
   registrarAtajoGlobal(menuElemento) {
