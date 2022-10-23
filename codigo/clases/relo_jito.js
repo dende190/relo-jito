@@ -1,5 +1,6 @@
 class ReloJito {
 
+  #configuracionClase;
   #configuracion;
   #configuracionVentana;
   #plataforma;
@@ -8,7 +9,8 @@ class ReloJito {
   #tiempo;
 
   constructor() {
-    this.configuracion = require('../configuracion.js');
+    this.configuracionClase = require('./configuracion.js');
+    this.configuracion = this.configuracionClase.obtener();
     this.plataforma = require('../plataformas/' + process.platform + '.js');
     this.relojes = [];
 
@@ -49,7 +51,6 @@ class ReloJito {
   }
 
   actualizarCadaSegundo() {
-    this.relojes.forEach((reloj) => {reloj.reubicar(this.configuracion);});
     this.tiempo.actualizar();
     setTimeout(this.actualizarCadaSegundo.bind(this), 1000);
   }
@@ -122,8 +123,8 @@ class ReloJito {
         accelerator: (
           this
           .configuracion
-          .ATAJOS_COMBINACIONES
-          .VENTANAS_ALTERNAR_NOTORIEDAD
+          .atajos_combinaciones
+          .ventanas_alternar_notoriedad
         ),
         click: this.alternarNotoriedad.bind(this),
         label: 'Alternar notoriedad de ventanas',
@@ -134,8 +135,8 @@ class ReloJito {
         accelerator: (
           this
           .configuracion
-          .ATAJOS_COMBINACIONES
-          .MICROFONOS_ALTERNAR_SILENCIO
+          .atajos_combinaciones
+          .microfono_alternar_silencio
         ),
         click: microfonos.alternarSilencio.bind(microfonos),
         label: 'Alternar silencio de micrófonos',
@@ -179,7 +180,7 @@ class ReloJito {
   }
 
   notificarConfiguracionCambio(evento, configuracionNueva) {
-    this.configuracion = configuracionNueva;
+    this.configuracion = this.configuracionClase.actualizar(configuracionNueva);
     (
       this
       .relojes

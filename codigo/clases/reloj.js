@@ -11,12 +11,12 @@ module.exports = class Reloj {
   constructor(pantalla) {
     this.esNotorio = true;
     this.pantalla = pantalla;
-    this.configuracion = require('../configuracion.js');
+    this.configuracion = require('./configuracion.js').obtener();
     this.fuente = (
       require(
         (
           '../fuentes/' +
-          this.configuracion.TEXTO.FUENTE.replace(/ /g, '_') +
+          this.configuracion.texto.fuente.replace(/ /g, '_') +
           '.js'
         ),
       )
@@ -72,14 +72,14 @@ module.exports = class Reloj {
     const ventanaMedidas = {
       alturaPixeles: (
         Math.ceil(
-          configuracion.TEXTO.TAMANO_PIXELES *
+          configuracion.texto.tamano_pixeles *
           this.fuente.CARACTER_FACTORES.ALTURA
         )
       ),
       anchuraPixeles: (
         CARACTERES_CANTIDAD *
         Math.ceil(
-          configuracion.TEXTO.TAMANO_PIXELES *
+          configuracion.texto.tamano_pixeles *
           this.fuente.CARACTER_FACTORES.ANCHURA
         )
       ),
@@ -88,7 +88,7 @@ module.exports = class Reloj {
     const relojVentanaLimites = {
       height: ventanaMedidas.alturaPixeles,
       width: ventanaMedidas.anchuraPixeles,
-      x: (pantallaLimites.x + configuracion.MARGEN_PIXELES),
+      x: (pantallaLimites.x + configuracion.margen_pixeles),
       y: (
         this.pantalla.workAreaSize.height -
         ventanaMedidas.alturaPixeles +

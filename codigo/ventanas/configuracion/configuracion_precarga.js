@@ -12,12 +12,12 @@ const Configuracion = {
     const { ipcRenderer } = require('electron');
     this.datos = await ipcRenderer.invoke('configuracionSolicitud');
     const dTextoTamano = document.querySelector('.jsTextoTamano');
-    dTextoTamano.value = this.datos.TEXTO.TAMANO_PIXELES;
-    dTextoTamano.addEventListener('change', this.notificarCambio);
+    dTextoTamano.value = this.datos.texto.tamano_pixeles;
+    dTextoTamano.addEventListener('change', this.notificarCambio.bind(this));
   },
 
-  notificarCambio: function() {
-    this.datos.TEXTO.TAMANO_PIXELES = this.value;
+  notificarCambio: function(evento) {
+    this.datos.texto.tamano_pixeles = evento.target.value;
     const { ipcRenderer } = require('electron');
     ipcRenderer.invoke('configuracionCambio', this.datos);
   },

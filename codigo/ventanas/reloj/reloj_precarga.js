@@ -2,6 +2,8 @@
 
 const Reloj = {
 
+  configuracion: null,
+  dHora: null,
   OPACIDADES: {
     OPACO: '0.8',
     TRANSPARENTE: '0.1',
@@ -11,25 +13,29 @@ const Reloj = {
     window.addEventListener('DOMContentLoaded', this.inicializar.bind(this));
   },
 
-  inicializar: function() {
-    const dHora = document.querySelector('.hora');
-    dHora.addEventListener('click', this.notificarNotoriedadCambio);
+  inicializar: async function() {
+    this.dHora = document.querySelector('.hora');
+    this.dHora.addEventListener('click', this.notificarNotoriedadCambio);
 
     const { ipcRenderer } = require('electron');
-    ipcRenderer.on('configuracionCambio', this.ajustarConfiguracion);
+    this.configuracion = await ipcRenderer.invoke('configuracionSolicitud');
+    this.dHora.style.fontSize = (
+      this.configuracion.texto.tamano_pixeles +
+      'px'
+    );
+    ipcRenderer.on('configuracionCambio', this.ajustarConfiguracion.bind(this));
     ipcRenderer.on('notoriedadCambio', this.cambiarNotoriedad.bind(this));
-    ipcRenderer.on('silencioCambio', this.notificarSilencioCambio);
-    ipcRenderer.on('tiempoCambio', this.notificarTiempoCambio);
+    ipcRenderer.on('silencioCambio', this.notificarSilencioCambio.bind(this));
+    ipcRenderer.on('tiempoCambio', this.notificarTiempoCambio.bind(this));
   },
 
   ajustarConfiguracion: function(evento, configuracion) {
-    const horaEstilos = document.querySelector('.hora').style;
-    horaEstilos.fontSize = (configuracion.TEXTO.TAMANO_PIXELES + 'px');
+    this.dHora.style.fontSize = (configuracion.texto.tamano_pixeles + 'px');
   },
 
   cambiarNotoriedad: function(evento, notorio) {
     const opacidad = this.OPACIDADES[notorio ? 'OPACO' : 'TRANSPARENTE'];
-    document.querySelector('.hora').style.opacity = opacidad;
+    this.dHora.style.opacity = opacidad;
   },
 
   notificarNotoriedadCambio: function(evento) {
@@ -38,15 +44,11 @@ const Reloj = {
   },
 
   notificarSilencioCambio: function(evento, microfonosEstanActivados) {
-    document.querySelector('.hora').style.color = (
-      microfonosEstanActivados ?
-      '' :
-      '#f00'
-    );
+    this.dHora.style.color = (microfonosEstanActivados ? '' : '#f00');
   },
 
   notificarTiempoCambio: function(evento, tiempoEnHorasMinutosYSegundos) {
-    document.querySelector('.hora').innerText = tiempoEnHorasMinutosYSegundos;
+    this.dHora.innerText = tiempoEnHorasMinutosYSegundos;
   },
 
 };
