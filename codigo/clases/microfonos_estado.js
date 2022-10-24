@@ -30,4 +30,4 @@ class MicrofonosEstado extends EventEmitter {
 
 }
 
-module.exports = new Microfonos();
+module.exports = new MicrofonosEstado();
