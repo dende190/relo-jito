@@ -40,34 +40,6 @@ module.exports = class Reloj {
     this.reubicar(this.configuracion);
   }
 
-  cambiarNotoriedad(notorio) {
-    this.esNotorio = notorio;
-    this.ventana.setIgnoreMouseEvents(!notorio);
-    this.ventana.webContents.send('notoriedadCambio', notorio);
-  }
-
-  notificarConfiguracionCambio(configuracion) {
-    this.reubicar(configuracion);
-    this.ventana.webContents.send('configuracionCambio', configuracion);
-  }
-
-  notificarSilencioCambio(microfonosEstanActivados) {
-    this.ventana.webContents.send('silencioCambio', microfonosEstanActivados);
-  }
-
-  notificarTiempoCambio(tiempoEnHorasMinutosYSegundos) {
-    (
-      this
-      .ventana
-      .webContents
-      .send('tiempoCambio', tiempoEnHorasMinutosYSegundos)
-    );
-  }
-
-  obtenerId() {
-    return this.ventana.id;
-  }
-
   reubicar(configuracion) {
     const ventanaMedidas = {
       alturaPixeles: (
@@ -97,6 +69,34 @@ module.exports = class Reloj {
     };
     this.ventana.setBounds(relojVentanaLimites);
     this.ventana.setAlwaysOnTop(true, 'screen-saver');
+  }
+
+  notificarConfiguracionCambio(configuracion) {
+    this.reubicar(configuracion);
+    this.ventana.webContents.send('configuracionCambio', configuracion);
+  }
+
+  cambiarNotoriedad(notorio) {
+    this.esNotorio = notorio;
+    this.ventana.setIgnoreMouseEvents(!notorio);
+    this.ventana.webContents.send('notoriedadCambio', notorio);
+  }
+
+  notificarSilencioCambio(microfonosEstanActivados) {
+    this.ventana.webContents.send('silencioCambio', microfonosEstanActivados);
+  }
+
+  notificarTiempoCambio(tiempoEnHorasMinutosYSegundos) {
+    (
+      this
+      .ventana
+      .webContents
+      .send('tiempoCambio', tiempoEnHorasMinutosYSegundos)
+    );
+  }
+
+  obtenerId() {
+    return this.ventana.id;
   }
 
 };

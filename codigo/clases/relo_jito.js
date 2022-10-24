@@ -55,109 +55,6 @@ class ReloJito {
     );
   }
 
-  abrirConfiguracion() {
-    if (this.configuracionVentana) {
-      return;
-    }
-    const path = require('path');
-    const rutaBase = path.join(__dirname, '../ventanas/configuracion/');
-    const ventanaDatos = {
-      webPreferences: {
-        preload: (rutaBase + 'configuracion_precarga.js'),
-      },
-    };
-    const { BrowserWindow } = require('electron');
-    this.configuracionVentana = new BrowserWindow(ventanaDatos);
-    this.configuracionVentana.on('closed', this.cerrarConfiguracion.bind(this));
-    this.configuracionVentana.removeMenu();
-    this.configuracionVentana.loadFile(rutaBase + 'configuracion.html');
-  }
-
-  abrirTiempoRegistros() {
-    if (this.tiemposRegistradosVentana) {
-      return;
-    }
-    const path = require('path');
-    const rutaBase = path.join(__dirname, '../ventanas/tiempos_registrados/');
-    const ventanaDatos = {
-      webPreferences: {
-        preload: (rutaBase + 'tiempos_registrados_precarga.js'),
-      },
-    };
-    const { BrowserWindow } = require('electron');
-    this.tiemposRegistradosVentana = new BrowserWindow(ventanaDatos);
-    (
-      this
-      .tiemposRegistradosVentana
-      .on('closed', this.cerrarTiemposRegistrados.bind(this))
-    );
-    this.tiemposRegistradosVentana.removeMenu();
-    (
-      this
-      .tiemposRegistradosVentana
-      .loadFile(rutaBase + 'tiempos_registrados.html')
-    );
-  }
-
-  actualizarCadaSegundo() {
-    this.relojes.forEach((reloj) => {reloj.reubicar(this.configuracion);});
-    this.tiempo.actualizar();
-    setTimeout(this.actualizarCadaSegundo.bind(this), 1000);
-  }
-
-  agregar(reloj) {
-    this.relojes.push(reloj);
-  }
-
-  alternarNotoriedad() {
-    const relojIgnorado = (
-      this
-      .relojes
-      .find((reloj) => {return !reloj.esNotorio;})
-    );
-    const notorio = !!relojIgnorado;
-    this.relojes.forEach((reloj) => {reloj.cambiarNotoriedad(notorio)});
-  }
-
-  alternarTiempoRegistrado() {
-    this.tiempo.alternarEstadoRegistro();
-  }
-
-  cambiarNotoriedad(relojId, notorio) {
-    const reloj = (
-      this
-      .relojes
-      .find((reloj) => {return (reloj.obtenerId() === relojId);})
-    );
-    reloj.cambiarNotoriedad(notorio);
-  }
-
-  cerrarAplicacion() {
-    if (this.plataforma.ES_MACOS) {
-      return;
-    }
-    const { app } = require('electron');
-    app.quit();
-  }
-
-  cerrarConfiguracion() {
-    delete this.configuracionVentana;
-  }
-
-  cerrarTiemposRegistrados() {
-    delete this.tiemposRegistradosVentana;
-  }
-
-  crearReloj(pantalla) {
-    const Reloj = require('./reloj.js');
-    this.agregar(new Reloj(pantalla));
-  }
-
-  crearRelojes() {
-    const { screen } = require('electron');
-    screen.getAllDisplays().forEach(this.crearReloj.bind(this));
-  }
-
   inicializar() {
     this.crearRelojes();
     this.inicializarSonido();
@@ -256,6 +153,109 @@ class ReloJito {
     this.sonidoVentana.loadFile(rutaBase + 'sonido.html');
   }
 
+  cerrarConfiguracion() {
+    delete this.configuracionVentana;
+  }
+
+  abrirConfiguracion() {
+    if (this.configuracionVentana) {
+      return;
+    }
+    const path = require('path');
+    const rutaBase = path.join(__dirname, '../ventanas/configuracion/');
+    const ventanaDatos = {
+      webPreferences: {
+        preload: (rutaBase + 'configuracion_precarga.js'),
+      },
+    };
+    const { BrowserWindow } = require('electron');
+    this.configuracionVentana = new BrowserWindow(ventanaDatos);
+    this.configuracionVentana.on('closed', this.cerrarConfiguracion.bind(this));
+    this.configuracionVentana.removeMenu();
+    this.configuracionVentana.loadFile(rutaBase + 'configuracion.html');
+  }
+
+  cerrarTiemposRegistrados() {
+    delete this.tiemposRegistradosVentana;
+  }
+
+  abrirTiempoRegistros() {
+    if (this.tiemposRegistradosVentana) {
+      return;
+    }
+    const path = require('path');
+    const rutaBase = path.join(__dirname, '../ventanas/tiempos_registrados/');
+    const ventanaDatos = {
+      webPreferences: {
+        preload: (rutaBase + 'tiempos_registrados_precarga.js'),
+      },
+    };
+    const { BrowserWindow } = require('electron');
+    this.tiemposRegistradosVentana = new BrowserWindow(ventanaDatos);
+    (
+      this
+      .tiemposRegistradosVentana
+      .on('closed', this.cerrarTiemposRegistrados.bind(this))
+    );
+    this.tiemposRegistradosVentana.removeMenu();
+    (
+      this
+      .tiemposRegistradosVentana
+      .loadFile(rutaBase + 'tiempos_registrados.html')
+    );
+  }
+
+  actualizarCadaSegundo() {
+    this.relojes.forEach((reloj) => {reloj.reubicar(this.configuracion);});
+    this.tiempo.actualizar();
+    setTimeout(this.actualizarCadaSegundo.bind(this), 1000);
+  }
+
+  alternarNotoriedad() {
+    const relojIgnorado = (
+      this
+      .relojes
+      .find((reloj) => {return !reloj.esNotorio;})
+    );
+    const notorio = !!relojIgnorado;
+    this.relojes.forEach((reloj) => {reloj.cambiarNotoriedad(notorio)});
+  }
+
+  alternarTiempoRegistrado() {
+    this.tiempo.alternarEstadoRegistro();
+  }
+
+  cambiarNotoriedad(relojId, notorio) {
+    const reloj = (
+      this
+      .relojes
+      .find((reloj) => {return (reloj.obtenerId() === relojId);})
+    );
+    reloj.cambiarNotoriedad(notorio);
+  }
+
+  notificarNotoriedadCambio(evento) {
+    this.cambiarNotoriedad(evento.sender.id, false);
+  }
+
+  cerrarAplicacion() {
+    if (this.plataforma.ES_MACOS) {
+      return;
+    }
+    const { app } = require('electron');
+    app.quit();
+  }
+
+  crearReloj(pantalla) {
+    const Reloj = require('./reloj.js');
+    this.relojes.push(new Reloj(pantalla));
+  }
+
+  crearRelojes() {
+    const { screen } = require('electron');
+    screen.getAllDisplays().forEach(this.crearReloj.bind(this));
+  }
+
   notificarConfiguracionCambio(evento, configuracionNueva) {
     this.configuracion = this.configuracionClase.actualizar(configuracionNueva);
     (
@@ -267,10 +267,6 @@ class ReloJito {
         },
       )
     );
-  }
-
-  notificarNotoriedadCambio(evento) {
-    this.cambiarNotoriedad(evento.sender.id, false);
   }
 
   notificarSilencioCambio(microfonosEstanActivados) {

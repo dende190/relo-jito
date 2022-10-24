@@ -20,6 +20,11 @@ const TiemposRegistrados = {
     );
   },
 
+  seleccionarRegistro: function(evento) {
+    const { ipcRenderer } = require('electron');
+    ipcRenderer.invoke('seleccionarTiempoRegistro', evento.target.value);
+  },
+
   actualizarTabla: function() {
     let dTablaRegistros = document.querySelector('.jsTablaRegistros');
     dTablaRegistros.innerHTML = '';
@@ -119,11 +124,6 @@ const TiemposRegistrados = {
     dFormulario.reset();
     this.registros = await ipcRenderer.invoke('tiemposRegistradosSolicitud');
     this.actualizarTabla();
-  },
-
-  seleccionarRegistro: function(evento) {
-    const { ipcRenderer } = require('electron');
-    ipcRenderer.invoke('seleccionarTiempoRegistro', evento.target.value);
   },
 
 };

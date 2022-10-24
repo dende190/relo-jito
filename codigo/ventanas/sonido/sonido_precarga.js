@@ -18,6 +18,14 @@ const Sonido = {
     ipcRenderer.on('toc', this.notificarToc.bind(this));
   },
 
+  iniciarAlarma: function() {
+    var contexto = new AudioContext();
+    this.oscilador = contexto.createOscillator();
+    this.oscilador.type = 'sine';
+    this.oscilador.connect(contexto.destination);
+    this.oscilador.start();
+  },
+
   detenerAlarma: function() {
     this.oscilador.stop();
     this.oscilador = null;
@@ -25,6 +33,13 @@ const Sonido = {
 
   eliminarAudio: function() {
     this.remove();
+  },
+
+  reproducirArchivoOgg: function(archivo) {
+    const dAudio = document.createElement('audio');
+    dAudio.src = ('../../../sonidos/' + archivo + '.ogg');
+    dAudio.addEventListener('ended', this.eliminarAudio);
+    dAudio.play();
   },
 
   notificarRecordatorio: function() {
@@ -41,21 +56,6 @@ const Sonido = {
 
   notificarToc: function() {
     this.reproducirArchivoOgg('notas_re_do_2x');
-  },
-
-  iniciarAlarma: function() {
-    var contexto = new AudioContext();
-    this.oscilador = contexto.createOscillator();
-    this.oscilador.type = 'sine';
-    this.oscilador.connect(contexto.destination);
-    this.oscilador.start();
-  },
-
-  reproducirArchivoOgg: function(archivo) {
-    const dAudio = document.createElement('audio');
-    dAudio.src = ('../../../sonidos/' + archivo + '.ogg');
-    dAudio.addEventListener('ended', this.eliminarAudio);
-    dAudio.play();
   },
 
 };

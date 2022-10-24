@@ -17,6 +17,24 @@ class Tiempo extends EventEmitter {
     );
   }
 
+  mostrarEnDosCifras(numero) {
+    return ('0' + numero).slice(-2);
+  }
+
+  obtenerEnHorasMinutosYSegundos() {
+    const hora = this.fecha.getHours();
+    const minutos = this.fecha.getMinutes();
+    const segundos = this.fecha.getSeconds();
+    const horasMinutosYSegundos = (
+      this.mostrarEnDosCifras(hora) +
+      ':' +
+      this.mostrarEnDosCifras(minutos) +
+      ':' +
+      this.mostrarEnDosCifras(segundos)
+    );
+    return horasMinutosYSegundos;
+  }
+
   actualizar() {
     this.fecha = new Date();
     let segundosActualesCantidad = Math.floor(this.fecha.getTime() / 1000);
@@ -113,24 +131,6 @@ class Tiempo extends EventEmitter {
     );
 
     this.actualizarRegistros();
-  }
-
-  mostrarEnDosCifras(numero) {
-    return ('0' + numero).slice(-2);
-  }
-
-  obtenerEnHorasMinutosYSegundos() {
-    const hora = this.fecha.getHours();
-    const minutos = this.fecha.getMinutes();
-    const segundos = this.fecha.getSeconds();
-    const horasMinutosYSegundos = (
-      this.mostrarEnDosCifras(hora) +
-      ':' +
-      this.mostrarEnDosCifras(minutos) +
-      ':' +
-      this.mostrarEnDosCifras(segundos)
-    );
-    return horasMinutosYSegundos;
   }
 
   obtenerRegistros() {
