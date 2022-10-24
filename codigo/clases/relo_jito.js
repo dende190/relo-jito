@@ -287,6 +287,15 @@ class ReloJito {
   }
 
   notificarTiempoCambio(tiempoEnHorasMinutosYSegundos) {
+    (
+      this
+      .relojes
+      .forEach(
+        (reloj) => {
+          reloj.notificarTiempoCambio(tiempoEnHorasMinutosYSegundos);
+        },
+      )
+    );
     if (['10:30:00', '15:30:00'].includes(tiempoEnHorasMinutosYSegundos)) {
       this.sonidoVentana.webContents.send('alarmaIniciada');
     } else if (
@@ -309,15 +318,6 @@ class ReloJito {
     }
     let ultimoDigito = tiempoEnHorasMinutosYSegundos.slice(-1);
     this.sonidoVentana.webContents.send((ultimoDigito % 2) ? 'tic' : 'toc');
-    (
-      this
-      .relojes
-      .forEach(
-        (reloj) => {
-          reloj.notificarTiempoCambio(tiempoEnHorasMinutosYSegundos);
-        },
-      )
-    );
   }
 
   notificarTiempoRegistradoCreado(evento, nombre) {
