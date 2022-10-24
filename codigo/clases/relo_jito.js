@@ -63,9 +63,9 @@ class ReloJito {
     this.tiempo.on('cambio', this.notificarTiempoCambio.bind(this));
     this.actualizarCadaSegundo();
 
-    const microfonos = require('./microfonos.js');
-    microfonos.on('silencioCambio', this.notificarSilencioCambio.bind(this));
-    microfonos.alternarSilencio();
+    const microfonosEstado = require('./microfonos_estado.js');
+    microfonosEstado.on('silencioCambio', this.notificarSilencioCambio.bind(this));
+    microfonosEstado.alternarSilencio();
 
     const { Menu } = require('electron');
     const menuElementos = [
@@ -112,7 +112,7 @@ class ReloJito {
           .atajos_combinaciones
           .microfono_alternar_silencio
         ),
-        click: microfonos.alternarSilencio.bind(microfonos),
+        click: microfonosEstado.alternarSilencio.bind(microfonosEstado),
         label: 'Alternar silencio de micrófonos',
         type: 'normal',
         registerAccelerator: false,

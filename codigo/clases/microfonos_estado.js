@@ -1,6 +1,6 @@
 const { EventEmitter } = require('node:events');
 
-class Microfonos extends EventEmitter {
+class MicrofonosEstado extends EventEmitter {
 
   #estanActivados;
 
