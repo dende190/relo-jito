@@ -298,7 +298,7 @@ class ReloJito {
       ['10:30:05', '15:30:05']
       .includes(tiempoEnHorasMinutosYSegundos)
     ) {
-      this.sonidoVentana.webContents.send('alarmaDetenida');
+      // this.sonidoVentana.webContents.send('alarmaDetenida');
     }
     let tiempoEnMinutosYSegundos = (
       tiempoEnHorasMinutosYSegundos
@@ -310,7 +310,7 @@ class ReloJito {
       ['59:30', '14:30', '29:30', '45:30']
       .includes(tiempoEnMinutosYSegundos)
     ) {
-      this.sonidoVentana.webContents.send('recordatorio');
+      // this.sonidoVentana.webContents.send('recordatorio');
     }
     let ultimoDigito = tiempoEnHorasMinutosYSegundos.slice(-1);
     // this.sonidoVentana.webContents.send((ultimoDigito % 2) ? 'tic' : 'toc');
