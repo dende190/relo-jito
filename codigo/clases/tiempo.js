@@ -69,7 +69,6 @@ class Tiempo extends EventEmitter {
       )
     );
     if (registroPosicionSeleccionado === -1) {
-      console.log('paila')
       return;
     }
 
