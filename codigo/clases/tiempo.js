@@ -17,11 +17,11 @@ class Tiempo extends EventEmitter {
     );
   }
 
-  mostrarEnDosCifras(numero) {
+  mostrarEnDosCifras = (numero) => {
     return ('0' + numero).slice(-2);
   }
 
-  obtenerEnHorasMinutosYSegundos() {
+  obtenerEnHorasMinutosYSegundos = () => {
     const hora = this.fecha.getHours();
     const minutos = this.fecha.getMinutes();
     const segundos = this.fecha.getSeconds();
@@ -35,7 +35,7 @@ class Tiempo extends EventEmitter {
     return horasMinutosYSegundos;
   }
 
-  actualizar() {
+  actualizar = () => {
     this.fecha = new Date();
     let segundosActualesCantidad = Math.floor(this.fecha.getTime() / 1000);
     if (this.segundosCantidad === segundosActualesCantidad) {
@@ -45,7 +45,7 @@ class Tiempo extends EventEmitter {
     this.emit('cambio', this.obtenerEnHorasMinutosYSegundos());
   }
 
-  actualizarRegistros() {
+  actualizarRegistros = () => {
     const fs = require('fs');
     const path = require('path');
     (
@@ -58,7 +58,7 @@ class Tiempo extends EventEmitter {
     return this.registros;
   }
 
-  alternarEstadoRegistro() {
+  alternarEstadoRegistro = () => {
     let registroPosicionSeleccionado = (
       this
       .registros
@@ -119,7 +119,7 @@ class Tiempo extends EventEmitter {
     this.actualizarRegistros();
   }
 
-  crearRegistro(nombre) {
+  crearRegistro = (nombre) => {
     (
       this
       .registros
@@ -133,11 +133,11 @@ class Tiempo extends EventEmitter {
     this.actualizarRegistros();
   }
 
-  obtenerRegistros() {
+  obtenerRegistros = () => {
     return this.registros;
   }
 
-  seleccionarRegistro(identificador) {
+  seleccionarRegistro = (identificador) => {
     this.registroIdentificadorSeleccionado = Number(identificador);
   }
 

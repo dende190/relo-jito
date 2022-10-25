@@ -40,7 +40,7 @@ module.exports = class Reloj {
     this.reubicar(this.configuracion);
   }
 
-  reubicar(configuracion) {
+  reubicar = (configuracion) => {
     const ventanaMedidas = {
       alturaPixeles: (
         Math.ceil(
@@ -71,22 +71,22 @@ module.exports = class Reloj {
     this.ventana.setAlwaysOnTop(true, 'screen-saver');
   }
 
-  notificarConfiguracionCambio(configuracion) {
+  notificarConfiguracionCambio = (configuracion) => {
     this.reubicar(configuracion);
     this.ventana.webContents.send('configuracionCambio', configuracion);
   }
 
-  cambiarNotoriedad(notorio) {
+  cambiarNotoriedad = (notorio) => {
     this.esNotorio = notorio;
     this.ventana.setIgnoreMouseEvents(!notorio);
     this.ventana.webContents.send('notoriedadCambio', notorio);
   }
 
-  notificarSilencioCambio(microfonosEstanActivados) {
+  notificarSilencioCambio = (microfonosEstanActivados) => {
     this.ventana.webContents.send('silencioCambio', microfonosEstanActivados);
   }
 
-  notificarTiempoCambio(tiempoEnHorasMinutosYSegundos) {
+  notificarTiempoCambio = (tiempoEnHorasMinutosYSegundos) => {
     (
       this
       .ventana
@@ -95,7 +95,7 @@ module.exports = class Reloj {
     );
   }
 
-  obtenerId() {
+  obtenerId = () => {
     return this.ventana.id;
   }
 

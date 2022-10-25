@@ -1,27 +1,27 @@
 'use strict';
 
-const Configuracion = {
+class Configuracion {
 
-  datos: null,
+  #datos;
 
-  preInicializar: function() {
-    window.addEventListener('DOMContentLoaded', this.inicializar.bind(this));
-  },
+  constructor() {
+    window.addEventListener('DOMContentLoaded', this.inicializar);
+  }
 
-  inicializar: async function() {
+  inicializar = async () => {
     const { ipcRenderer } = require('electron');
     this.datos = await ipcRenderer.invoke('configuracionSolicitud');
     const dTextoTamano = document.querySelector('.jsTextoTamano');
     dTextoTamano.value = this.datos.texto.tamano_pixeles;
-    dTextoTamano.addEventListener('change', this.notificarCambio.bind(this));
-  },
+    dTextoTamano.addEventListener('change', this.notificarCambio);
+  }
 
-  notificarCambio: function(evento) {
+  notificarCambio = (evento) => {
     this.datos.texto.tamano_pixeles = evento.target.value;
     const { ipcRenderer } = require('electron');
     ipcRenderer.invoke('configuracionCambio', this.datos);
-  },
+  }
 
-};
+}
 
-Configuracion.preInicializar();
+new Configuracion();

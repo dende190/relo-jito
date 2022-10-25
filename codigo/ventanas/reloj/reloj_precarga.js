@@ -1,19 +1,21 @@
 'use strict';
 
-const Reloj = {
+class Reloj {
 
-  configuracion: null,
-  dHora: null,
-  OPACIDADES: {
+  // TODO: Traer del archivo de configuración
+  static OPACIDADES = {
     OPACO: '0.8',
     TRANSPARENTE: '0.1',
-  },
+  };
 
-  preInicializar: function() {
-    window.addEventListener('DOMContentLoaded', this.inicializar.bind(this));
-  },
+  #configuracion;
+  #dHora;
 
-  inicializar: async function() {
+  constructor() {
+    window.addEventListener('DOMContentLoaded', this.inicializar);
+  }
+
+  inicializar = async () => {
     this.dHora = document.querySelector('.hora');
     this.dHora.addEventListener('click', this.notificarNotoriedadCambio);
 
@@ -23,34 +25,34 @@ const Reloj = {
       this.configuracion.texto.tamano_pixeles +
       'px'
     );
-    ipcRenderer.on('configuracionCambio', this.ajustarConfiguracion.bind(this));
-    ipcRenderer.on('notoriedadCambio', this.cambiarNotoriedad.bind(this));
-    ipcRenderer.on('silencioCambio', this.notificarSilencioCambio.bind(this));
-    ipcRenderer.on('tiempoCambio', this.notificarTiempoCambio.bind(this));
-  },
+    ipcRenderer.on('configuracionCambio', this.ajustarConfiguracion);
+    ipcRenderer.on('notoriedadCambio', this.cambiarNotoriedad);
+    ipcRenderer.on('silencioCambio', this.notificarSilencioCambio);
+    ipcRenderer.on('tiempoCambio', this.notificarTiempoCambio);
+  }
 
-  ajustarConfiguracion: function(evento, configuracion) {
+  ajustarConfiguracion = (evento, configuracion) => {
     this.dHora.style.fontSize = (configuracion.texto.tamano_pixeles + 'px');
-  },
+  }
 
-  cambiarNotoriedad: function(evento, notorio) {
-    const opacidad = this.OPACIDADES[notorio ? 'OPACO' : 'TRANSPARENTE'];
+  cambiarNotoriedad = (evento, notorio) => {
+    const opacidad = Reloj.OPACIDADES[notorio ? 'OPACO' : 'TRANSPARENTE'];
     this.dHora.style.opacity = opacidad;
-  },
+  }
 
-  notificarNotoriedadCambio: function(evento) {
+  notificarNotoriedadCambio = (evento) => {
     const { ipcRenderer } = require('electron');
     ipcRenderer.invoke('notoriedadCambio');
-  },
+  }
 
-  notificarSilencioCambio: function(evento, microfonosEstanActivados) {
+  notificarSilencioCambio = (evento, microfonosEstanActivados) => {
     this.dHora.style.color = (microfonosEstanActivados ? '' : '#f00');
-  },
+  }
 
-  notificarTiempoCambio: function(evento, tiempoEnHorasMinutosYSegundos) {
+  notificarTiempoCambio = (evento, tiempoEnHorasMinutosYSegundos) => {
     this.dHora.innerText = tiempoEnHorasMinutosYSegundos;
-  },
+  }
 
-};
+}
 
-Reloj.preInicializar();
+new Reloj();

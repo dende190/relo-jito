@@ -4,7 +4,7 @@ class MicrofonosEstado extends EventEmitter {
 
   #estanActivados;
 
-  alternarSilencio() {
+  alternarSilencio = () => {
     const PLATAFORMA = require('../plataformas/' + process.platform + '.js');
     let comando = PLATAFORMA.MICROFONOS.SILENCIO.ALTERNAR_COMANDO;
     if (this.estanActivados === undefined) {
@@ -12,10 +12,10 @@ class MicrofonosEstado extends EventEmitter {
       comando = PLATAFORMA.MICROFONOS.SILENCIO.DESACTIVAR_COMANDO;
     }
     const { exec } = require('child_process');
-    exec(comando, this.notificarSilencioCambio.bind(this));
+    exec(comando, this.notificarSilencioCambio);
   }
 
-  notificarSilencioCambio(error, stdout, stderr) {
+  notificarSilencioCambio = (error, stdout, stderr) => {
     if (error) {
       // TODO: Informar el error
       return;

@@ -21,62 +21,62 @@ class ReloJito {
       ipcMain
       .handle(
         'crearTiempoRegistro',
-        this.notificarTiempoRegistradoCreado.bind(this),
+        this.notificarTiempoRegistradoCreado,
       )
     );
     (
       ipcMain
       .handle(
         'configuracionCambio',
-        this.notificarConfiguracionCambio.bind(this),
+        this.notificarConfiguracionCambio,
       )
     );
     (
       ipcMain
-      .handle('configuracionSolicitud', this.obtenerConfiguracion.bind(this))
+      .handle('configuracionSolicitud', this.obtenerConfiguracion)
     );
     (
       ipcMain
-      .handle('notoriedadCambio', this.notificarNotoriedadCambio.bind(this))
+      .handle('notoriedadCambio', this.notificarNotoriedadCambio)
     );
     (
       ipcMain
       .handle(
         'seleccionarTiempoRegistro',
-        this.notificarTiempoRegistradoSeleccionado.bind(this),
+        this.notificarTiempoRegistradoSeleccionado,
       )
     );
     (
       ipcMain
       .handle(
         'tiemposRegistradosSolicitud',
-        this.obtenerTiemposRegistrados.bind(this),
+        this.obtenerTiemposRegistrados,
       )
     );
   }
 
-  inicializar() {
+  inicializar = () => {
     this.crearRelojes();
     this.inicializarSonido();
     this.tiempo = require('./tiempo.js');
     this.tiemposRegistrados = this.tiempo.obtenerRegistros();
-    this.tiempo.on('cambio', this.notificarTiempoCambio.bind(this));
+    this.tiempo.on('cambio', this.notificarTiempoCambio);
     this.actualizarCadaSegundo();
 
     const microfonosEstado = require('./microfonos_estado.js');
-    microfonosEstado.on('silencioCambio', this.notificarSilencioCambio.bind(this));
+    microfonosEstado.on('silencioCambio', this.notificarSilencioCambio);
     microfonosEstado.alternarSilencio();
 
     const { Menu } = require('electron');
     const menuElementos = [
       {
-        click: this.abrirConfiguracion.bind(this),
+        click: this.abrirConfiguracion,
         label: 'Configurar...',
         type: 'normal',
       },
       {type: 'separator'},
       {
-        click: this.abrirTiempoRegistros.bind(this),
+        click: this.abrirTiempoRegistros,
         label: 'Tiempos Registrados',
         type: 'normal',
       },
@@ -87,7 +87,7 @@ class ReloJito {
           .atajos_combinaciones
           .tiempo_registrado_alternar_estado
         ),
-        click: this.alternarTiempoRegistrado.bind(this),
+        click: this.alternarTiempoRegistrado,
         label: 'Alternar Estado Tiempo Registrado',
         type: 'normal',
         registerAccelerator: false,
@@ -100,7 +100,7 @@ class ReloJito {
           .atajos_combinaciones
           .ventanas_alternar_notoriedad
         ),
-        click: this.alternarNotoriedad.bind(this),
+        click: this.alternarNotoriedad,
         label: 'Alternar notoriedad de ventanas',
         type: 'normal',
         registerAccelerator: false,
@@ -112,14 +112,14 @@ class ReloJito {
           .atajos_combinaciones
           .microfono_alternar_silencio
         ),
-        click: microfonosEstado.alternarSilencio.bind(microfonosEstado),
+        click: microfonosEstado.alternarSilencio,
         label: 'Alternar silencio de micrófonos',
         type: 'normal',
         registerAccelerator: false,
       },
       {type: 'separator'},
       {
-        click: this.cerrarAplicacion.bind(this),
+        click: this.cerrarAplicacion,
         label: 'Cerrar',
         type: 'normal',
       },
@@ -130,15 +130,15 @@ class ReloJito {
     const notificacionIcono = new Tray(this.plataforma.ICONO);
     notificacionIcono.setToolTip('Relo-Jito');
     notificacionIcono.setContextMenu(menu);
-    notificacionIcono.on('click', this.alternarNotoriedad.bind(this));
+    notificacionIcono.on('click', this.alternarNotoriedad);
 
-    menuElementos.forEach(this.registrarAtajoGlobal.bind(this));
+    menuElementos.forEach(this.registrarAtajoGlobal);
 
     const { app } = require('electron');
-    app.on('window-all-closed', this.cerrarAplicacion.bind(this));
+    app.on('window-all-closed', this.cerrarAplicacion);
   }
 
-  inicializarSonido() {
+  inicializarSonido = () => {
     const path = require('path');
     const rutaBase = path.join(__dirname, '../ventanas/sonido/');
     const ventanaDatos = {
@@ -153,11 +153,11 @@ class ReloJito {
     this.sonidoVentana.loadFile(rutaBase + 'sonido.html');
   }
 
-  cerrarConfiguracion() {
+  cerrarConfiguracion = () => {
     delete this.configuracionVentana;
   }
 
-  abrirConfiguracion() {
+  abrirConfiguracion = () => {
     if (this.configuracionVentana) {
       return;
     }
@@ -170,16 +170,16 @@ class ReloJito {
     };
     const { BrowserWindow } = require('electron');
     this.configuracionVentana = new BrowserWindow(ventanaDatos);
-    this.configuracionVentana.on('closed', this.cerrarConfiguracion.bind(this));
+    this.configuracionVentana.on('closed', this.cerrarConfiguracion);
     this.configuracionVentana.removeMenu();
     this.configuracionVentana.loadFile(rutaBase + 'configuracion.html');
   }
 
-  cerrarTiemposRegistrados() {
+  cerrarTiemposRegistrados = () => {
     delete this.tiemposRegistradosVentana;
   }
 
-  abrirTiempoRegistros() {
+  abrirTiempoRegistros = () => {
     if (this.tiemposRegistradosVentana) {
       return;
     }
@@ -195,7 +195,7 @@ class ReloJito {
     (
       this
       .tiemposRegistradosVentana
-      .on('closed', this.cerrarTiemposRegistrados.bind(this))
+      .on('closed', this.cerrarTiemposRegistrados)
     );
     this.tiemposRegistradosVentana.removeMenu();
     (
@@ -205,13 +205,13 @@ class ReloJito {
     );
   }
 
-  actualizarCadaSegundo() {
     this.relojes.forEach((reloj) => {reloj.reubicar(this.configuracion);});
+  actualizarCadaSegundo = () => {
     this.tiempo.actualizar();
-    setTimeout(this.actualizarCadaSegundo.bind(this), 1000);
+    setTimeout(this.actualizarCadaSegundo, 1000);
   }
 
-  alternarNotoriedad() {
+  alternarNotoriedad = () => {
     const relojIgnorado = (
       this
       .relojes
@@ -221,11 +221,11 @@ class ReloJito {
     this.relojes.forEach((reloj) => {reloj.cambiarNotoriedad(notorio)});
   }
 
-  alternarTiempoRegistrado() {
+  alternarTiempoRegistrado = () => {
     this.tiempo.alternarEstadoRegistro();
   }
 
-  cambiarNotoriedad(relojId, notorio) {
+  cambiarNotoriedad = (relojId, notorio) => {
     const reloj = (
       this
       .relojes
@@ -234,11 +234,11 @@ class ReloJito {
     reloj.cambiarNotoriedad(notorio);
   }
 
-  notificarNotoriedadCambio(evento) {
+  notificarNotoriedadCambio = (evento) => {
     this.cambiarNotoriedad(evento.sender.id, false);
   }
 
-  cerrarAplicacion() {
+  cerrarAplicacion = () => {
     if (this.plataforma.ES_MACOS) {
       return;
     }
@@ -246,17 +246,17 @@ class ReloJito {
     app.quit();
   }
 
-  crearReloj(pantalla) {
+  crearReloj = (pantalla) => {
     const Reloj = require('./reloj.js');
     this.relojes.push(new Reloj(pantalla));
   }
 
-  crearRelojes() {
+  crearRelojes = () => {
     const { screen } = require('electron');
-    screen.getAllDisplays().forEach(this.crearReloj.bind(this));
+    screen.getAllDisplays().forEach(this.crearReloj);
   }
 
-  notificarConfiguracionCambio(evento, configuracionNueva) {
+  notificarConfiguracionCambio = (evento, configuracionNueva) => {
     this.configuracion = this.configuracionClase.actualizar(configuracionNueva);
     (
       this
@@ -269,7 +269,7 @@ class ReloJito {
     );
   }
 
-  notificarSilencioCambio(microfonosEstanActivados) {
+  notificarSilencioCambio = (microfonosEstanActivados) => {
     this.sonidoVentana.webContents.send('silencioCambio');
     (
       this
@@ -282,7 +282,7 @@ class ReloJito {
     );
   }
 
-  notificarTiempoCambio(tiempoEnHorasMinutosYSegundos) {
+  notificarTiempoCambio = (tiempoEnHorasMinutosYSegundos) => {
     (
       this
       .relojes
@@ -316,23 +316,23 @@ class ReloJito {
     this.sonidoVentana.webContents.send((ultimoDigito % 2) ? 'tic' : 'toc');
   }
 
-  notificarTiempoRegistradoCreado(evento, nombre) {
+  notificarTiempoRegistradoCreado = (evento, nombre) => {
     this.tiempo.crearRegistro(nombre);
   }
 
-  notificarTiempoRegistradoSeleccionado(evento, tiempoRegistroIdentificador) {
+  notificarTiempoRegistradoSeleccionado = (evento, tiempoRegistroIdentificador) => {
     this.tiempo.seleccionarRegistro(tiempoRegistroIdentificador);
   }
 
-  obtenerConfiguracion() {
+  obtenerConfiguracion = () => {
     return this.configuracion;
   }
 
-  obtenerTiemposRegistrados() {
+  obtenerTiemposRegistrados = () => {
     return this.tiemposRegistrados;
   }
 
-  registrarAtajoGlobal(menuElemento) {
+  registrarAtajoGlobal = (menuElemento) => {
     if (!menuElemento.accelerator || !menuElemento.click) {
       return;
     }

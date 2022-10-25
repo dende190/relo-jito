@@ -1,31 +1,31 @@
 'use strict';
 
-const TiemposRegistrados = {
+class TiemposRegistrados {
 
-  registros: null,
-  noAplicaTexto: 'N/A',
+  #registros;
+  #noAplicaTexto = 'N/A';
 
-  preInicializar: function() {
-    window.addEventListener('DOMContentLoaded', this.inicializar.bind(this));
-  },
+  preInicializar = () => {
+    window.addEventListener('DOMContentLoaded', this.inicializar);
+  }
 
-  inicializar: async function() {
+  inicializar = async () => {
     const { ipcRenderer } = require('electron');
     this.registros = await ipcRenderer.invoke('tiemposRegistradosSolicitud');
     this.actualizarTabla();
     (
       document
       .querySelector('.jsFormularioRegistroNuevo')
-      .addEventListener('submit', this.crearNuevoRegistro.bind(this))
+      .addEventListener('submit', this.crearNuevoRegistro)
     );
-  },
+  }
 
-  seleccionarRegistro: function(evento) {
+  seleccionarRegistro = (evento) => {
     const { ipcRenderer } = require('electron');
     ipcRenderer.invoke('seleccionarTiempoRegistro', evento.target.value);
-  },
+  }
 
-  actualizarTabla: function() {
+  actualizarTabla = () => {
     let dTablaRegistros = document.querySelector('.jsTablaRegistros');
     dTablaRegistros.innerHTML = '';
     let dTablaFilaBase = document.querySelector('.jsTablaFilaBase');
@@ -113,9 +113,9 @@ const TiemposRegistrados = {
         dElemento.addEventListener('change', this.seleccionarRegistro);
       })
     );
-  },
+  }
 
-  crearNuevoRegistro: async function(evento) {
+  crearNuevoRegistro = async (evento) => {
     evento.preventDefault();
     let dFormulario = evento.target;
     let nombre = dFormulario.elements['registroNombre'].value;
@@ -124,8 +124,8 @@ const TiemposRegistrados = {
     dFormulario.reset();
     this.registros = await ipcRenderer.invoke('tiemposRegistradosSolicitud');
     this.actualizarTabla();
-  },
+  }
 
-};
+}
 
-TiemposRegistrados.preInicializar();
+new TiemposRegistrados();
