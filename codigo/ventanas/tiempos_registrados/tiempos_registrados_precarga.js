@@ -2,10 +2,11 @@
 
 class TiemposRegistrados {
 
-  #registros;
-  #noAplicaTexto = 'N/A';
+  static noAplicaTexto = 'N/A';
 
-  preInicializar = () => {
+  #registros;
+
+  constructor() {
     window.addEventListener('DOMContentLoaded', this.inicializar);
   }
 
@@ -62,7 +63,7 @@ class TiemposRegistrados {
             (
               dTablaFilaClone
               .querySelector('.jsTablaFilaTiempoBase')
-              .textContent = this.noAplicaTexto
+              .textContent = TiemposRegistrados.noAplicaTexto
             );
             dTablaRegistros.appendChild(dTablaFilaClone);
             return;
@@ -86,12 +87,18 @@ class TiemposRegistrados {
                 (
                   dListaElementoTiempoClone
                   .querySelector('.jsListaElementoTiempoFinBase')
-                  .textContent = (tiempo.fin || this.noAplicaTexto)
+                  .textContent = (
+                    tiempo.fin ||
+                    TiemposRegistrados.noAplicaTexto
+                  )
                 );
                 (
                   dListaElementoTiempoClone
                   .querySelector('.jsListaElementoTiempoDiferenciaBase')
-                  .textContent = (tiempo.diferencia || this.noAplicaTexto)
+                  .textContent = (
+                    tiempo.diferencia ||
+                    TiemposRegistrados.noAplicaTexto
+                  )
                 );
                 (
                   dTablaFilaClone
