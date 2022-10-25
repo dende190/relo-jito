@@ -313,7 +313,7 @@ class ReloJito {
       this.sonidoVentana.webContents.send('recordatorio');
     }
     let ultimoDigito = tiempoEnHorasMinutosYSegundos.slice(-1);
-    this.sonidoVentana.webContents.send((ultimoDigito % 2) ? 'tic' : 'toc');
+    // this.sonidoVentana.webContents.send((ultimoDigito % 2) ? 'tic' : 'toc');
   }
 
   notificarTiempoRegistradoCreado = (evento, nombre) => {
