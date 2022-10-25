@@ -9,9 +9,9 @@
   "watch": {
     "restart-electron-app": {
       "patterns": [
-        "./codigo/"
+        "./"
       ],
-      "extensions": "js,css,html"
+      "extensions": "js"
     }
   },
   "scripts": {
