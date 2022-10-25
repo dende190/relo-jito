@@ -205,8 +205,8 @@ class ReloJito {
     );
   }
 
-    this.relojes.forEach((reloj) => {reloj.reubicar(this.configuracion);});
   actualizarCadaSegundo = () => {
+    this.relojes.forEach((reloj) => {reloj.reubicar(this.configuracion);});
     this.tiempo.actualizar();
     setTimeout(this.actualizarCadaSegundo, 1000);
   }
