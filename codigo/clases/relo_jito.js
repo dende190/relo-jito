@@ -301,7 +301,7 @@ class ReloJito {
       )
     );
     if (['10:30:00', '15:30:00'].includes(tiempoEnHorasMinutosYSegundos)) {
-      this.sonidoVentana.webContents.send('alarmaIniciada');
+      // this.sonidoVentana.webContents.send('alarmaIniciada');
     } else if (
       ['10:30:05', '15:30:05']
       .includes(tiempoEnHorasMinutosYSegundos)
