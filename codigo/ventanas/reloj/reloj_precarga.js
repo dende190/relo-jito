@@ -72,6 +72,18 @@ class Reloj {
 
   ajustarConfiguracion = (evento, configuracion) => {
     this.dHora.style.fontSize = (configuracion.texto.tamano_pixeles + 'px');
+    (
+      document
+      .querySelectorAll('.jsTareasRegistroAlternarEstadoBoton')
+      .forEach(
+        (dTareasRegistroAlternarEstadoBoton) => {
+          dTareasRegistroAlternarEstadoBoton.style.fontSize = (
+            configuracion.texto.tamano_pixeles +
+            'px'
+          );
+        }
+      )
+    );
   }
 
   cambiarNotoriedad = (evento, notorio) => {
