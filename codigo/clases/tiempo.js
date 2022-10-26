@@ -95,22 +95,49 @@ class Tiempo extends EventEmitter {
       .obtenerEnHorasMinutosYSegundos()
     );
 
-    const tiempoFinSeparado = (
-      registroTiempos[registroTiempoFinalPosicion]
-      .fin
-      .split(':')
-    );
+    const fecha = new Date();
     const tiempoIniciSeparado = (
       registroTiempos[registroTiempoFinalPosicion]
       .inicio
       .split(':')
     );
+    const tiempoFinSeparado = (
+      registroTiempos[registroTiempoFinalPosicion]
+      .fin
+      .split(':')
+    );
+    const tiempoInicioTimestamp = (
+      fecha
+      .setHours(
+        tiempoIniciSeparado[0],
+        tiempoIniciSeparado[1],
+        tiempoIniciSeparado[2],
+        0
+      )
+    );
+    const tiempoFinTimestamp = (
+      fecha
+      .setHours(
+        tiempoFinSeparado[0],
+        tiempoFinSeparado[1],
+        tiempoFinSeparado[2],
+        0
+      )
+    );
+    const tiemposDiferenciaSegundos = (
+      (tiempoFinTimestamp - tiempoInicioTimestamp) /
+      1000
+    );
+    const diferenciaSegundos = Math.round(tiemposDiferenciaSegundos % 60);
+    const tiemposDiferenciaMinutos = (tiemposDiferenciaSegundos / 60);
+    const diferenciaHoras = Math.round(tiemposDiferenciaMinutos / 60);
+    const diferenciaMinutos = Math.round(tiemposDiferenciaMinutos % 60);
     const tiempoDiferenciaTexto = (
-      (tiempoFinSeparado[0] - tiempoIniciSeparado[0]) + 'h' +
+      diferenciaHoras + 'h' +
       ' ' +
-      (tiempoFinSeparado[1] - tiempoIniciSeparado[1]) + 'm' +
+      diferenciaMinutos + 'm' +
       ' ' +
-      (tiempoFinSeparado[2] - tiempoIniciSeparado[2]) + 's'
+      diferenciaSegundos + 's'
     );
     registroTiempos[registroTiempoFinalPosicion].diferencia = (
       tiempoDiferenciaTexto
