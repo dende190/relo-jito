@@ -53,6 +53,13 @@ class ReloJito {
         this.obtenerTiemposRegistrados,
       )
     );
+    (
+      ipcMain
+      .handle(
+        'alternarTiempoRegistrado',
+        this.alternarTiempoRegistrado,
+      )
+    );
   }
 
   inicializar = () => {
@@ -223,6 +230,7 @@ class ReloJito {
 
   alternarTiempoRegistrado = () => {
     this.tiempo.alternarEstadoRegistro();
+    this.relojes.forEach((reloj) => {reloj.alternarTiempoRegistradoIconos()});
   }
 
   cambiarNotoriedad = (relojId, notorio) => {

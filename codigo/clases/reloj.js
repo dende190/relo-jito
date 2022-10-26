@@ -1,4 +1,4 @@
-const CARACTERES_CANTIDAD = 8;
+const CARACTERES_CANTIDAD = 10;
 
 module.exports = class Reloj {
 
@@ -97,6 +97,10 @@ module.exports = class Reloj {
 
   obtenerId = () => {
     return this.ventana.id;
+  }
+
+  alternarTiempoRegistradoIconos = () => {
+    this.ventana.webContents.send('alternarTiempoRegistradoIconos');
   }
 
 };

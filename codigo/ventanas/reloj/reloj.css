@@ -2,7 +2,13 @@
   margin: 0;
   padding: 0;
 }
-.hora {
+
+.relojito {
+  display: flex;
+  justify-content: center;
+}
+
+.relojito-hora {
   color: #fff;
   cursor: pointer;
   /* TODO: Traer de configuración */
@@ -15,4 +21,52 @@
     /* TODO: Traer de configuración */
     2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000,
     2px 2px #000, -2px -2px #000, 2px -2px #000, -2px 2px #000;
+}
+
+.relojito-tareas_registradas_boton_iniciar {
+  margin-left: 7px;
+  border: none;
+  background: none;
+  color: #fff;
+  font-size: 24px;
+  font-family: courier new;
+  cursor: pointer;
+  font-weight: bold;
+  opacity: 0.8;
+  text-shadow:
+    1px 0 #000, -1px 0 #000, 0 1px #000, 0 -1px #000,
+    1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+}
+
+.relojito-tareas_registradas_boton_pausar {
+  margin-left: 7px;
+  border: none;
+  background: none;
+  color: #ff0000;
+  font-size: 30px;
+  font-family: courier new;
+  cursor: pointer;
+  font-weight: bold;
+  opacity: 0.8;
+  text-shadow:
+    1px 0 #000, -1px 0 #000, 0 1px #000, 0 -1px #000,
+    1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+  animation-name: cambio_color;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+
+}
+
+@keyframes cambio_color {
+  0% {
+    color: #ff0000;
+  }
+
+  50% {
+    color: #8b0505;
+  }
+
+  100% {
+    color: #ff0000;
+  }
 }
