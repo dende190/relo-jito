@@ -328,7 +328,10 @@ class ReloJito {
     this.tiempo.crearRegistro(nombre);
   }
 
-  notificarTiempoRegistradoSeleccionado = (evento, tiempoRegistroIdentificador) => {
+  notificarTiempoRegistradoSeleccionado = (
+    evento,
+    tiempoRegistroIdentificador
+  ) => {
     this.tiempo.seleccionarRegistro(tiempoRegistroIdentificador);
   }
 
