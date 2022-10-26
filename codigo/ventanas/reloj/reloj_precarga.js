@@ -76,7 +76,7 @@ class Reloj {
 
   cambiarNotoriedad = (evento, notorio) => {
     const opacidad = Reloj.OPACIDADES[notorio ? 'OPACO' : 'TRANSPARENTE'];
-    this.dHora.style.opacity = opacidad;
+    document.querySelector('.relojito').style.opacity = opacidad;
   }
 
   notificarSilencioCambio = (evento, microfonosEstanActivados) => {
