@@ -1,6 +1,5 @@
 class ReloJito {
 
-  #configuracionClase;
   #configuracion;
   #configuracionVentana;
   #plataforma;
@@ -11,8 +10,7 @@ class ReloJito {
   #tiemposRegistradosVentana;
 
   constructor() {
-    this.configuracionClase = require('./configuracion.js');
-    this.configuracion = this.configuracionClase.obtener();
+    this.configuracion = require('./configuracion.js');
     this.plataforma = require('../plataformas/' + process.platform + '.js');
     this.relojes = [];
 
@@ -33,7 +31,7 @@ class ReloJito {
     );
     (
       ipcMain
-      .handle('configuracionSolicitud', this.obtenerConfiguracion)
+      .handle('configuracionSolicitud', this.configuracion.obtener)
     );
     (
       ipcMain
@@ -75,6 +73,7 @@ class ReloJito {
     microfonosEstado.alternarSilencio();
 
     const { Menu } = require('electron');
+    const configuracion = this.configuracion.obtener();
     const menuElementos = [
       {
         click: this.abrirConfiguracion,
@@ -88,12 +87,7 @@ class ReloJito {
         type: 'normal',
       },
       {
-        accelerator: (
-          this
-          .configuracion
-          .atajos_combinaciones
-          .tiempo_registrado_alternar_estado
-        ),
+        accelerator: configuracion.cronometro.atajo_para_alternar_estado,
         click: this.alternarTiempoRegistrado,
         label: 'Alternar estado tiempo registrado',
         type: 'normal',
@@ -101,24 +95,14 @@ class ReloJito {
       },
       {type: 'separator'},
       {
-        accelerator: (
-          this
-          .configuracion
-          .atajos_combinaciones
-          .ventanas_alternar_notoriedad
-        ),
+        accelerator: configuracion.ventanas.atajo_para_alternar_notoriedad,
         click: this.alternarNotoriedad,
         label: 'Alternar notoriedad de ventanas',
         type: 'normal',
         registerAccelerator: false,
       },
       {
-        accelerator: (
-          this
-          .configuracion
-          .atajos_combinaciones
-          .microfono_alternar_silencio
-        ),
+        accelerator: configuracion.microfonos.atajo_para_alternar_silencio,
         click: microfonosEstado.alternarSilencio,
         label: 'Alternar silencio de micrófonos',
         type: 'normal',
@@ -180,6 +164,7 @@ class ReloJito {
     this.configuracionVentana.on('closed', this.cerrarConfiguracion);
     this.configuracionVentana.removeMenu();
     this.configuracionVentana.loadFile(rutaBase + 'configuracion.html');
+    this.configuracionVentana.webContents.openDevTools();
   }
 
   cerrarTiemposRegistrados = () => {
@@ -213,8 +198,12 @@ class ReloJito {
   }
 
   actualizarCadaSegundo = () => {
-    this.relojes.forEach((reloj) => {reloj.reubicar(this.configuracion);});
     this.tiempo.actualizar();
+    (
+      this
+      .relojes
+      .forEach((reloj) => {reloj.reubicar(this.configuracion.obtener());})
+    );
     setTimeout(this.actualizarCadaSegundo, 1000);
   }
 
@@ -265,13 +254,13 @@ class ReloJito {
   }
 
   notificarConfiguracionCambio = (evento, configuracionNueva) => {
-    this.configuracion = this.configuracionClase.actualizar(configuracionNueva);
+    this.configuracion.actualizar(configuracionNueva);
     (
       this
       .relojes
       .forEach(
         (reloj) => {
-          reloj.notificarConfiguracionCambio(this.configuracion);
+          reloj.notificarConfiguracionCambio(this.configuracion.obtener());
         },
       )
     );
@@ -335,10 +324,6 @@ class ReloJito {
     tiempoRegistroIdentificador
   ) => {
     this.tiempo.seleccionarRegistro(tiempoRegistroIdentificador);
-  }
-
-  obtenerConfiguracion = () => {
-    return this.configuracion;
   }
 
   obtenerTiemposRegistrados = () => {

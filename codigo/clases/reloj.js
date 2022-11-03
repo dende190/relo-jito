@@ -2,7 +2,7 @@ const CARACTERES_CANTIDAD = 10;
 
 module.exports = class Reloj {
 
-  #configuracion;
+  #configuracionDatos;
   #esNotorio;
   #fuente;
   #pantalla;
@@ -11,12 +11,12 @@ module.exports = class Reloj {
   constructor(pantalla) {
     this.esNotorio = true;
     this.pantalla = pantalla;
-    this.configuracion = require('./configuracion.js').obtener();
+    this.configuracionDatos = require('./configuracion.js').obtener();
     this.fuente = (
       require(
         (
           '../fuentes/' +
-          this.configuracion.texto.fuente.replace(/ /g, '_') +
+          this.configuracionDatos.ventanas.texto.fuente.replace(/ /g, '_') +
           '.js'
         ),
       )
@@ -37,21 +37,21 @@ module.exports = class Reloj {
     const { BrowserWindow } = require('electron');
     this.ventana = new BrowserWindow(ventanaDatos);
     this.ventana.loadFile(rutaBase + 'reloj.html');
-    this.reubicar(this.configuracion);
+    this.reubicar(this.configuracionDatos);
   }
 
   reubicar = (configuracion) => {
     const ventanaMedidas = {
       alturaPixeles: (
         Math.ceil(
-          configuracion.texto.tamano_pixeles *
+          configuracion.ventanas.texto.tamano_en_pixeles *
           this.fuente.CARACTER_FACTORES.ALTURA
         )
       ),
       anchuraPixeles: (
         CARACTERES_CANTIDAD *
         Math.ceil(
-          configuracion.texto.tamano_pixeles *
+          configuracion.ventanas.texto.tamano_en_pixeles *
           this.fuente.CARACTER_FACTORES.ANCHURA
         )
       ),
@@ -60,7 +60,7 @@ module.exports = class Reloj {
     const relojVentanaLimites = {
       height: ventanaMedidas.alturaPixeles,
       width: ventanaMedidas.anchuraPixeles,
-      x: (pantallaLimites.x + configuracion.margen_pixeles),
+      x: (pantallaLimites.x + configuracion.ventanas.margen_en_pixeles),
       y: (
         this.pantalla.workAreaSize.height -
         ventanaMedidas.alturaPixeles +
@@ -71,9 +71,9 @@ module.exports = class Reloj {
     this.ventana.setAlwaysOnTop(true, 'screen-saver');
   }
 
-  notificarConfiguracionCambio = (configuracion) => {
-    this.reubicar(configuracion);
-    this.ventana.webContents.send('configuracionCambio', configuracion);
+  notificarConfiguracionCambio = (configuracionDatos) => {
+    this.reubicar(configuracionDatos);
+    this.ventana.webContents.send('configuracionCambio', configuracionDatos);
   }
 
   cambiarNotoriedad = (notorio) => {

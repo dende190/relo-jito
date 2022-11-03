@@ -1,12 +1,38 @@
 module.exports = {
-  ATAJOS_COMBINACIONES: {
-    MICROFONOS_ALTERNAR_SILENCIO: 'CommandOrControl+Shift+X',
-    VENTANAS_ALTERNAR_NOTORIEDAD: 'CommandOrControl+Alt+X',
+  alarmas: {
+    duracion_en_segundos: 5,
+    sonido_activo: true,
+    horarios: [
+      '10:30',
+      '15:30',
+    ],
   },
-  MARGEN_PIXELES: 8,
-  TEXTO: {
-    FUENTE: 'courier new',
-    SOMBRA_GROSOR_PIXELES: 2,
-    TAMANO_PIXELES: 48,
+  cronometro: {
+    atajo_para_alternar_estado: 'CommandOrControl+Shift+Z',
+  },
+  microfonos: {
+    atajo_para_alternar_silencio: 'CommandOrControl+Shift+X',
+    sonido_para_indicar_cambio_de_silencio: true,
+  },
+  recordatorios_cada_cuarto_de_hora: {
+    sonido_activo: true,
+  },
+  tic_toc: {
+    sonido_activo: false,
+  },
+  ventanas: {
+    atajo_para_alternar_notoriedad: 'CommandOrControl+Alt+X',
+    margen_en_pixeles: 8,
+    opacidad_en_porcentaje: {
+      notable: 80,
+      baja: 20,
+    },
+    texto: {
+      fuente: 'courier new',
+      grosor_de_sombra_en_pixeles: 2,
+      tamano_en_pixeles: 48,
+      color_normal: '#fff',
+      color_para_indicar_silencio_de_microfonos: '#f00',
+    },
   },
 };

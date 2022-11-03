@@ -10,3 +10,16 @@
 .configuracion-logo {
   width: 32px;
 }
+.configuracion-opcion {
+  display: block;
+  margin: 8px 0px;
+}
+.configuracion-opcion_valor {
+  margin: 0px 8px;
+}
+.configuracion-opcion.-escondida {
+  display: none;
+}
+.configuracion-opcion_vacia_alerta {
+  color: #faa;
+}

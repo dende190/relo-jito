@@ -2,6 +2,7 @@ const { EventEmitter } = require('node:events');
 
 class Tiempo extends EventEmitter {
 
+  #archivoRuta;
   #fecha;
   #segundosCantidad;
   #registros;
@@ -9,7 +10,18 @@ class Tiempo extends EventEmitter {
 
   constructor() {
     super();
-    this.registros = require('../tiempos_registrados.json');
+    const electron = require('electron');
+    const usuarioDatosDirectorio = electron.app.getPath('userData');
+    const path = require('path');
+    this.archivoRuta = (
+      path
+      .join(usuarioDatosDirectorio, '/tiempos_registrados.json')
+    );
+    try {
+      this.registros = JSON.parse(fs.readFileSync(this.archivoRuta));
+    } catch(error) {
+      this.registros = [];
+    }
     this.registroIdentificadorSeleccionado = (
       this.registros.length ?
       this.registros[this.registros.length - 1].id :
@@ -48,13 +60,7 @@ class Tiempo extends EventEmitter {
   actualizarRegistros = () => {
     const fs = require('fs');
     const path = require('path');
-    (
-      fs
-      .writeFileSync(
-        path.join(__dirname, '../tiempos_registrados.json'),
-        JSON.stringify(this.registros)
-      )
-    );
+    fs.writeFileSync(this.archivoRuta, JSON.stringify(this.registros));
     return this.registros;
   }
 

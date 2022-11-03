@@ -8,7 +8,7 @@ class Reloj {
     TRANSPARENTE: '0.1',
   };
 
-  #configuracion;
+  #configuracionDatos;
   #dHora;
 
   constructor() {
@@ -30,9 +30,11 @@ class Reloj {
     );
 
     const { ipcRenderer } = require('electron');
-    this.configuracion = await ipcRenderer.invoke('configuracionSolicitud');
+    this.configuracionDatos = (
+      await ipcRenderer.invoke('configuracionSolicitud')
+    );
     this.dHora.style.fontSize = (
-      this.configuracion.texto.tamano_pixeles +
+      this.configuracionDatos.ventanas.texto.tamano_en_pixeles +
       'px'
     );
     ipcRenderer.on('configuracionCambio', this.ajustarConfiguracion);
@@ -67,18 +69,21 @@ class Reloj {
 
   alternarTiempoRegistro = () => {
     const { ipcRenderer } = require('electron');
-    this.configuracion = ipcRenderer.invoke('alternarTiempoRegistrado');
+    this.configuracionDatos = ipcRenderer.invoke('alternarTiempoRegistrado');
   }
 
-  ajustarConfiguracion = (evento, configuracion) => {
-    this.dHora.style.fontSize = (configuracion.texto.tamano_pixeles + 'px');
+  ajustarConfiguracion = (evento, configuracionDatos) => {
+    this.dHora.style.fontSize = (
+      configuracionDatos.ventanas.texto.tamano_pixeles +
+      'px'
+    );
     (
       document
       .querySelectorAll('.jsTareasRegistroAlternarEstadoBoton')
       .forEach(
         (dTareasRegistroAlternarEstadoBoton) => {
           dTareasRegistroAlternarEstadoBoton.style.fontSize = (
-            configuracion.texto.tamano_pixeles +
+            configuracionDatos.ventanas.texto.tamano_pixeles +
             'px'
           );
         }
