@@ -42,8 +42,9 @@ class Sonido {
     dAudio.play();
   }
 
-  notificarRecordatorio = () => {
-    this.reproducirArchivoOgg('notas_si_la_sol_fa_mi_re_do_re_mi_fa_sol_la_2x');
+  notificarRecordatorio = (evento, tiempoEnHorasYMinutos) => {
+    let dictado = new SpeechSynthesisUtterance(tiempoEnHorasYMinutos);
+    speechSynthesis.speak(dictado);
   }
 
   notificarSilencioCambio = () => {

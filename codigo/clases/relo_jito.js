@@ -308,17 +308,19 @@ class ReloJito {
     ) {
       // this.sonidoVentana.webContents.send('alarmaDetenida');
     }
-    let tiempoEnMinutosYSegundos = (
-      tiempoEnHorasMinutosYSegundos
-      .split(':')
-      .splice(1)
-      .join(':')
-    );
+    let tiempoPartes = tiempoEnHorasMinutosYSegundos.split(':');
+    let tiempoEnHorasYMinutos = tiempoPartes.slice(0, 2).join(':');
+    let tiempoEnMinutosYSegundos = tiempoPartes.splice(1).join(':');
     if (
-      ['59:30', '14:30', '29:30', '45:30']
+      ['00:00', '15:00', '30:00', '45:00']
       .includes(tiempoEnMinutosYSegundos)
     ) {
-      // this.sonidoVentana.webContents.send('recordatorio');
+      (
+        this
+        .sonidoVentana
+        .webContents
+        .send('recordatorio', tiempoEnHorasYMinutos)
+      );
     }
     let ultimoDigito = tiempoEnHorasMinutosYSegundos.slice(-1);
     // this.sonidoVentana.webContents.send((ultimoDigito % 2) ? 'tic' : 'toc');
