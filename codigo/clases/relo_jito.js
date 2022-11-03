@@ -84,7 +84,7 @@ class ReloJito {
       {type: 'separator'},
       {
         click: this.abrirTiempoRegistros,
-        label: 'Tiempos Registrados',
+        label: 'Tiempos registrados',
         type: 'normal',
       },
       {
@@ -95,7 +95,7 @@ class ReloJito {
           .tiempo_registrado_alternar_estado
         ),
         click: this.alternarTiempoRegistrado,
-        label: 'Alternar Estado Tiempo Registrado',
+        label: 'Alternar estado tiempo registrado',
         type: 'normal',
         registerAccelerator: false,
       },
