@@ -73,6 +73,7 @@ class Reloj {
   }
 
   ajustarConfiguracion = (evento, configuracionDatos) => {
+    this.configuracionDatos = configuracionDatos;
     this.dHora.style.fontSize = (
       configuracionDatos.ventanas.texto.tamano_pixeles +
       'px'
