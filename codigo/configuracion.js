@@ -10,12 +10,13 @@ module.exports = {
   cronometro: {
     atajo_para_alternar_estado: 'CommandOrControl+Shift+A',
   },
+  hora_hablada: {
+    sonido_activo: true,
+    lapso_en_minutos: 15,
+  },
   microfonos: {
     atajo_para_alternar_silencio: 'CommandOrControl+Shift+X',
     sonido_para_indicar_cambio_de_silencio: true,
-  },
-  recordatorios_cada_cuarto_de_hora: {
-    sonido_activo: true,
   },
   tic_toc: {
     sonido_activo: false,
