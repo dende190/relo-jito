@@ -17,11 +17,14 @@ class Tiempo extends EventEmitter {
       path
       .join(usuarioDatosDirectorio, '/tiempos_registrados.json')
     );
+
     try {
+      const fs = require('fs');
       this.registros = JSON.parse(fs.readFileSync(this.archivoRuta));
     } catch(error) {
       this.registros = [];
     }
+
     this.registroIdentificadorSeleccionado = (
       this.registros.length ?
       this.registros[this.registros.length - 1].id :
