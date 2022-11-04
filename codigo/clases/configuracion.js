@@ -11,7 +11,7 @@ class Configuracion {
     try {
       this.datos = require(this.archivoRuta);
     } catch(error) {
-      this.datos = require('../configuracion.js');
+      this.restaurar();
     }
   }
 
@@ -28,6 +28,11 @@ class Configuracion {
   }
 
   obtener = () => {
+    return this.datos;
+  }
+
+  restaurar = () => {
+    this.datos = require('../configuracion.js');
     return this.datos;
   }
 
