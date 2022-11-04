@@ -25,7 +25,6 @@ class Configuracion {
         ('module.exports=' + JSON.stringify(this.datos)),
       )
     );
-    return this.datos;
   }
 
   obtener = () => {
