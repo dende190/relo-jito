@@ -107,4 +107,8 @@ module.exports = class Reloj {
     this.ventana.close();
   }
 
+  validarEsNotorio = () => {
+    return this.esNotorio;
+  }
+
 };

@@ -215,7 +215,7 @@ class ReloJito {
     const relojIgnorado = (
       this
       .relojes
-      .find((reloj) => {return !reloj.esNotorio;})
+      .find((reloj) => {return !reloj.validarEsNotorio();})
     );
     const notorio = !!relojIgnorado;
     this.relojes.forEach((reloj) => {reloj.cambiarNotoriedad(notorio)});
