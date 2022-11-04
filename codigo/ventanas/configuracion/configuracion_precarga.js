@@ -11,6 +11,21 @@ class Configuracion {
   inicializar = async () => {
     const { ipcRenderer } = require('electron');
     this.datos = await ipcRenderer.invoke('configuracionSolicitud');
+    this.repintar();
+    (
+      document
+      .querySelector('.jsBotonRestaurar')
+      .addEventListener('click', this.confirmarRestauracion)
+    );
+    (
+      document
+      .querySelector('.jsBotonRestaurarConfirmacion')
+      .addEventListener('click', this.restaurar)
+    );
+  }
+
+  repintar = () => {
+    document.querySelector('.jsFormulario').innerHTML = '';
     this.mostrarDato({nivel: 2, propiedad: this.datos, ruta: ''});
   }
 
@@ -82,6 +97,27 @@ class Configuracion {
     );
     const { ipcRenderer } = require('electron');
     ipcRenderer.invoke('configuracionCambio', this.datos);
+  }
+
+  confirmarRestauracion = () => {
+    (
+      document
+      .querySelector('.jsBotonRestaurarConfirmacion')
+      .classList
+      .remove('escondido')
+    );
+  }
+
+  restaurar = async () => {
+    (
+      document
+      .querySelector('.jsBotonRestaurarConfirmacion')
+      .classList
+      .add('escondido')
+    );
+    const { ipcRenderer } = require('electron');
+    this.datos = await ipcRenderer.invoke('configuracionRestaurar');
+    this.repintar();
   }
 
 }

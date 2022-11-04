@@ -35,6 +35,10 @@ class ReloJito {
     );
     (
       ipcMain
+      .handle('configuracionRestaurar', this.configuracion.restaurar)
+    );
+    (
+      ipcMain
       .handle('notoriedadCambio', this.notificarNotoriedadCambio)
     );
     (
