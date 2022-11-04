@@ -80,6 +80,11 @@ class ReloJito {
         label: 'Configurar...',
         type: 'normal',
       },
+      {
+        click: this.repintarRelojes,
+        label: 'Repintar relojes',
+        type: 'normal',
+      },
       {type: 'separator'},
       {
         click: this.abrirTiempoRegistros,
