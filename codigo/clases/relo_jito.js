@@ -61,7 +61,7 @@ class ReloJito {
   }
 
   inicializar = () => {
-    this.crearRelojes();
+    this.repintarRelojes();
     this.inicializarSonido();
     this.tiempo = require('./tiempo.js');
     this.tiemposRegistrados = this.tiempo.obtenerRegistros();
@@ -248,7 +248,11 @@ class ReloJito {
     this.relojes.push(new Reloj(pantalla));
   }
 
-  crearRelojes = () => {
+  repintarRelojes = () => {
+    for (let relojIndice in this.relojes) {
+      this.relojes[relojIndice].cerrar();
+      delete this.relojes[relojIndice];
+    }
     const { screen } = require('electron');
     screen.getAllDisplays().forEach(this.crearReloj);
   }
