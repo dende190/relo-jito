@@ -2,6 +2,9 @@
   margin: 0;
   padding: 0;
 }
+.escondido {
+  display: none;
+}
 .configuracion {
   background-color: rgb(27, 27, 29);
   color: rgb(227, 227, 227);
@@ -9,6 +12,12 @@
 }
 .configuracion-logo {
   width: 32px;
+}
+.configuracion-boton_restaurar {
+  color: green;
+}
+.configuracion-boton_restaurar_confirmacion {
+  color: red;
 }
 .configuracion-opcion {
   display: block;
