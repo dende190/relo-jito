@@ -89,7 +89,7 @@ class ReloJito {
       {
         accelerator: configuracion.cronometro.atajo_para_alternar_estado,
         click: this.alternarTiempoRegistrado,
-        label: 'Alternar estado tiempo registrado',
+        label: 'Alternar estado cronómetro',
         type: 'normal',
         registerAccelerator: false,
       },
