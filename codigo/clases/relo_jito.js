@@ -61,8 +61,7 @@ class ReloJito {
   }
 
   inicializar = () => {
-    this.repintarRelojes();
-    this.inicializarSonido();
+    this.reiniciarVentanas();
     this.tiempo = require('./tiempo.js');
     this.tiemposRegistrados = this.tiempo.obtenerRegistros();
     this.tiempo.on('cambio', this.notificarTiempoCambio);
@@ -81,8 +80,8 @@ class ReloJito {
         type: 'normal',
       },
       {
-        click: this.repintarRelojes,
-        label: 'Repintar relojes',
+        click: this.reiniciarVentanas,
+        label: 'Reiniciar ventanas',
         type: 'normal',
       },
       {type: 'separator'},
@@ -253,11 +252,14 @@ class ReloJito {
     this.relojes.push(new Reloj(pantalla));
   }
 
-  repintarRelojes = () => {
+  reiniciarVentanas = () => {
     for (let relojIndice in this.relojes) {
       this.relojes[relojIndice].cerrar();
       delete this.relojes[relojIndice];
     }
+    this.sonidoVentana?.close();
+    delete this.sonidoVentana;
+    this.inicializarSonido();
     const { screen } = require('electron');
     screen.getAllDisplays().forEach(this.crearReloj);
   }
