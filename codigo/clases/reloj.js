@@ -103,4 +103,8 @@ module.exports = class Reloj {
     this.ventana.webContents.send('alternarTiempoRegistradoIconos');
   }
 
+  cerrar = () => {
+    this.ventana.close();
+  }
+
 };
