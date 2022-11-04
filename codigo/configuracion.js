@@ -8,7 +8,7 @@ module.exports = {
     ],
   },
   cronometro: {
-    atajo_para_alternar_estado: 'CommandOrControl+Shift+Z',
+    atajo_para_alternar_estado: 'CommandOrControl+Shift+A',
   },
   microfonos: {
     atajo_para_alternar_silencio: 'CommandOrControl+Shift+X',
