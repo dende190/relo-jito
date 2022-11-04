@@ -74,10 +74,12 @@ class Configuracion {
       entradaRutaParteIndice++
     ) {
       let entradaRutaParte = entradaRutaPartes[entradaRutaParteIndice];
-      dato = this.datos[entradaRutaParte];
+      dato = dato[entradaRutaParte];
     }
-    dato[entradaRutaPartes.pop()] = (dEntrada.checked || dEntrada.value);
-    console.log(this.datos);
+    dato[entradaRutaPartes.pop()] = (
+      dEntrada.checked ||
+      (dEntrada.type === 'number' ? Number(dEntrada.value) : dEntrada.value)
+    );
     const { ipcRenderer } = require('electron');
     ipcRenderer.invoke('configuracionCambio', this.datos);
   }
