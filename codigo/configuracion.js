@@ -8,7 +8,7 @@ module.exports = {
     ],
   },
   cronometro: {
-    atajo_para_alternar_estado: 'CommandOrControl+Shift+A',
+    atajo_para_alternar_estado: 'CommandOrControl+Alt+A',
   },
   hora_hablada: {
     sonido_activo: true,
