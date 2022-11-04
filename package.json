@@ -11,6 +11,9 @@
       "patterns": [
         "./"
       ],
+      "ignore": [
+        "./codigo/ventanas"
+      ],
       "extensions": "js"
     }
   },
