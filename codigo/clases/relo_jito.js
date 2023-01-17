@@ -69,7 +69,7 @@ class ReloJito {
     this.tiempo = require('./tiempo.js');
     this.tiemposRegistrados = this.tiempo.obtenerRegistros();
     this.tiempo.on('cambio', this.notificarTiempoCambio);
-    this.actualizarCadaSegundo();
+    this.actualizarContinuamente();
 
     const microfonosEstado = require('./microfonos_estado.js');
     microfonosEstado.on('silencioCambio', this.notificarSilencioCambio);
@@ -205,14 +205,14 @@ class ReloJito {
     );
   }
 
-  actualizarCadaSegundo = () => {
+  actualizarContinuamente = () => {
     this.tiempo.actualizar();
     (
       this
       .relojes
       .forEach((reloj) => {reloj.reubicar(this.configuracion.obtener());})
     );
-    setTimeout(this.actualizarCadaSegundo, 1000);
+    setTimeout(this.actualizarContinuamente, 500);
   }
 
   alternarNotoriedad = () => {
