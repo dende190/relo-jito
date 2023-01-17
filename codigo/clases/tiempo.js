@@ -2,6 +2,8 @@ const { EventEmitter } = require('node:events');
 
 class Tiempo extends EventEmitter {
 
+  actualizacionMilisegundos = 500;
+
   #archivoRuta;
   #fecha;
   #segundosCantidad;
@@ -30,6 +32,8 @@ class Tiempo extends EventEmitter {
       this.registros[this.registros.length - 1].id :
       0
     );
+
+    setInterval(this.actualizar, this.actualizacionMilisegundos);
   }
 
   mostrarEnDosCifras = (numero) => {
