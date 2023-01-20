@@ -8,6 +8,7 @@ class ReloJito {
   #tiempo;
   #tiemposRegistrados;
   #tiemposRegistradosVentana;
+  #red;
 
   constructor() {
     this.configuracion = require('./configuracion.js');
@@ -69,6 +70,11 @@ class ReloJito {
     this.tiempo = require('./tiempo.js');
     this.tiemposRegistrados = this.tiempo.obtenerRegistros();
     this.tiempo.on('cambio', this.notificarTiempoCambio);
+
+    this.red = require('./red.js');
+    this.red.comprobarEstado();
+    this.red.on('cambio', this.notificarRedEstado);
+
     this.actualizarContinuamente();
 
     const microfonosEstado = require('./microfonos_estado.js');
@@ -354,6 +360,10 @@ class ReloJito {
       globalShortcut
       .register(menuElemento.accelerator, menuElemento.click)
     );
+  }
+
+  notificarRedEstado = (estadoId) => {
+    this.relojes.forEach((reloj) => {reloj.alternarRedEstado(estadoId)});
   }
 
 }

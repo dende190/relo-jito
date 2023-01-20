@@ -7,6 +7,11 @@ class Reloj {
     OPACO: '0.8',
     TRANSPARENTE: '0.1',
   };
+  static ESTADOS_IDS = {
+    'BUENO': 1,
+    'MEDIO': 2,
+    'BAJO': 3,
+  };
 
   #configuracionDatos;
   #dHora;
@@ -44,6 +49,10 @@ class Reloj {
     (
       ipcRenderer
       .on('alternarTiempoRegistradoIconos', this.alternarTiempoRegistradoIconos)
+    );
+    (
+      ipcRenderer
+      .on('alternarRedEstadoIcono', this.alternarRedEstadoIcono)
     );
   }
 
@@ -103,6 +112,25 @@ class Reloj {
 
   notificarTiempoCambio = (evento, tiempoEnHorasMinutosYSegundos) => {
     this.dHora.innerText = tiempoEnHorasMinutosYSegundos;
+  }
+
+  alternarRedEstadoIcono = (evento, estadoId) => {
+    let dRedEstadoBuenoIcono = document.querySelector('.jsRedEstadoBuenoIcono');
+    let dRedEstadoMedioIcono = document.querySelector('.jsRedEstadoMedioIcono');
+    let dRedEstadoMaloIcono = document.querySelector('.jsRedEstadoMaloIcono');
+    if (Reloj.ESTADOS_IDS['BUENO'] === estadoId) {
+      dRedEstadoBuenoIcono.hidden = false;
+      dRedEstadoMedioIcono.hidden = true;
+      dRedEstadoMaloIcono.hidden = true;
+    } else if (Reloj.ESTADOS_IDS['MEDIO'] === estadoId) {
+      dRedEstadoBuenoIcono.hidden = true;
+      dRedEstadoMedioIcono.hidden = false;
+      dRedEstadoMaloIcono.hidden = true;
+    } else {
+      dRedEstadoBuenoIcono.hidden = true;
+      dRedEstadoMedioIcono.hidden = true;
+      dRedEstadoMaloIcono.hidden = false;
+    }
   }
 
 }
