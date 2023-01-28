@@ -34,7 +34,6 @@ class Red extends EventEmitter {
             .trim()
             .replace(/.+time=(\d+).+/, '$1')
           );
-          console.log(tiempoMilisegundos);
           if (tiempoMilisegundos < Red.ESTADOS_VALORES['BUENO']) {
             this.emit('cambio', Red.ESTADOS_IDS['BUENO']);
           } else if (
