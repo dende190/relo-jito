@@ -21,29 +21,23 @@ class Red extends EventEmitter {
 
   comprobarEstado = () => {
     const { spawn } = require('child_process');
-    let ping = spawn('ping', [this.ipPeticion]);
+    let ping = spawn('ping', [this.ipPeticion, '-t']);
     (
       ping
       .stdout
       .on(
         'data',
         (informacion) => {
-          const tiempoMilisegundos = (
+          let tiempoMilisegundos = (
             informacion
             .toString()
             .trim()
             .replace(/.+time=(\d+).+/, '$1')
           );
-          if (tiempoMilisegundos < Red.ESTADOS_VALORES['BUENO']) {
-            this.emit('cambio', Red.ESTADOS_IDS['BUENO']);
-          } else if (
-            (tiempoMilisegundos > Red.ESTADOS_VALORES['BUENO']) &&
-            (tiempoMilisegundos < Red.ESTADOS_VALORES['MALO'])
-          ) {
-            this.emit('cambio', Red.ESTADOS_IDS['MEDIO']);
-          } else {
-            this.emit('cambio', Red.ESTADOS_IDS['MALO']);
+          if (isNaN(tiempoMilisegundos)) {
+            tiempoMilisegundos = 0;
           }
+          this.emit('cambio', tiempoMilisegundos);
         }
       )
     );

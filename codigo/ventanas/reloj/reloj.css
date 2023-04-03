@@ -55,16 +55,6 @@
   animation-iteration-count: infinite;
 }
 
-.relojito-red_estado_contenedor {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.relojito-red_estado {
-  font-size: 21px;
-}
-
 @keyframes cambio_color {
   0% {
     color: #ff0000;

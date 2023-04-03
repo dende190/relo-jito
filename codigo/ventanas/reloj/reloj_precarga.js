@@ -50,10 +50,7 @@ class Reloj {
       ipcRenderer
       .on('alternarTiempoRegistradoIconos', this.alternarTiempoRegistradoIconos)
     );
-    (
-      ipcRenderer
-      .on('alternarRedEstadoIcono', this.alternarRedEstadoIcono)
-    );
+    ipcRenderer.on('actualizarRedEstado', this.actualizarRedEstado);
   }
 
   notificarNotoriedadCambio = (evento) => {
@@ -114,23 +111,20 @@ class Reloj {
     this.dHora.innerText = tiempoEnHorasMinutosYSegundos;
   }
 
-  alternarRedEstadoIcono = (evento, estadoId) => {
-    let dRedEstadoBuenoIcono = document.querySelector('.jsRedEstadoBuenoIcono');
-    let dRedEstadoMedioIcono = document.querySelector('.jsRedEstadoMedioIcono');
-    let dRedEstadoMaloIcono = document.querySelector('.jsRedEstadoMaloIcono');
-    if (Reloj.ESTADOS_IDS['BUENO'] === estadoId) {
-      dRedEstadoBuenoIcono.hidden = false;
-      dRedEstadoMedioIcono.hidden = true;
-      dRedEstadoMaloIcono.hidden = true;
-    } else if (Reloj.ESTADOS_IDS['MEDIO'] === estadoId) {
-      dRedEstadoBuenoIcono.hidden = true;
-      dRedEstadoMedioIcono.hidden = false;
-      dRedEstadoMaloIcono.hidden = true;
-    } else {
-      dRedEstadoBuenoIcono.hidden = true;
-      dRedEstadoMedioIcono.hidden = true;
-      dRedEstadoMaloIcono.hidden = false;
+  actualizarRedEstado = (evento, tiempoMilisegundos) => {
+    const dRedEstado = document.querySelector('.jsRedEstado');
+    dRedEstado.innerText = (tiempoMilisegundos || '∞');
+    if (!tiempoMilisegundos) {
+      tiempoMilisegundos = Number.MAX_SAFE_INTEGER;
     }
+    let verdeValor = 255;
+    let rojoValor = 0;
+    if (tiempoMilisegundos > 100) {
+      tiempoMilisegundos = 100;
+    }
+    rojoValor = (tiempoMilisegundos * 255 / 100);
+    verdeValor = (255 - rojoValor);
+    dRedEstado.style.color = 'rgb(' + rojoValor + ', ' + verdeValor + ', 0)';
   }
 
 }

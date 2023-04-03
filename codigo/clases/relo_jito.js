@@ -351,8 +351,12 @@ class ReloJito {
     );
   }
 
-  notificarRedEstado = (estadoId) => {
-    this.relojes.forEach((reloj) => {reloj.alternarRedEstado(estadoId)});
+  notificarRedEstado = (tiempoMilisegundos) => {
+    (
+      this
+      .relojes
+      .forEach((reloj) => {reloj.actualizarRedEstado(tiempoMilisegundos)})
+    );
   }
 
 }

@@ -103,8 +103,8 @@ module.exports = class Reloj {
     this.ventana.webContents.send('alternarTiempoRegistradoIconos');
   }
 
-  alternarRedEstado = (estadoId) => {
-    this.ventana.webContents.send('alternarRedEstadoIcono', estadoId);
+  actualizarRedEstado = (tiempoMilisegundos) => {
+    this.ventana.webContents.send('actualizarRedEstado', tiempoMilisegundos);
   }
 
   cerrar = () => {
