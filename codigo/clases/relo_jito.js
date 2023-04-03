@@ -75,8 +75,6 @@ class ReloJito {
     this.red.comprobarEstado();
     this.red.on('cambio', this.notificarRedEstado);
 
-    this.actualizarContinuamente();
-
     const microfonosEstado = require('./microfonos_estado.js');
     microfonosEstado.on('silencioCambio', this.notificarSilencioCambio);
     microfonosEstado.alternarSilencio();
