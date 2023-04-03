@@ -53,7 +53,16 @@
   animation-name: cambio_color;
   animation-duration: 2s;
   animation-iteration-count: infinite;
+}
 
+.relojito-red_estado_contenedor {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.relojito-red_estado {
+  font-size: 21px;
 }
 
 @keyframes cambio_color {
