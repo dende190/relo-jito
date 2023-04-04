@@ -255,6 +255,7 @@ class ReloJito {
       this.relojes[relojIndice].cerrar();
       delete this.relojes[relojIndice];
     }
+    this.relojes = [];
     this.sonidoVentana?.close();
     delete this.sonidoVentana;
     this.inicializarSonido();
@@ -269,7 +270,7 @@ class ReloJito {
       .relojes
       .forEach(
         (reloj) => {
-          reloj.notificarConfiguracionCambio(this.configuracion.obtener());
+          reloj.notificarConfiguracionCambio(configuracionNueva);
         },
       )
     );
