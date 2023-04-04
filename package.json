@@ -28,12 +28,12 @@
     "rpmbuild": "0.0.23"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^6.0.0-beta.68",
-    "@electron-forge/maker-deb": "^6.0.0-beta.68",
-    "@electron-forge/maker-rpm": "^6.0.0-beta.68",
-    "@electron-forge/maker-squirrel": "^6.0.0-beta.68",
-    "@electron-forge/maker-zip": "^6.0.0-beta.68",
-    "electron": "^20.3.3",
+    "@electron-forge/cli": "^6.1.0",
+    "@electron-forge/maker-deb": "^6.1.0",
+    "@electron-forge/maker-rpm": "^6.1.0",
+    "@electron-forge/maker-squirrel": "^6.1.0",
+    "@electron-forge/maker-zip": "^6.1.0",
+    "electron": "^20.3.12",
     "electron-icon-builder": "^2.0.1",
     "npm-watch": "^0.11.0"
   },
