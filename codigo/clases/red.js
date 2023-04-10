@@ -16,7 +16,7 @@ class Red extends EventEmitter {
 
   constructor() {
     super();
-    this.ipPeticion = '1.1.1.1';
+    this.ipPeticion = '8.8.8.8';
   }
 
   comprobarEstado = () => {
