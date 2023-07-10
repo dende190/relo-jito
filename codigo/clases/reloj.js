@@ -2,7 +2,7 @@ const CARACTERES_CANTIDAD = 10;
 
 module.exports = class Reloj {
 
-  #configuracionDatos;
+  #configuracion;
   #esNotorio;
   #fuente;
   #pantalla;
@@ -11,12 +11,13 @@ module.exports = class Reloj {
   constructor(pantalla) {
     this.esNotorio = true;
     this.pantalla = pantalla;
-    this.configuracionDatos = require('./configuracion.js').obtener();
+    const configuracion = require('./configuracion.js');
+    this.configuracion = configuracion;
     this.fuente = (
       require(
         (
           '../fuentes/' +
-          this.configuracionDatos.ventanas.texto.fuente.replace(/ /g, '_') +
+          configuracion.obtener('ventanas.texto.fuente').replace(/ /g, '_') +
           '.js'
         ),
       )
@@ -37,21 +38,21 @@ module.exports = class Reloj {
     const { BrowserWindow } = require('electron');
     this.ventana = new BrowserWindow(ventanaDatos);
     this.ventana.loadFile(rutaBase + 'reloj.html');
-    this.reubicar(this.configuracionDatos);
+    this.reubicar(configuracion);
   }
 
   reubicar = (configuracion) => {
     const ventanaMedidas = {
       alturaPixeles: (
         Math.ceil(
-          configuracion.ventanas.texto.tamano_en_pixeles *
+          configuracion.obtener('ventanas.texto.tamano_en_pixeles') *
           this.fuente.CARACTER_FACTORES.ALTURA
         )
       ),
       anchuraPixeles: (
         CARACTERES_CANTIDAD *
         Math.ceil(
-          configuracion.ventanas.texto.tamano_en_pixeles *
+          configuracion.obtener('ventanas.texto.tamano_en_pixeles') *
           this.fuente.CARACTER_FACTORES.ANCHURA
         )
       ),
@@ -60,7 +61,10 @@ module.exports = class Reloj {
     const relojVentanaLimites = {
       height: ventanaMedidas.alturaPixeles,
       width: ventanaMedidas.anchuraPixeles,
-      x: (pantallaLimites.x + configuracion.ventanas.margen_en_pixeles),
+      x: (
+        pantallaLimites.x +
+        configuracion.obtener('ventanas.margen_en_pixeles')
+      ),
       y: (
         this.pantalla.workAreaSize.height -
         ventanaMedidas.alturaPixeles +
@@ -71,9 +75,14 @@ module.exports = class Reloj {
     this.ventana.setAlwaysOnTop(true, 'screen-saver');
   }
 
-  notificarConfiguracionCambio = (configuracionDatos) => {
-    this.reubicar(configuracionDatos);
-    this.ventana.webContents.send('configuracionCambio', configuracionDatos);
+  notificarConfiguracionCambio = (configuracion) => {
+    this.reubicar(configuracion);
+    (
+      this
+      .ventana
+      .webContents
+      .send('configuracionCambio', configuracion.obtener())
+    );
   }
 
   cambiarNotoriedad = (notorio) => {

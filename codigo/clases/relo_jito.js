@@ -80,7 +80,7 @@ class ReloJito {
     microfonosEstado.alternarSilencio();
 
     const { Menu } = require('electron');
-    const configuracion = this.configuracion.obtener();
+    const configuracion = this.configuracion;
     const menuElementos = [
       {
         click: this.abrirConfiguracion,
@@ -99,7 +99,10 @@ class ReloJito {
         type: 'normal',
       },
       {
-        accelerator: configuracion.cronometro.atajo_para_alternar_estado,
+        accelerator: (
+          configuracion
+          .obtener('cronometro.atajo_para_alternar_estado')
+        ),
         click: this.alternarTiempoRegistrado,
         label: 'Alternar estado cronómetro',
         type: 'normal',
@@ -107,14 +110,20 @@ class ReloJito {
       },
       {type: 'separator'},
       {
-        accelerator: configuracion.ventanas.atajo_para_alternar_notoriedad,
+        accelerator: (
+          configuracion
+          .obtener('ventanas.atajo_para_alternar_notoriedad')
+        ),
         click: this.alternarNotoriedad,
         label: 'Alternar notoriedad de ventanas',
         type: 'normal',
         registerAccelerator: false,
       },
       {
-        accelerator: configuracion.microfonos.atajo_para_alternar_silencio,
+        accelerator: (
+          configuracion
+          .obtener('microfonos.atajo_para_alternar_silencio')
+        ),
         click: microfonosEstado.alternarSilencio,
         label: 'Alternar silencio de micrófonos',
         type: 'normal',
@@ -264,15 +273,12 @@ class ReloJito {
   }
 
   notificarConfiguracionCambio = (evento, configuracionNueva) => {
-    this.configuracion.actualizar(configuracionNueva);
+    const configuracion = this.configuracion;
+    configuracion.actualizar(configuracionNueva);
     (
       this
       .relojes
-      .forEach(
-        (reloj) => {
-          reloj.notificarConfiguracionCambio(configuracionNueva);
-        },
-      )
+      .forEach((reloj) => {reloj.notificarConfiguracionCambio(configuracion)})
     );
   }
 
@@ -296,7 +302,7 @@ class ReloJito {
       .forEach(
         (reloj) => {
           reloj.notificarTiempoCambio(tiempoEnHorasMinutosYSegundos);
-          reloj.reubicar(this.configuracion.obtener());
+          reloj.reubicar(this.configuracion);
         },
       )
     );

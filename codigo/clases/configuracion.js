@@ -27,12 +27,29 @@ class Configuracion {
     );
   }
 
-  obtener = () => {
-    return this.datos;
+  obtener = (rutaTexto = '') => {
+    const rutaPartes = (
+      (typeof rutaTexto === 'string') ?
+      rutaTexto.split('.') :
+      []
+    );
+    let configuracion = this.datos;
+    let configuracionPorDefecto = this.obtenerPorDefecto();
+    for (const rutaSeccion of rutaPartes) {
+      if (configuracion !== undefined) {
+        configuracion = configuracion[rutaSeccion];
+      }
+      configuracionPorDefecto = configuracionPorDefecto[rutaSeccion];
+    }
+    return (configuracion || configuracionPorDefecto);
+  }
+
+  obtenerPorDefecto = () => {
+    return require('../configuracion.js');
   }
 
   restaurar = () => {
-    this.datos = require('../configuracion.js');
+    this.datos = this.obtenerPorDefecto();
     return this.datos;
   }
 
