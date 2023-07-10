@@ -35,5 +35,10 @@ module.exports = {
       color_normal: '#fff',
       color_para_indicar_silencio_de_microfonos: '#f00',
     },
+    texto_de_cita: {
+      fuente: 'arial',
+      grosor_de_sombra_en_pixeles: 2,
+      tamano_en_pixeles: 24,
+    },
   },
 };

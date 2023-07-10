@@ -2,6 +2,7 @@ const CARACTERES_CANTIDAD = 10;
 
 module.exports = class Reloj {
 
+  #cita;
   #configuracion;
   #esNotorio;
   #fuente;
@@ -9,6 +10,7 @@ module.exports = class Reloj {
   #ventana;
 
   constructor(pantalla) {
+    this.cita = 'Pausas Activas';
     this.esNotorio = true;
     this.pantalla = pantalla;
     const configuracion = require('./configuracion.js');
@@ -36,14 +38,26 @@ module.exports = class Reloj {
       },
     };
     const { BrowserWindow } = require('electron');
-    this.ventana = new BrowserWindow(ventanaDatos);
-    this.ventana.loadFile(rutaBase + 'reloj.html');
+    const ventana = new BrowserWindow(ventanaDatos);
+    this.ventana = ventana;
+    ventana.loadFile(rutaBase + 'reloj.html');
+    ventana.webContents.setWindowOpenHandler(this.abrirEnlacesEnNavegador);
     this.reubicar(configuracion);
+  }
+
+  abrirEnlacesEnNavegador = ({ url: enlace }) => {
+    require('electron').shell.openExternal(enlace);
+    return {action: 'deny'};
   }
 
   reubicar = (configuracion) => {
     const ventanaMedidas = {
       alturaPixeles: (
+        (
+          this.cita ?
+          configuracion.obtener('ventanas.texto_de_cita.tamano_en_pixeles') :
+          0
+        ) +
         Math.ceil(
           configuracion.obtener('ventanas.texto.tamano_en_pixeles') *
           this.fuente.CARACTER_FACTORES.ALTURA
