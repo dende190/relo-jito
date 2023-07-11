@@ -91,6 +91,10 @@ class Google {
 
   obtenerProximaCita = async () => {
     const cliente = this.cliente;
+    if (!cliente) {
+      return;
+    }
+
     const calendario = google.calendar({version: 'v3', auth: cliente});
     //TODO: Traer solo un dato y no una lista
     const calendarioRespuesta = await calendario.events.list({

@@ -326,6 +326,7 @@ class ReloJito {
       return;
     }
 
+    //TODO: Alerta un minuto antes con sonidito
     (
       this
       .relojes
