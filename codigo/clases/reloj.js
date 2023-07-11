@@ -2,7 +2,7 @@ const CARACTERES_CANTIDAD = 10;
 
 module.exports = class Reloj {
 
-  #cita;
+  #tieneCita;
   #configuracion;
   #esNotorio;
   #fuente;
@@ -10,7 +10,6 @@ module.exports = class Reloj {
   #ventana;
 
   constructor(pantalla) {
-    this.cita = 'Pausas Activas';
     this.esNotorio = true;
     this.pantalla = pantalla;
     const configuracion = require('./configuracion.js');
@@ -54,7 +53,7 @@ module.exports = class Reloj {
     const ventanaMedidas = {
       alturaPixeles: (
         (
-          this.cita ?
+          this.tieneCita ?
           configuracion.obtener('ventanas.texto_de_cita.tamano_en_pixeles') :
           0
         ) +
@@ -116,6 +115,12 @@ module.exports = class Reloj {
       .webContents
       .send('tiempoCambio', tiempoEnHorasMinutosYSegundos)
     );
+  }
+
+  mostrarProximaCita = (proximaCita) => {
+    //TODO: this.tieneCita cambiar a false si no hay cita
+    this.tieneCita = true;
+    this.ventana.webContents.send('citaCambio', proximaCita);
   }
 
   obtenerId = () => {

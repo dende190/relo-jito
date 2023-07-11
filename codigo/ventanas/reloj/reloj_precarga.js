@@ -14,6 +14,7 @@ class Reloj {
   };
 
   #dHora;
+  #dCita;
 
   constructor() {
     window.addEventListener('DOMContentLoaded', this.inicializar);
@@ -21,6 +22,7 @@ class Reloj {
 
   inicializar = async () => {
     this.dHora = document.querySelector('.jsHora');
+    this.dCita = document.querySelector('.jsCita');
     this.dHora.addEventListener('click', this.notificarNotoriedadCambio);
     (
       document
@@ -45,6 +47,7 @@ class Reloj {
     ipcRenderer.on('notoriedadCambio', this.cambiarNotoriedad);
     ipcRenderer.on('silencioCambio', this.notificarSilencioCambio);
     ipcRenderer.on('tiempoCambio', this.notificarTiempoCambio);
+    ipcRenderer.on('citaCambio', this.mostrarProximaCita);
     (
       ipcRenderer
       .on('alternarTiempoRegistradoIconos', this.alternarTiempoRegistradoIconos)
@@ -107,6 +110,13 @@ class Reloj {
 
   notificarTiempoCambio = (evento, tiempoEnHorasMinutosYSegundos) => {
     this.dHora.innerText = tiempoEnHorasMinutosYSegundos;
+  }
+
+  mostrarProximaCita = (evento, proximaCita) => {
+    this.dCita.innerText = proximaCita.titulo;
+    if (proximaCita.enlace) {
+      this.dCita.href = proximaCita.enlace;
+    }
   }
 
   actualizarRedEstado = (evento, tiempoMilisegundos) => {

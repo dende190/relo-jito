@@ -3,7 +3,7 @@
   padding: 0;
 }
 
-.relojito-cita:-webkit-any-link {
+.relojito-cita {
   color: #afa;
   cursor: pointer;
   display: block;

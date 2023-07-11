@@ -1,3 +1,5 @@
+const CINCO_MINUTOS_EN_MILISEGUNDOS = 300000;
+
 class ReloJito {
 
   #configuracion;
@@ -9,6 +11,7 @@ class ReloJito {
   #tiemposRegistrados;
   #tiemposRegistradosVentana;
   #red;
+  #google;
 
   constructor() {
     this.configuracion = require('./configuracion.js');
@@ -65,8 +68,11 @@ class ReloJito {
     );
   }
 
-  inicializar = () => {
+  inicializar = async () => {
     this.reiniciarVentanas();
+    this.google = require('./google.js');
+    await this.google.inicializar();
+    this.actualizarProximaCita();
     this.tiempo = require('./tiempo.js');
     this.tiemposRegistrados = this.tiempo.obtenerRegistros();
     this.tiempo.on('cambio', this.notificarTiempoCambio);
@@ -295,7 +301,48 @@ class ReloJito {
     );
   }
 
+  actualizarProximaCita = async () => {
+    const proximaCita = await this.google.obtenerProximaCita();
+    if (!Object.values(proximaCita).length) {
+      return;
+    }
+
+    const fechaActual = new Date().getTime();
+    const proximaCitaFechaInicioTimestamp = (
+      new Date(proximaCita.fechaInicio).getTime()
+    );
+    if (
+      (proximaCitaFechaInicioTimestamp - fechaActual) >
+      CINCO_MINUTOS_EN_MILISEGUNDOS
+    ) {
+      return;
+    }
+
+    const proximaCitaFechaFinTimestamp = (
+      new Date(proximaCita.fechaFin).getTime()
+    );
+
+    if (fechaActual > proximaCitaFechaFinTimestamp) {
+      return;
+    }
+
+    (
+      this
+      .relojes
+      .forEach(
+        (reloj) => {
+          reloj.mostrarProximaCita(proximaCita);
+          reloj.reubicar(this.configuracion);
+        },
+      )
+    );
+  }
+
   notificarTiempoCambio = (tiempoEnHorasMinutosYSegundos) => {
+    const nuevoMinuto = (tiempoEnHorasMinutosYSegundos.split(':')[2] === '00');
+    if (nuevoMinuto) {
+      this.actualizarProximaCita();
+    }
     (
       this
       .relojes
