@@ -123,6 +123,12 @@ module.exports = class Reloj {
     this.ventana.webContents.send('citaCambio', proximaCita);
   }
 
+  removerProximaCita = (proximaCita) => {
+    //TODO: this.tieneCita cambiar a false si no hay cita
+    this.tieneCita = false;
+    this.ventana.webContents.send('citaCambio', {});
+  }
+
   obtenerId = () => {
     return this.ventana.id;
   }

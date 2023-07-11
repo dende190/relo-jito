@@ -315,14 +315,16 @@ class ReloJito {
       (proximaCitaFechaInicioTimestamp - fechaActual) >
       CINCO_MINUTOS_EN_MILISEGUNDOS
     ) {
-      return;
-    }
-
-    const proximaCitaFechaFinTimestamp = (
-      new Date(proximaCita.fechaFin).getTime()
-    );
-
-    if (fechaActual > proximaCitaFechaFinTimestamp) {
+      (
+        this
+        .relojes
+        .forEach(
+          (reloj) => {
+            reloj.removerProximaCita();
+            reloj.reubicar(this.configuracion);
+          },
+        )
+      );
       return;
     }
 

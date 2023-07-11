@@ -113,7 +113,7 @@ class Reloj {
   }
 
   mostrarProximaCita = (evento, proximaCita) => {
-    this.dCita.innerText = proximaCita.titulo;
+    this.dCita.innerText = (proximaCita.titulo || '');
     if (proximaCita.enlace) {
       this.dCita.href = proximaCita.enlace;
     }
