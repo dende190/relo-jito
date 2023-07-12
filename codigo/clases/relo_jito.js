@@ -256,6 +256,7 @@ class ReloJito {
     if (this.plataforma.ES_MACOS) {
       return;
     }
+    this.reiniciarRelojes();
     const { app } = require('electron');
     app.quit();
   }
@@ -265,12 +266,16 @@ class ReloJito {
     this.relojes.push(new Reloj(pantalla));
   }
 
-  reiniciarVentanas = () => {
+  reiniciarRelojes = () => {
     for (let relojIndice in this.relojes) {
       this.relojes[relojIndice].cerrar();
       delete this.relojes[relojIndice];
     }
     this.relojes = [];
+  }
+
+  reiniciarVentanas = () => {
+    this.reiniciarRelojes();
     this.sonidoVentana?.close();
     delete this.sonidoVentana;
     this.inicializarSonido();
