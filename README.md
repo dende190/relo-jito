@@ -4,6 +4,16 @@ Un proyecto que nació porque queríamos poder ver la hora con segundos en todo
 momento, en todos los monitores, de manera que se pudieran tomar decisiones con
 respecto a la misma
 
+## Ejecución
+
+1. Clonar el repositorio
+2. Ejecutar `npm install`
+3. Ejecutar `npm start`
+
+## Generación de paquete
+
+Ejecutar `npm run make`
+
 ## Generación de iconos
 
 Gracias a https://github.com/safu9/electron-icon-builder
