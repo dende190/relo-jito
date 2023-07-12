@@ -71,7 +71,18 @@ class ReloJito {
   inicializar = async () => {
     this.reiniciarVentanas();
     this.google = require('./google.js');
-    await this.google.inicializar();
+    try {
+      await this.google.inicializar();
+    } catch(error) {
+      (
+        console
+        .error(
+          '\x1b[31mOcurrió un problema al inicializar Google:\x1b[0m ' +
+          error
+        )
+      );
+      this.cerrarAplicacion();
+    }
     this.actualizarProximaCita();
     this.tiempo = require('./tiempo.js');
     this.tiemposRegistrados = this.tiempo.obtenerRegistros();
