@@ -11,6 +11,9 @@ const MICROFONOS = {
 module.exports = {
   ICONO: path.join(__dirname, '../../iconos/icon.ico'),
   TECLA_CONTROL: 'Ctrl',
+  RED: {
+    PARAMETRO: '-t',
+  },
   MICROFONOS: {
     SILENCIO: {
       DESACTIVAR_COMANDO: (

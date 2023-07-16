@@ -12,6 +12,7 @@ class Google {
   #clienteCredencialesRuta;
   #credencialesRuta;
   #autorizacionTipo;
+  #usuarioAutenticadoId;
 
   constructor() {
     this.autenticacionEnlaces = [
@@ -25,6 +26,9 @@ class Google {
       path
       .join(process.cwd(), 'credenciales_google/credenciales_google.json')
     );
+
+    //TODO: Poder configurar esto en la configuracion
+    this.usuarioAutenticadoId = 1; //AUTH de google
   }
 
   inicializar = async () => {
@@ -111,13 +115,18 @@ class Google {
 
     const cita = citas[0];
     const citaTitulo = cita.summary;
+    const citaEnlace = cita.hangoutLink;
     return {
       titulo: (
         (citaTitulo.length > CITA_CARACTERES_MAXIMOS) ?
         (citaTitulo.substr(0, CITA_CARACTERES_MAXIMOS) + '...') :
         citaTitulo
       ),
-      enlace: (cita.hangoutLink || ''),
+      enlace: (
+        citaEnlace ?
+        (citaEnlace + '?authuser=' + this.usuarioAutenticadoId) :
+        ''
+      ),
       fechaInicio: cita.start.dateTime,
       fechaFin: cita.end.dateTime,
     };

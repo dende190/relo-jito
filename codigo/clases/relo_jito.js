@@ -373,12 +373,12 @@ class ReloJito {
       )
     );
     if (['10:30:00', '15:30:00'].includes(tiempoEnHorasMinutosYSegundos)) {
-      // this.sonidoVentana.webContents.send('alarmaIniciada');
+      this.sonidoVentana.webContents.send('alarmaIniciada');
     } else if (
-      ['10:30:05', '15:30:05']
+      ['10:30:01', '15:30:01']
       .includes(tiempoEnHorasMinutosYSegundos)
     ) {
-      // this.sonidoVentana.webContents.send('alarmaDetenida');
+      this.sonidoVentana.webContents.send('alarmaDetenida');
     }
     let tiempoPartes = tiempoEnHorasMinutosYSegundos.split(':');
     let tiempoEnHorasYMinutos = tiempoPartes.slice(0, 2).join(':');
