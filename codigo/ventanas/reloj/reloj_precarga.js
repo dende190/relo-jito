@@ -116,7 +116,21 @@ class Reloj {
     this.dCita.innerText = (proximaCita.titulo || '');
     if (proximaCita.enlace) {
       this.dCita.href = proximaCita.enlace;
+    } else {
+      this.dCita.removeAttribute('href');
     }
+
+    if (!proximaCita?.rojoTonalidad) {
+      return;
+    }
+
+    this.dCita.style.color = (
+      'rgb(' +
+        proximaCita?.rojoTonalidad + ', ' +
+        '255, ' +
+        '0' +
+      ')'
+    );
   }
 
   actualizarRedEstado = (evento, tiempoMilisegundos) => {

@@ -1,4 +1,6 @@
-const CINCO_MINUTOS_EN_MILISEGUNDOS = 300000;
+const DIEZ_MINUTOS_EN_MILISEGUNDOS = 600000;
+const UN_MINUTOS_EN_MILISEGUNDOS = 60000;
+const ROJO_TONALIDAD_REMOVER = 25.5;
 
 class ReloJito {
 
@@ -327,10 +329,11 @@ class ReloJito {
     const proximaCitaFechaInicioTimestamp = (
       new Date(proximaCita.fechaInicio).getTime()
     );
-    if (
-      (proximaCitaFechaInicioTimestamp - fechaActual) >
-      CINCO_MINUTOS_EN_MILISEGUNDOS
-    ) {
+    const proximaCitaTiempoFaltanteMilisegundos = (
+      proximaCitaFechaInicioTimestamp -
+      fechaActual
+    );
+    if (proximaCitaTiempoFaltanteMilisegundos > DIEZ_MINUTOS_EN_MILISEGUNDOS) {
       (
         this
         .relojes
@@ -342,6 +345,20 @@ class ReloJito {
         )
       );
       return;
+    }
+
+    const citaMinutosFaltantes = (
+      (proximaCitaTiempoFaltanteMilisegundos / 1000) /
+      60
+    );
+
+    proximaCita.rojoTonalidad = (ROJO_TONALIDAD_REMOVER * citaMinutosFaltantes);
+    if (
+      (proximaCitaTiempoFaltanteMilisegundos <= UN_MINUTOS_EN_MILISEGUNDOS) &&
+      (proximaCitaTiempoFaltanteMilisegundos > 0)
+    ) {
+      this.sonidoVentana.webContents.send('alarmaCita');
+      delete proximaCita.rojoTonalidad;
     }
 
     //TODO: Alerta un minuto antes con sonidito

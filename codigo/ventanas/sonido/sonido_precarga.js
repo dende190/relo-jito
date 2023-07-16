@@ -14,6 +14,7 @@ class Sonido {
     ipcRenderer.on('alarmaIniciada', this.iniciarAlarma);
     ipcRenderer.on('alarmaDetenida', this.detenerAlarma);
     ipcRenderer.on('recordatorio', this.notificarRecordatorio);
+    ipcRenderer.on('alarmaCita', this.notificarCita);
     ipcRenderer.on('tic', this.notificarTic);
     ipcRenderer.on('toc', this.notificarToc);
   }
@@ -57,6 +58,10 @@ class Sonido {
 
   notificarToc = () => {
     this.reproducirArchivoOgg('notas_re_do_2x');
+  }
+
+  notificarCita = () => {
+    this.reproducirArchivoOgg('cita_alerta');
   }
 
 };
