@@ -104,7 +104,7 @@ class Google {
     const calendarioRespuesta = await calendario.events.list({
       calendarId: 'primary',
       timeMin: new Date().toISOString(),
-      maxResults: 1,
+      maxResults: 10,
       singleEvents: true,
       orderBy: 'startTime',
     });
@@ -113,7 +113,11 @@ class Google {
       return {};
     }
 
-    const cita = citas[0];
+    let cita = citas.shift();
+    while (cita.start?.date) {
+      cita = citas.shift();
+    }
+
     const citaTitulo = cita.summary;
     const citaEnlace = cita.hangoutLink;
     return {
