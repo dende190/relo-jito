@@ -101,13 +101,19 @@ class Google {
 
     const calendario = google.calendar({version: 'v3', auth: cliente});
     //TODO: Traer solo un dato y no una lista
-    const calendarioRespuesta = await calendario.events.list({
-      calendarId: 'primary',
-      timeMin: new Date().toISOString(),
-      maxResults: 10,
-      singleEvents: true,
-      orderBy: 'startTime',
-    });
+    try {
+      const calendarioRespuesta = await calendario.events.list({
+        calendarId: 'primary',
+        timeMin: new Date().toISOString(),
+        maxResults: 10,
+        singleEvents: true,
+        orderBy: 'startTime',
+      });
+    } catch(error) {
+      const Alerta = require('./alerta.js');
+      new Alerta('No se pudieron obtener los eventos del calendario', error);
+      return {};
+    }
     const citas = calendarioRespuesta.data.items;
     if (!citas || !citas.length) {
       return {};

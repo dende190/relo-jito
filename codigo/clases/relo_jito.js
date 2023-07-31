@@ -75,13 +75,8 @@ class ReloJito {
       await this.google.inicializar();
       this.actualizarProximaCita();
     } catch(error) {
-      (
-        console
-        .error(
-          '\x1b[31mOcurrió un problema al inicializar Google:\x1b[0m ' +
-          error
-        )
-      );
+      const Alerta = require('./alerta.js');
+      new Alerta('Ocurrió un problema al inicializar Google:', error);
       this.cerrarAplicacion();
     }
   }
