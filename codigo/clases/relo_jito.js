@@ -70,11 +70,10 @@ class ReloJito {
     );
   }
 
-  inicializar = async () => {
-    this.reiniciarVentanas();
-    this.google = require('./google.js');
+  inicializarCalendario = async () => {
     try {
       await this.google.inicializar();
+      this.actualizarProximaCita();
     } catch(error) {
       (
         console
@@ -85,7 +84,12 @@ class ReloJito {
       );
       this.cerrarAplicacion();
     }
-    this.actualizarProximaCita();
+  }
+
+  inicializar = async () => {
+    this.reiniciarVentanas();
+    this.google = require('./google.js');
+    this.inicializarCalendario();
     this.tiempo = require('./tiempo.js');
     this.tiemposRegistrados = this.tiempo.obtenerRegistros();
     this.tiempo.on('cambio', this.notificarTiempoCambio);
