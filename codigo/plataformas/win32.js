@@ -12,7 +12,7 @@ module.exports = {
   ICONO: path.join(__dirname, '../../iconos/icon.ico'),
   TECLA_CONTROL: 'Ctrl',
   RED: {
-    PARAMETRO: '-t',
+    PING_ARGUMENTO: '-t',
   },
   MICROFONOS: {
     SILENCIO: {

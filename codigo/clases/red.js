@@ -13,15 +13,21 @@ class Red extends EventEmitter {
   };
 
   #ipPeticion;
+  #plataforma;
 
   constructor() {
     super();
     this.ipPeticion = '8.8.8.8';
+    this.plataforma = require('../plataformas/' + process.platform + '.js');
   }
 
   comprobarEstado = () => {
     const { spawn } = require('child_process');
-    let ping = spawn('ping', [this.ipPeticion]);
+    let argumentos = [this.ipPeticion];
+    if (this.plataforma.RED.PING_ARGUMENTO) {
+      argumentos.push(this.plataforma.RED.PING_ARGUMENTO);
+    }
+    let ping = spawn('ping', argumentos);
     (
       ping
       .stdout
