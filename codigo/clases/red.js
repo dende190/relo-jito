@@ -24,7 +24,7 @@ class Red extends EventEmitter {
   comprobarEstado = () => {
     const { spawn } = require('child_process');
     let argumentos = [this.ipPeticion];
-    if (this.plataforma.RED.PING_ARGUMENTO) {
+    if (this.plataforma.RED?.PING_ARGUMENTO) {
       argumentos.push(this.plataforma.RED.PING_ARGUMENTO);
     }
     let ping = spawn('ping', argumentos);
