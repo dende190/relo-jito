@@ -7,6 +7,7 @@ class ReloJito {
   #configuracion;
   #configuracionVentana;
   #plataforma;
+  #calendario;
   #relojes;
   #sonidoVentana;
   #tiempo;
@@ -83,8 +84,11 @@ class ReloJito {
 
   inicializar = async () => {
     this.reiniciarVentanas();
-    this.google = require('./google.js');
-    this.inicializarCalendario();
+    const calendario = require('./calendario.js');
+    calendario.inicializar();
+    this.calendario = calendario;
+    // this.google = require('./google.js');
+    // this.inicializarCalendario();
     this.tiempo = require('./tiempo.js');
     this.tiemposRegistrados = this.tiempo.obtenerRegistros();
     this.tiempo.on('cambio', this.notificarTiempoCambio);
