@@ -14,7 +14,7 @@ class Reloj {
   };
 
   #dHora;
-  #dCita;
+  #dCitasContenedor;
 
   constructor() {
     window.addEventListener('DOMContentLoaded', this.inicializar);
@@ -22,7 +22,7 @@ class Reloj {
 
   inicializar = async () => {
     this.dHora = document.querySelector('.jsHora');
-    this.dCita = document.querySelector('.jsCita');
+    this.dCitasContenedor = document.querySelector('.jsCitasContenedor');
     this.dHora.addEventListener('click', this.notificarNotoriedadCambio);
     (
       document
@@ -112,24 +112,55 @@ class Reloj {
     this.dHora.innerText = tiempoEnHorasMinutosYSegundos;
   }
 
-  mostrarProximaCita = (evento, proximaCita) => {
-    this.dCita.innerText = (proximaCita.titulo || '');
-    if (proximaCita.enlace) {
-      this.dCita.href = proximaCita.enlace;
-    } else {
-      this.dCita.removeAttribute('href');
-    }
-
-    if (!proximaCita?.rojoTonalidad) {
+  mostrarProximaCita = (evento, proximasCitas) => {
+    if (!proximasCitas.length) {
+      this.dCitasContenedor.innerHTML = '';
       return;
     }
 
-    this.dCita.style.color = (
-      'rgb(' +
-        proximaCita?.rojoTonalidad + ', ' +
-        '255, ' +
-        '0' +
-      ')'
+    const citasIds = [];
+    for (const proximaCita of proximasCitas) {
+      const citaId = proximaCita.id;
+      const dCita = document.querySelector('.jsCita' + citaId);
+      citasIds.push(citaId);
+      if (dCita) {
+        if (!proximaCita?.rojoTonalidad) {
+          return;
+        }
+
+        dCita.style.color = (
+          'rgb(' +
+            proximaCita?.rojoTonalidad + ', ' +
+            '255, ' +
+            '0' +
+          ')'
+        );
+        continue;
+      }
+
+      const dEnlace = document.createElement('a');
+      dEnlace.textContent = proximaCita.titulo;
+      dEnlace.classList.add('relojito-cita', ('jsCita' + citaId), 'jsCita');
+      dEnlace.dataset.id = citaId;
+      if (proximaCita.enlace) {
+        dEnlace.href = proximaCita.enlace;
+        dEnlace.target = '_blank';
+      }
+
+      this.dCitasContenedor.appendChild(dEnlace);
+    }
+
+    (
+      this
+      .dCitasContenedor
+      .querySelectorAll('.jsCita')
+      .forEach(
+        (dCita) => {
+          if (!citasIds.includes(dCita.dataset.id)) {
+            dCita.remove();
+          }
+        },
+      )
     );
   }
 

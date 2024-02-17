@@ -2,7 +2,7 @@ const CARACTERES_CANTIDAD = 10;
 
 module.exports = class Reloj {
 
-  #tieneCita;
+  #citasCantidad;
   #configuracion;
   #esNotorio;
   #fuente;
@@ -11,6 +11,7 @@ module.exports = class Reloj {
 
   constructor(pantalla) {
     this.esNotorio = true;
+    this.citasCantidad = 0;
     this.pantalla = pantalla;
     const configuracion = require('./configuracion.js');
     this.configuracion = configuracion;
@@ -53,9 +54,8 @@ module.exports = class Reloj {
     const ventanaMedidas = {
       alturaPixeles: (
         (
-          this.tieneCita ?
-          configuracion.obtener('ventanas.texto_de_cita.tamano_en_pixeles') :
-          0
+          this.citasCantidad *
+          configuracion.obtener('ventanas.texto_de_cita.tamano_en_pixeles')
         ) +
         Math.ceil(
           configuracion.obtener('ventanas.texto.tamano_en_pixeles') *
@@ -117,16 +117,9 @@ module.exports = class Reloj {
     );
   }
 
-  mostrarProximaCita = (proximaCita) => {
-    //TODO: this.tieneCita cambiar a false si no hay cita
-    this.tieneCita = true;
-    this.ventana.webContents.send('citaCambio', proximaCita);
-  }
-
-  removerProximaCita = (proximaCita) => {
-    //TODO: this.tieneCita cambiar a false si no hay cita
-    this.tieneCita = false;
-    this.ventana.webContents.send('citaCambio', {});
+  actualizarProximasCitas = (proximasCitas) => {
+    this.citasCantidad = proximasCitas.length;
+    this.ventana.webContents.send('citaCambio', proximasCitas);
   }
 
   obtenerId = () => {

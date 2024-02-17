@@ -319,54 +319,56 @@ class ReloJito {
   }
 
   actualizarProximaCita = async () => {
-    const proximaCita = await this.google.obtenerProximaCita();
-    if (!Object.values(proximaCita).length) {
+    const proximasCitas = await this.google.obtenerProximaCita();
+    if (!proximasCitas.length) {
       return;
     }
 
     const fechaActual = new Date().getTime();
-    const proximaCitaFechaInicioTimestamp = (
-      new Date(proximaCita.fechaInicio).getTime()
-    );
-    const proximaCitaTiempoFaltanteMilisegundos = (
-      proximaCitaFechaInicioTimestamp -
-      fechaActual
-    );
-    if (proximaCitaTiempoFaltanteMilisegundos > DIEZ_MINUTOS_EN_MILISEGUNDOS) {
-      (
-        this
-        .relojes
-        .forEach(
-          (reloj) => {
-            reloj.removerProximaCita();
-            reloj.reubicar(this.configuracion);
-          },
-        )
+    const citasVisibles = [];
+    for (const proximaCita of proximasCitas) {
+      const proximaCitaFechaInicioTimestamp = (
+        new Date(proximaCita.fechaInicio).getTime()
       );
-      return;
+
+      const proximaCitaTiempoFaltanteMilisegundos = (
+        proximaCitaFechaInicioTimestamp -
+        fechaActual
+      );
+      if (
+        proximaCitaTiempoFaltanteMilisegundos >
+        DIEZ_MINUTOS_EN_MILISEGUNDOS
+      ) {
+        continue;
+      }
+
+      const citaMinutosFaltantes = (
+        (proximaCitaTiempoFaltanteMilisegundos / 1000) /
+        60
+      );
+
+      proximaCita.rojoTonalidad = (
+        ROJO_TONALIDAD_REMOVER *
+        citaMinutosFaltantes
+      );
+
+      if (
+        (proximaCitaTiempoFaltanteMilisegundos <= UN_MINUTOS_EN_MILISEGUNDOS) &&
+        (proximaCitaTiempoFaltanteMilisegundos > 0)
+      ) {
+        this.sonidoVentana.webContents.send('alarmaCita');
+        delete proximaCita.rojoTonalidad;
+      }
+
+      citasVisibles.push(proximaCita);
     }
 
-    const citaMinutosFaltantes = (
-      (proximaCitaTiempoFaltanteMilisegundos / 1000) /
-      60
-    );
-
-    proximaCita.rojoTonalidad = (ROJO_TONALIDAD_REMOVER * citaMinutosFaltantes);
-    if (
-      (proximaCitaTiempoFaltanteMilisegundos <= UN_MINUTOS_EN_MILISEGUNDOS) &&
-      (proximaCitaTiempoFaltanteMilisegundos > 0)
-    ) {
-      this.sonidoVentana.webContents.send('alarmaCita');
-      delete proximaCita.rojoTonalidad;
-    }
-
-    //TODO: Alerta un minuto antes con sonidito
     (
       this
       .relojes
       .forEach(
         (reloj) => {
-          reloj.mostrarProximaCita(proximaCita);
+          reloj.actualizarProximasCitas(citasVisibles);
           reloj.reubicar(this.configuracion);
         },
       )
