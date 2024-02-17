@@ -35,48 +35,12 @@ class Google {
     await this.crearCliente();
   }
 
-  guardarClienteCredenciales = async (client) => {
-    const credenciales = await fs.readFile(this.credencialesRuta);
-    const crdencialesJson = JSON.parse(credenciales);
-    const credencialesLlave = (
-      crdencialesJson.installed ||
-      crdencialesJson.web
-    );
-    const clienteCredencialesJson = (
-      JSON
-      .stringify(
-        {
-          type: 'authorized_user',
-          client_id: credencialesLlave.client_id,
-          client_secret: credencialesLlave.client_secret,
-          refresh_token: client.credentials.refresh_token,
-        }
-      )
-    );
-    await fs.writeFile(this.clienteCredencialesRuta, clienteCredencialesJson);
-  }
-
   crearCliente = async () => {
     if (this.cliente) {
       return;
     }
 
-    let cliente = {};
-    try {
-      const clienteCredenciales = await (
-        fs
-        .readFile(this.clienteCredencialesRuta)
-      );
-      const clienteCredencialesJson = JSON.parse(clienteCredenciales);
-      cliente = google.auth.fromJSON(clienteCredencialesJson);
-    } catch (err) {}
-
-    if (Object.keys(cliente).length) {
-      this.cliente = cliente;
-      return;
-    }
-
-    cliente = await (
+    const cliente = await (
       authenticate(
         {
           scopes: this.autenticacionEnlaces,
@@ -84,10 +48,6 @@ class Google {
         }
       )
     );
-
-    if (cliente.credentials) {
-      await this.guardarClienteCredenciales(cliente);
-    }
 
     this.cliente = cliente;
   }
