@@ -1,6 +1,5 @@
 const CITA_CARACTERES_MAXIMOS = 20;
 const CITAS_SOLICITADAS_CANTIDAD = 10;
-const CITAS_MOSTRADAS_CANTIDAD = 2;
 const fs = require('fs').promises;
 const path = require('path');
 const process = require('process');
@@ -87,7 +86,7 @@ class Google {
       const citaEnlace = cita.hangoutLink;
       (
         citasVisibles
-        .push(
+        .unshift(
           {
             id: cita.id,
             titulo: (
@@ -105,10 +104,6 @@ class Google {
           },
         )
       );
-
-      if (citasVisibles === CITAS_MOSTRADAS_CANTIDAD) {
-        break;
-      }
     }
 
     return citasVisibles;
