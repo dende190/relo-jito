@@ -10,7 +10,7 @@ const MICROFONOS_COMANDO_INICIO_50_PORCIENTO = (
 
 module.exports = {
   ES_MACOS: true,
-  ICONO: path.join(__dirname, '../../iconos/icon.icns'),
+  ICONO: path.join(__dirname, '../../iconos/16x16.png'),
   TECLA_CONTROL: 'Command',
   MICROFONOS: {
     SILENCIO: {
