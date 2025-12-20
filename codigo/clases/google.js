@@ -21,11 +21,11 @@ class Google {
     ];
     this.clienteCredencialesRuta = (
       path
-      .join(process.cwd(), 'credenciales_google/token.json')
+      .join(__dirname, '../../credenciales_google/token.json')
     );
     this.credencialesRuta = (
       path
-      .join(process.cwd(), 'credenciales_google/credenciales_google.json')
+      .join(__dirname, '../../credenciales_google/credenciales_google.json')
     );
 
     //TODO: Poder configurar esto en la configuracion
