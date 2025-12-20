@@ -165,6 +165,10 @@ class ReloJito {
     menuElementos.forEach(this.registrarAtajoGlobal);
 
     const { app } = require('electron');
+    if (this.plataforma.ES_MACOS) {
+      app.dock.hide();
+    }
+
     app.on('window-all-closed', this.cerrarAplicacion);
   }
 
